@@ -2,11 +2,15 @@
 layout: default
 ---
 <div class="article">
- <h2>
-   {{ page.title }}<br />
-   <span class="entrydate">{{ page.date | date_to_string }}</span>
- </h2>
-  {{ content }}
+  <div class="header">
+    <h2>
+      {{ page.title }}
+    </h2>
+    <span class="entrydate">{{ page.date | date_to_string }}</span>
+  </div>
+  <div class="content">
+    {{ content }}
+  </div>
 </div>
 <script type="text/javascript">
     var disqus_url = "http://.github.com/mrdias/{{ post.url }}"; var disqus_title ="{{ post.title }}";
