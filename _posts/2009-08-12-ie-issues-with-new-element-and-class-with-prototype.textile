@@ -10,7 +10,7 @@ The problem we have is that this code
 new Element('div', {'class':'klassName'})
 {% endhighlight %}
 
-will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles.
+will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles. <!-- -**-END-**- -->
 
 One of the workarounds would be to explicitly add the class name, like this:
 
