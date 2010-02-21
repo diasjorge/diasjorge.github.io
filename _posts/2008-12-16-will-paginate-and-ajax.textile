@@ -1,0 +1,41 @@
+---
+layout: post
+title: Will Paginate And Ajax
+---
+
+I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn't customize the pagination url's or I had to specify the paginator to use (will paginate's default or mine for ajax), so I came up with this solution which fulfils all my needs.
+
+First create the following class in your app/helpers.
+
+{% highlight ruby %}
+class RemoteLinkRenderer < WillPaginate::LinkRenderer
+  def prepare(collection, options, template)
+    @remote = options.delete(:remote)
+    super
+  end
+
+  protected
+  def page_link(page, text, attributes = {})
+    if @remote
+      @template.link_to_remote(text, {:url => url_for(page), :method => :get}.
+                               merge(@remote), attributes)
+    else
+      @template.link_to(text, url_for(page), attributes)
+    end
+  end
+end
+{% endhighlight %}
+
+Then you have to tell will_paginate which link_renderer to use, I do this in a rails initializer.
+
+{% highlight ruby %}
+WillPaginate::ViewHelpers.pagination_options[:renderer] = 'RemoteLinkRenderer'
+{% endhighlight %}
+
+So with this solution, you can work like you would normally with will_paginate, but if you need to do an ajax link, then you'll have to pass the options in the remote hash, something like this:
+
+{% highlight ruby %}
+will_paginate(@comments, :remote => {:update => 'comments'})
+{% endhighlight %}
+
+That's it enjoy. You can keep passing the same options you would normally do to will_paginate to customize the behaviour.

@@ -1,0 +1,48 @@
+---
+layout: post
+title: IE issues with new Element and class with Prototype
+---
+
+The problem we have is that this code
+
+{% highlight js %}
+new Element('div', {'class':'klassName'})
+{% endhighlight %}
+
+will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles.
+
+One of the workarounds would be to explicitly add the class name, like this:
+
+{% highlight js %}
+var e = new Element('div');
+e.addClassName('klassName');
+{% endhighlight %}
+
+The problem with this approach is that at work, we have a huge javascript codebase, so instead, we are going to monkey patch Prototype. We're working against version 1.6.0.3 of prototype, that's why we add the alert, so when we update, we'll catch this and check if it was fixed on core.
+
+{% highlight js %}
+// This is a dirty hack to protoype, so IE, will take class names on new Element
+// new Element('div', {'class':'klassName'}) doesn't work on IE but does on firefox
+// in IE, we wouldn't get the className set.
+
+if (Prototype.Version != '1.6.0.3') alert("BEWARE OF THE PROTOTYPE VERSION");
+
+(function() {
+   var element = this.Element;
+   this.Element = function(tagName, attributes) {
+     attributes = attributes || { };
+     tagName = tagName.toLowerCase();
+     var cache = Element.cache;
+     if (Prototype.Browser.IE && (attributes.name || attributes['class'])) {
+       tagName = '<' + tagName + ' name="' + attributes.name + '"' + 'class="' + attributes['class'] + '"' + '>';
+       delete attributes.name;
+
+       return Element.writeAttribute(document.createElement(tagName), attributes);
+     }
+     if (!cache[tagName]) cache[tagName] = Element.extend(document.createElement(tagName));
+     return Element.writeAttribute(cache[tagName].cloneNode(false), attributes);
+   };
+   Object.extend(this.Element, element || { });
+   if (element) this.Element.prototype = element.prototype;
+ }).call(window);
+{% endhighlight %}

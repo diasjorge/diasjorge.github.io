@@ -1,0 +1,26 @@
+---
+layout: post
+title: Will Paginate And Merb
+---
+
+I read something about how to do it in this "post":http://merbist.com/2008/10/27/will_paginate-and-merb/ by The merbist, albeit the information was not complete.
+So here are my instructions:
+Clone mislav's will_paginate repo and build the gem from the agnostic branch.
+
+{% highlight sh %}
+git clone git://github.com/mislav/will_paginate.git
+cd will_paginate/
+git checkout origin/agnostic 
+gem build
+{% endhighlight %}
+
+With this commands you've generated the will_paginate-3.0.0.gem.
+
+If you want to install it system-wide use your usual gem install.
+If you want to bundle it in your project, as I did, then you'll have to do:
+
+{% highlight sh %}
+thor merb:gem:install path/to/gem
+{% endhighlight %}
+
+That's it.

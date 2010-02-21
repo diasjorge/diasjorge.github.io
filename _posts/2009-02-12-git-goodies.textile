@@ -1,0 +1,18 @@
+---
+layout: post
+title: Git Goodies
+---
+
+A couple days ago I had to gather some information from a git repository, so I'm sharing this small scripts with you.
+
+List of all authors on a git repo:
+
+{% highlight sh %}
+git log --pretty=short | grep Author: | awk '{print $2}' | sort | uniq
+{% endhighlight %}
+
+List all modified files since a revision:
+
+{% highlight sh %}
+git-whatchanged revision.. --pretty=oneline | grep '^:' | awk '{print $6}' | sort | uniq
+{% endhighlight %}
