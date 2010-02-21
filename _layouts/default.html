@@ -29,6 +29,18 @@
       <div id="sidebar">
 	<div class="module">
 	  <h2>
+	    Tags
+	  </h2>
+	  <ul>
+	    {% for tag in site.iterable.tags %}
+	    <a style="font-size: {{ tag.posts | size | times:1.5 | plus: 10 }}px" href="{{site.baseurl}}/tags/{{tag.name}}">
+	      {{ tag.name }}</a>{% if forloop.last == false %},&nbsp;{% endif %}
+	      {% endfor %}
+	  </ul>
+	</div>
+	<div id="github-badge" class="module"></div>
+	<div class="module">
+	  <h2>
 	    Friend's Links
 	  </h2>
 	  <ul>
@@ -41,10 +53,8 @@
 	    <li>
 	      <a href="http://jorgecalas.com/">Jorge Calas</a>
 	    </li>
-	  </ul>
-	  
+	  </ul>	  
 	</div>
-	<div id="github-badge" class="module"></div>
       </div>
       <div id="footer">
 	&copy; 2010 Jorge Dias

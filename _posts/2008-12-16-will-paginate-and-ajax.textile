@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Will Paginate And Ajax
+tags: ajax rails will_paginate
 ---
 
 I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn't customize the pagination url's or I had to specify the paginator to use (will paginate's default or mine for ajax), so I came up with this solution which fulfils all my needs.

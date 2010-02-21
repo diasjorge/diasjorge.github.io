@@ -1,6 +1,7 @@
 ---
 layout: post
 title: IE issues with new Element and class with Prototype
+tags: IE javascript prototype
 ---
 
 The problem we have is that this code

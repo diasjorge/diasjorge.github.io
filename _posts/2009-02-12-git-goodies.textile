@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Git Goodies
+tags: git shell
 ---
 
 A couple days ago I had to gather some information from a git repository, so I'm sharing this small scripts with you.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Will Paginate And Merb
+tags: merb will_paginate
 ---
 
 I read something about how to do it in this "post":http://merbist.com/2008/10/27/will_paginate-and-merb/ by The merbist, albeit the information was not complete.
