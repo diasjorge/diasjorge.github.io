@@ -99,6 +99,7 @@ body.main a { text-decoration: none; color: #4088b8; }
 body.main a:hover { text-decoration: underline; color: #4088b8; }
 body.main a:visited { color: #4088b8; }
 body.main h2 { border-bottom: 4px solid #f0f0f0; color: #666666; }
+body.main h2.title { font-size: 3em; }
 body.main #header h1 { font-size: 4.5em; color: #4088b8; margin: 0; }
 body.main #header h1 a { color: inherit; }
 body.main #header h1 a:hover { text-decoration: none; }

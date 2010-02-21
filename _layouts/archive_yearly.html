@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h2>{{ page.year }}</h2>
+<h2 class="title">{{ page.year }}</h2>
 
 {% for m in (1..12) reversed %}
   {% if site.collated_posts[page.year][m] %}
