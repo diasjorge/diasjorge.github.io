@@ -95,20 +95,28 @@ body.three-col #sidebar { display: inline; float: left; margin-right: 0; width: 
 body.three-col #content { display: inline; float: left; margin-right: 10px; width: 710px; }
 * html body.three-col #content { overflow-x: hidden; }
 
-body.main { color: #333333; }
 body.main a { text-decoration: none; color: #4088b8; }
-body.main a:hover { text-decoration: underline; }
+body.main a:hover { text-decoration: underline; color: #4088b8; }
 body.main a:visited { color: #4088b8; }
-body.main h2 { border-bottom: 4px solid #dadada; color: #666666; }
-body.main #header h1 { color: #4088b8; }
+body.main h2 { border-bottom: 4px solid #f0f0f0; color: #666666; }
+body.main #header h1 { font-size: 4.5em; color: #4088b8; margin: 0; }
 body.main #header h1 a { color: inherit; }
-body.main #header h4 { color: #333333; }
+body.main #header h1 a:hover { text-decoration: none; }
+body.main #header h4 { margin-bottom: 0.5em; }
 body.main #header #toplinks { float: right; }
-body.main #sidebar h2 { color: #666666; }
-body.main .article div.header { border-bottom: 4px solid #dadada; margin-bottom: 0.75em; }
+body.main #sidebar div.module { border: 4px solid #f0f0f0; margin-bottom: 1.5em; padding-bottom: 0.2em; }
+body.main #sidebar div.module ul { margin: 0.1em; }
+body.main #sidebar div.module ul li { list-style-type: none; margin-left: 0px; }
+body.main #sidebar div.module ul li { margin-bottom: 0.25em; border: 1px solid #D8D8D8; background-color: #f0f0f0; }
+body.main #sidebar div.module ul li a { font-weight: bold; }
+body.main #sidebar div.module h2 { background-color: #f0f0f0; color: #666666; margin-bottom: 0.2em; }
+body.main .article { margin-bottom: 1.5em; }
+body.main .article p { margin: 0 0 0.5em 0; }
+body.main .article div.header { border-bottom: 4px solid #f0f0f0; margin-bottom: 0.75em; }
 body.main .article div.header h2 { border: 0; margin-bottom: 0; }
 body.main .article div.content { font-size: 130%; }
-body.main .article div.highlight { font-size: 85%; overflow-x: auto; margin-top: -1em; }
-body.main #github-badge { font: inherit; }
+body.main .article div.highlight { font-size: 85%; }
+body.main .article div.highlight pre { background-color: #f0f0f0; overflow-x: auto; }
+body.main #github-badge { font: inherit; padding: 0; background-color: inherit; }
 body.main #github-badge h2 span.title { font: inherit; }
-body.main #github-badge a { color: #4088b8; }
+body.main #github-badge a { background-color: inherit; color: #4088b8; }
