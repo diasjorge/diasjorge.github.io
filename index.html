@@ -14,9 +14,14 @@ title: Mr. Dias
       <span class="entrydate">{{ post.date | date_to_string }}</span>
     </div>
     <div class="content">
-      {{ post.preview }}
-      <br />
-      <a href="{{ post.url }}">Continue Reading</a>
+      {% if forloop.first == true %}
+        {{ post.content }}
+      {% else %}
+        {{ post.preview }}
+      {% endif %}
+      <p>
+	<a href="{{ post.url }}">Continue Reading</a>
+      </p>
     </div>
   </li>
   {% endfor %}
