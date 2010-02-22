@@ -9,7 +9,7 @@
     <!--[if lt IE 8]>
       <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
-    <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="http://feeds2.feedburner.com/mrdias" />
+    <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="{{ site.feed_url }}" />
     <link rel="openid.server" href="http://www.myopenid.com/server"/>
     <link rel="openid.delegate" href="http://theturingmachine.myopenid.com/"/>
   </head>
@@ -54,6 +54,16 @@
 	      <a href="http://jorgecalas.com/">Jorge Calas</a>
 	    </li>
 	  </ul>	  
+	</div>
+	<div class="module">
+	  <h2>
+	    Subscribe
+	  </h2>
+	  <ul>
+	    <li>
+	      <a href="{{ site.feed_url }}" class="feed_link">RSS</a>
+	    </li>
+	  </ul>
 	</div>
       </div>
       <div id="footer">

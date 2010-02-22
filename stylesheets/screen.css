@@ -110,6 +110,7 @@ body.main #sidebar div.module ul { margin: 0; padding: 0.2em; }
 body.main #sidebar div.module ul li { list-style-type: none; margin-left: 0px; }
 body.main #sidebar div.module ul li { margin-bottom: 0.25em; border: 1px solid #D8D8D8; background-color: #f0f0f0; }
 body.main #sidebar div.module ul li a { font-weight: bold; }
+body.main #sidebar div.module ul li a.feed_link { padding: 0 0 0 19px; background: url("../images/feed-icon-14x14.png") no-repeat 0 50%; }
 body.main #sidebar div.module h2 { background-color: #f0f0f0; color: #666666; margin-bottom: 0.2em; }
 body.main ul.posts { margin-left: 0; margin-right: 0; }
 body.main ul.posts li { list-style-type: none; margin-left: 0px; }

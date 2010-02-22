@@ -1,4 +1,5 @@
 url: "/"
+feed_url: "http://feeds2.feedburner.com/mrdias"
 markdown: rdiscount
 pygments: true
 exclude:
