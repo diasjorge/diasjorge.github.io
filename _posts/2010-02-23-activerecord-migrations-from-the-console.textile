@@ -1,0 +1,13 @@
+---
+layout: post
+title: ActiveRecord migrations from the console
+---
+
+If you ever run into the situation where one migration doesn't complete sucessfully, and you're stuck with a column in a table or a new table, so you can't drop the migration or execute the migration again, you can always call the migration methods from the console like this:<!-- -**-END-**- -->
+
+{% highlight ruby %}
+ActiveRecord::Migration.drop_table :table_name
+ActiveRecord::Migration.remove_column :table_name, :column_name
+{% endhighlight %}
+
+Hopefully this will help you when you're developing your migrations.
