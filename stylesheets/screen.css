@@ -108,10 +108,10 @@ body.main #header h1 a { color: inherit; }
 body.main #header h1 a:hover { text-decoration: none; }
 body.main #header h4 { margin-bottom: 0.5em; }
 body.main #header #toplinks { float: right; }
-body.main #sidebar div.module { border: 4px solid #f0f0f0; margin-bottom: 1.5em; padding-bottom: 0.2em; border-radius: 7px; -moz-border-radius: 7px; -webkit-border-radius: 7px; }
+body.main #sidebar div.module { border: 4px solid #f0f0f0; margin-bottom: 1.5em; padding-bottom: 0.2em; border-radius: 7px; -moz-border-radius: 7px; -webkit-border-radius: 7px; background-color: #f9f9f9; }
 body.main #sidebar div.module ul { margin: 0; padding: 0.2em; }
 body.main #sidebar div.module ul li { list-style-type: none; margin-left: 0px; }
-body.main #sidebar div.module ul li { margin-bottom: 0.25em; border: 1px solid #D8D8D8; background-color: #f0f0f0; }
+body.main #sidebar div.module ul li { margin-bottom: 0.25em; }
 body.main #sidebar div.module ul li a { font-weight: bold; }
 body.main #sidebar div.module ul li a.feed_link { padding: 0 0 0 19px; background: url("../images/feed-icon-14x14.png") no-repeat 0 50%; }
 body.main #sidebar div.module h2 { background-color: #f0f0f0; color: #666666; margin-bottom: 0.2em; }
@@ -127,4 +127,6 @@ body.main .article div.highlight pre { background-color: #f0f0f0; overflow-x: au
 body.main #github-badge { font: inherit; padding: 0; background-color: inherit; }
 body.main #github-badge h2 span.title { font: inherit; }
 body.main #github-badge a { background-color: inherit; color: #4088b8; }
+body.main #github-badge .repos .public { border: 0; background-color: inherit; }
+body.main #github-badge .repos .public a { background-color: inherit; }
 body.main .highlight pre { border-radius: 7px; -moz-border-radius: 7px; -webkit-border-radius: 7px; padding: 5px 10px; }

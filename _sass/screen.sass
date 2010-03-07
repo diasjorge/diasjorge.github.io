@@ -88,14 +88,13 @@ body.main
       margin-bottom: 1.5em
       padding-bottom: 0.2em
       +border-radius("7px")
+      background-color: #f9f9f9
       ul
         +no-bullets
         margin: 0
         padding: 0.2em
         li
           margin-bottom: 0.25em
-          border: 1px solid #D8D8D8
-          background-color = !light_color
           a
             font-weight: bold
             &.feed_link
@@ -147,6 +146,13 @@ body.main
     a
       background-color: inherit
       color = !link_color
+
+    .repos
+      .public
+        border: 0
+        background-color: inherit
+        a
+          background-color: inherit
 
   .highlight
     pre
