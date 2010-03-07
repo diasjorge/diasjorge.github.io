@@ -75,7 +75,7 @@
 	    Monthly Archives
 	  </h2>
 	  <ul>
-	    {% for monthly_archive in site.monthly_archives %}
+	    {% for monthly_archive in site.monthly_archives reversed %}
 	    <li>
 	      <a href="{{ site.baseurl }}/{{ monthly_archive.url }}">{{ monthly_archive.name }}</a> ({{ monthly_archive.posts | size }} posts)
 	    </li>
