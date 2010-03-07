@@ -11,7 +11,7 @@ table { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inhe
 
 a img { border: none; }
 
-body.bp { line-height: 1.5; font-family: Helvetica Neue, Arial, Helvetica, sans-serif; color: #333333; font-size: 75%; }
+body.bp { line-height: 1.5; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color: #333333; font-size: 75%; }
 body.bp h1 { font-weight: normal; color: #222222; font-size: 3em; line-height: 1; margin-bottom: 0.5em; }
 body.bp h1 img { margin: 0; }
 body.bp h2 { font-weight: normal; color: #222222; font-size: 2em; margin-bottom: 0.75em; }
@@ -95,6 +95,9 @@ body.three-col #sidebar { display: inline; float: left; margin-right: 0; width: 
 body.three-col #content { display: inline; float: left; margin-right: 10px; width: 710px; }
 * html body.three-col #content { overflow-x: hidden; }
 
+html { font-size: 10px; }
+
+body.main { font-size: 1.2em; }
 body.main a { text-decoration: none; color: #4088b8; }
 body.main a:hover { text-decoration: underline; color: #4088b8; }
 body.main a:visited { color: #4088b8; }
