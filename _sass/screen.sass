@@ -9,6 +9,8 @@
 
 @import compass/utilities/lists.sass
 
+@import partials/_border-radius.sass
+
 // To generate css equivalent to the blueprint css but with your configuration applied, uncomment:
 // +blueprint
 
@@ -82,6 +84,7 @@ body.main
       border = "4px solid" !light_color
       margin-bottom: 1.5em
       padding-bottom: 0.2em
+      +border-radius("7px")
       ul
         +no-bullets
         margin: 0
@@ -141,3 +144,8 @@ body.main
     a
       background-color: inherit
       color = !link_color
+
+  .highlight
+    pre
+      +border-radius("7px")      
+      padding: 5px 10px
