@@ -74,7 +74,7 @@ module Jekyll
     site_instance.collated = {}
   end
   
-  AOP.after(Site, :render) do |site_instance, result, args|
+  AOP.before(Site, :render) do |site_instance, result, args|
     site_instance.posts.reverse.each do |post|
       y, m, d = post.date.year, post.date.month, post.date.day
       unless site_instance.collated.key? y
