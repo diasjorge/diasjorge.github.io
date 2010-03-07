@@ -31,12 +31,17 @@
 	  <h2>
 	    Tags
 	  </h2>
-	  <ul>
-	    {% for tag in site.iterable.tags %}
-	    <a style="font-size: {{ tag.posts | size | times:0.1 | plus: 1 }}em" href="{{site.baseurl}}/tags/{{tag.name}}">
-	      {{ tag.name }}</a>{% if forloop.last == false %},&nbsp;{% endif %}
+	  <div class="cloud_wrap">
+	    <ul>
+	      {% for tag in site.iterable.tags %}
+	      <li>
+		<a style="font-size: {{ tag.posts | size | times:0.1 | plus: 1 }}em" href="{{site.baseurl}}/tags/{{tag.name}}">
+		  {{ tag.name }}
+		</a>
+	      </li>
 	      {% endfor %}
-	  </ul>
+	    </ul>	    
+	  </div>
 	</div>
 	<div id="github-badge" class="module"></div>
 	<div class="module">

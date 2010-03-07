@@ -115,6 +115,10 @@ body.main #sidebar div.module ul li { margin-bottom: 0.25em; }
 body.main #sidebar div.module ul li a { font-weight: bold; }
 body.main #sidebar div.module ul li a.feed_link { padding: 0 0 0 19px; background: url("../images/feed-icon-14x14.png") no-repeat 0 50%; }
 body.main #sidebar div.module h2 { background-color: #f0f0f0; color: #666666; margin-bottom: 0em; }
+body.main #sidebar div.module div.cloud_wrap { padding: 0.2em 0.5em; }
+body.main #sidebar div.module div.cloud_wrap ul { list-style-type: none; margin: 0px; padding: 0px; display: inline; }
+body.main #sidebar div.module div.cloud_wrap ul li { margin: 0px; padding: 0px; display: inline; }
+body.main #sidebar div.module div.cloud_wrap ul li { margin-right: 0.2em; }
 body.main ul.posts { margin-left: 0; margin-right: 0; }
 body.main ul.posts li { list-style-type: none; margin-left: 0px; }
 body.main .article { margin-bottom: 1.5em; }
