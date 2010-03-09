@@ -21,7 +21,7 @@
 	  <a href="http://github.com/diasjorge">On Github</a> |
 	  <a href="http://twitter.com/dias_jorge">On Twitter</a>
 	</span>
-	<h1><a href="{{site.url}}">Mr. Dias</a></h1>
+	<h1><a href="/">Mr. Dias</a></h1>
 	<h4>Talks about code</h4>
       </div>
       <div id="content">
@@ -78,7 +78,7 @@
 	  <ul>
 	    {% for monthly_archive in site.monthly_archives reversed %}
 	    <li>
-	      <a href="{{ site.baseurl }}/{{ monthly_archive.url }}">{{ monthly_archive.name }}</a> ({{ monthly_archive.posts | size }} posts)
+	      <a href="{{ monthly_archive.url }}">{{ monthly_archive.name }}</a> ({{ monthly_archive.posts | size }} posts)
 	    </li>
 	    {% endfor %}
 	  </ul>
