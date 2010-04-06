@@ -126,6 +126,7 @@ body.main .article p { margin: 0 0 0.5em 0; }
 body.main .article div.header { border-bottom: 4px solid #f0f0f0; margin-bottom: 0.75em; }
 body.main .article div.header h2 { border: 0; margin-bottom: 0; font-size: 2em; }
 body.main .article div.content { font-size: 130%; }
+body.main .article div.content .article-comments { float: right; font-size: 0.8em; }
 body.main .article div.highlight { font-size: 85%; }
 body.main .article div.highlight pre { background-color: #f0f0f0; overflow-x: auto; }
 body.main #github-badge { font: inherit; padding: 0; background-color: inherit; }

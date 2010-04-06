@@ -41,7 +41,7 @@
 		</a>
 	      </li>
 	      {% endfor %}
-	    </ul>	    
+	    </ul>
 	  </div>
 	</div>
 	<div id="github-badge" class="module"></div>
@@ -59,7 +59,7 @@
 	    <li>
 	      <a href="http://jorgecalas.com/">Jorge Calas</a>
 	    </li>
-	  </ul>	  
+	  </ul>
 	</div>
 	<div class="module">
 	  <h2>
@@ -106,5 +106,19 @@
         pageTracker._trackPageview();
       } catch(err) {}
     </script>
+    <script type="text/javascript">
+    //<![CDATA[
+    (function() {
+        var links = document.getElementsByTagName('a');
+        var query = '?';
+        for(var i = 0; i < links.length; i++) {
+          if(links[i].href.indexOf('#disqus_thread') >= 0) {
+            query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+          }
+        }
+        document.write('<script type="text/javascript" src="http://disqus.com/forums/mrdias/get_num_replies.js' + query + '"></' + 'script>');
+    })();
+    //]]>
+</script>
   </body>
 </html>

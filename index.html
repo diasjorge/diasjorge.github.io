@@ -2,9 +2,8 @@
 layout: default
 title: Mr. Dias
 ---
-
+<h2 class="title">Blog Posts</h2>
 <ul class="posts">
-  <h2 class="title">Blog Posts</h2>
   {% for post in site.posts %}
   <li class="article">
     <div class="header">
@@ -21,6 +20,7 @@ title: Mr. Dias
       {% endif %}
       <p>
 	<a href="{{ post.url }}">Continue Reading</a>
+	<a class="article-comments" href="{{ post.url }}#disqus_thread">Comments</a>
       </p>
     </div>
   </li>
