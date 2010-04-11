@@ -8,6 +8,6 @@ If you're using emacs to write your jekyll blog posts, there is a mode to help y
 
 Here is an screenshot of it at work:
 
-<a target="_blank" href="http://i.imagehost.org/view/0633/jekyll-highlight"><img src="http://i.imagehost.org/t/0633/jekyll-highlight.jpg" border="0" width="150" height="80" alt="jekyll-highlight.png (50 KB)" /></a>
+<a href="http://lh5.ggpht.com/_uASPsTfW2ao/S8IdbhfcsiI/AAAAAAAAAD0/oyN3znNuWXg/jekyll-highlight.png" target="_blank"><img src="http://lh5.ggpht.com/_uASPsTfW2ao/S8IdbhfcsiI/AAAAAAAAAD0/oyN3znNuWXg/s400/jekyll-highlight.png" /></a>
 
 You can get it [here](http://github.com/diasjorge/jekyll.el).
