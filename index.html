@@ -6,10 +6,10 @@ title: Mr. Dias
   {% for post in site.posts %}
   <li class="article">
     <div class="header">
+      <div class="entrydate">{{ post.date | date_to_string }}</div>
       <h2>
 	{{ post.title }}
       </h2>
-      <span class="entrydate">{{ post.date | date_to_string }}</span>
     </div>
     <div class="content">
       {% if forloop.first == true %}
