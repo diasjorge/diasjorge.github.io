@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Monthly archives for Jekyll
+tags: jekyll archives
 ---
 
 Recently I moved my blog to [Jekyll](http://jekyllrb.com/), while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found [Raoul Felix](http://rfelix.com) approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called [jekyll_ext](http://github.com/rfelix/jekyll_ext). Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.
