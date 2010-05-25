@@ -2,16 +2,14 @@
 layout: default
 title: Mr. Dias
 ---
-
 <ul class="posts">
-  <h2 class="title">Blog Posts</h2>
   {% for post in site.posts %}
   <li class="article">
     <div class="header">
+      <div class="entrydate">{{ post.date | date_to_string }}</div>
       <h2>
 	{{ post.title }}
       </h2>
-      <span class="entrydate">{{ post.date | date_to_string }}</span>
     </div>
     <div class="content">
       {% if forloop.first == true %}
@@ -21,6 +19,7 @@ title: Mr. Dias
       {% endif %}
       <p>
 	<a href="{{ post.url }}">Continue Reading</a>
+	<a class="article-comments" href="{{ post.url }}#disqus_thread">Comments</a>
       </p>
     </div>
   </li>
