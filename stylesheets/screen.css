@@ -3,7 +3,7 @@ html, body { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style:
 div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, address, code, del, dfn, em, img, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, thead, tr { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
 
 blockquote, q { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; quotes: "" ""; }
-blockquote:before, blockquote:after, q:before, q:after { content: ""; }
+blockquote:before, q:before, blockquote:after, q:after { content: ""; }
 
 th, td, caption { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; text-align: left; font-weight: normal; vertical-align: middle; }
 
@@ -28,14 +28,14 @@ body.bp a:visited { color: #000066; }
 body.bp a:focus { color: black; }
 body.bp a:hover { color: black; }
 body.bp a:active { color: #cc0099; }
-body.bp blockquote { margin: 1.5em; color: #666666; font-style: italic; }
+body.bp blockquote { margin: 1.5em; color: #666; font-style: italic; }
 body.bp strong { font-weight: bold; }
 body.bp em { font-style: italic; }
 body.bp dfn { font-style: italic; font-weight: bold; }
 body.bp sup, body.bp sub { line-height: 0; }
-body.bp abbr, body.bp acronym { border-bottom: 1px dotted #666666; }
+body.bp abbr, body.bp acronym { border-bottom: 1px dotted #666; }
 body.bp address { margin: 0 0 1.5em; font-style: italic; }
-body.bp del { color: #666666; }
+body.bp del { color: #666; }
 body.bp pre { margin: 1.5em 0; white-space: pre; }
 body.bp pre, body.bp code, body.bp tt { font: 1em 'andale mono', 'lucida console', monospace; line-height: 1.5; }
 body.bp li ul, body.bp li ol { margin: 0 1.5em; }
@@ -50,21 +50,21 @@ body.bp thead th { background: #c3d9ff; }
 body.bp th, body.bp td, body.bp caption { padding: 4px 10px 4px 5px; }
 body.bp tr.even td { background: #e5ecf9; }
 body.bp tfoot { font-style: italic; }
-body.bp caption { background: #eeeeee; }
+body.bp caption { background: #eee; }
 body.bp .quiet { color: #666666; }
 body.bp .loud { color: #111111; }
 
-body.bp .box { padding: 1.5em; margin-bottom: 1.5em; background: #e5ecf9; }
+body.bp .box { padding: 1.5em; margin-bottom: 1.5em; background: #E5ECF9; }
 body.bp div.border { padding-right: 4px; margin-right: 5px; border-right: 1px solid #eeeeee; }
 body.bp div.colborder { padding-right: 24px; margin-right: 25px; border-right: 1px solid #eeeeee; }
-body.bp hr { background: #dddddd; color: #dddddd; clear: both; float: none; width: 100%; height: 0.1em; margin: 0 0 1.45em; border: none; }
-body.bp hr.space { background: #dddddd; color: #dddddd; clear: both; float: none; width: 100%; height: 0.1em; margin: 0 0 1.45em; border: none; background: white; color: white; }
+body.bp hr { background: #dddddd; color: #dddddd; clear: both; float: none; width: 100%; height: .1em; margin: 0 0 1.45em; border: none; }
+body.bp hr.space { background: #dddddd; color: #dddddd; clear: both; float: none; width: 100%; height: .1em; margin: 0 0 1.45em; border: none; background: #fff; color: #fff; }
 
 body.bp .clear { clear: both; }
 body.bp .nowrap { white-space: nowrap; }
 body.bp .clearfix { overflow: hidden; display: inline-block; }
 body.bp .clearfix { display: block; }
-body.bp .small { font-size: 0.8em; margin-bottom: 1.875em; line-height: 1.875em; }
+body.bp .small { font-size: .8em; margin-bottom: 1.875em; line-height: 1.875em; }
 body.bp .large { font-size: 1.2em; line-height: 2.5em; margin-bottom: 1.25em; }
 body.bp .first { margin-left: 0; padding-left: 0; }
 body.bp .last { margin-right: 0; padding-right: 0; }
@@ -75,7 +75,7 @@ body.bp .showgrid { background: url('/images/grid.png?1268153283'); }
 form.bp label { font-weight: bold; }
 form.bp fieldset { padding: 1.4em; margin: 0 0 1.5em 0; }
 form.bp legend { font-weight: bold; font-size: 1.2em; }
-form.bp input.text, form.bp input.title, form.bp input[type=text] { margin: 0.5em 0; background-color: white; padding: 5px; }
+form.bp input.text, form.bp input.title, form.bp input[type=text] { margin: 0.5em 0; background-color: #fff; padding: 5px; }
 form.bp input.title { font-size: 1.5em; }
 form.bp input[type=checkbox], form.bp input.checkbox, form.bp input[type=radio], form.bp input.radio { position: relative; top: 0.25em; }
 form.bp textarea { margin: 0.5em 0; padding: 5px; }
@@ -113,7 +113,7 @@ body.main #sidebar div.module ul { margin: 0; padding: 0.2em 0.5em; }
 body.main #sidebar div.module ul li { list-style-type: none; margin-left: 0px; }
 body.main #sidebar div.module ul li { margin-bottom: 0.25em; }
 body.main #sidebar div.module ul li a { font-weight: bold; }
-body.main #sidebar div.module ul li a.feed_link { padding: 0 0 0 19px; background: url('"../images/feed-icon-14x14.png"') no-repeat 0 50%; }
+body.main #sidebar div.module ul li a.feed_link { padding: 0 0 0 19px; background: url("/images/feed-icon-14x14.png") no-repeat 0 50%; }
 body.main #sidebar div.module h2 { background-color: #f0f0f0; color: #666666; margin-bottom: 0em; }
 body.main #sidebar div.module div.cloud_wrap { padding: 0.2em 0.5em; }
 body.main #sidebar div.module div.cloud_wrap ul { list-style-type: none; margin: 0px; padding: 0px; display: inline; }
