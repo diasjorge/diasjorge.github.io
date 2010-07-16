@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Ruby Enterprise, Passenger and Encoding hell
 tags: passenger ruby encodings
 ---
