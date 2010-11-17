@@ -12,6 +12,8 @@ module Jekyll
       end
     end
 
+    monthly_archives = monthly_archives.sort { |x,y| x['url'] <=> y['url'] }
+
     result = proceed.call
     result['site']['monthly_archives'] = monthly_archives
     result
