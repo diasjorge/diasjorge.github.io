@@ -8,7 +8,7 @@ title: Mr. Dias
     <div class="header">
       <div class="entrydate">{{ post.date | date_to_string }}</div>
       <h2>
-	{{ post.title }}
+        <a href="{{ post.url }}">{{ post.title }}</a>
       </h2>
     </div>
     <div class="content">
