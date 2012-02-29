@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Being pragmatic
-tags: programming, reflections
+tags: reflections refactoring
 ---
 
 It is perhaps my experience but I've hardly had the opportunity to work on green field projects, but rather worked on legacy ones where most of the original developers were no longer part of the team or even none of them. Projects with little to no documentation and in some cases no tests at all. You probable know this feeling, it sucks, you want to do things but everything you touch breaks something else, where you obviously see that there was lack of care. The point is not to criticize the developers who did this, they probably didn't know any better and they probably tried to do their best given the constraints they had. But being the one who cleans that mess is not cool. So what can you do? Well don't be that developer. Take care of your future self and others who may come after you and make it easier for them. Others will probably curse you anyway, you just can't be perfect, but at least try to be invisible, try to give your best shot and don't cut corners. Test your code and think from the outside, how the code is going to be used. May be you're thinking that your boss is going to tell you to "not waste time" with tests or "just make things work", and this is the point where you have to keep true to yourself and be a professional. You have to be ethic and do things well, but you also have to choose your battles right, not everything is a matter of life and death but also not everything is unimportant, choose right and you'll earn the confidence of your peers and superiors.<!-- -**-END-**- -->
