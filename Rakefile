@@ -5,6 +5,7 @@ task :default => :server
 
 desc 'Build site with Jekyll'
 task :build do
+  raise "Install pygments" unless system("which pygmentize")
   jekyll
 end
 
