@@ -11,11 +11,13 @@ end
 
 desc 'Start server with --auto'
 task :server do
+  sh 'compass compile --force'
   jekyll('--server --auto')
 end
 
 desc 'Build and deploy'
 task :deploy => :build do
+  sh 'compass compile -c prod_config.rb --force'
   sh 'rsync -rctzh --progress --delete _site/* deploy@mrdias.com:/var/www/apps/mrdias/'
 end
 
