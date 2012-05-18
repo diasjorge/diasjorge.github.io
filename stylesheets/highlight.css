@@ -1,80 +1,53 @@
-/* line 1, ../_sass/highlight.sass */
 .hll { background-color: #ffffcc; }
 
-/* line 5, ../_sass/highlight.sass */
 .c { color: #008800; font-style: italic; }
 
-/* line 10, ../_sass/highlight.sass */
 .err { color: #a61717; background-color: #e3d2d2; }
 
-/* line 15, ../_sass/highlight.sass */
 .k { color: navy; font-weight: bold; }
 
-/* line 20, ../_sass/highlight.sass */
 .cm { color: #008800; font-style: italic; }
 
-/* line 25, ../_sass/highlight.sass */
 .cp { color: teal; }
 
-/* line 29, ../_sass/highlight.sass */
 .c1 { color: #008800; font-style: italic; }
 
-/* line 34, ../_sass/highlight.sass */
 .cs { color: #008800; font-weight: bold; }
 
-/* line 39, ../_sass/highlight.sass */
 .gd { color: black; background-color: #ffdddd; }
 
-/* line 44, ../_sass/highlight.sass */
 .ge { font-style: italic; }
 
-/* line 48, ../_sass/highlight.sass */
 .gr { color: #aa0000; }
 
-/* line 52, ../_sass/highlight.sass */
 .gh { color: #999999; }
 
-/* line 56, ../_sass/highlight.sass */
 .gi { color: black; background-color: #ddffdd; }
 
-/* line 61, ../_sass/highlight.sass */
 .go { color: #888888; }
 
-/* line 65, ../_sass/highlight.sass */
 .gp { color: #555555; }
 
-/* line 69, ../_sass/highlight.sass */
 .gs { font-weight: bold; }
 
-/* line 73, ../_sass/highlight.sass */
 .gu { color: #aaaaaa; }
 
-/* line 77, ../_sass/highlight.sass */
 .gt { color: #aa0000; }
 
-/* line 81, ../_sass/highlight.sass */
 .kc, .kd, .kn, .kp, .kr, .kt { color: navy; font-weight: bold; }
 
-/* line 86, ../_sass/highlight.sass */
 .m, .s { color: blue; }
 
-/* line 90, ../_sass/highlight.sass */
 .na { color: red; }
 
-/* line 94, ../_sass/highlight.sass */
 .nt { color: navy; font-weight: bold; }
 
-/* line 99, ../_sass/highlight.sass */
 .ow { font-weight: bold; }
 
-/* line 103, ../_sass/highlight.sass */
 .w { color: #bbbbbb; }
 
-/* line 107, ../_sass/highlight.sass */
 .mf, .mh, .mi, .mo, .sb { color: blue; }
 
-/* line 111, ../_sass/highlight.sass */
 .sc { color: purple; }
 
-/* line 115, ../_sass/highlight.sass */
 .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss, .il { color: blue; }
