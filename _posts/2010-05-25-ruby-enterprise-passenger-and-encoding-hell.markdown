@@ -6,7 +6,7 @@ tags: passenger ruby encodings
 
 Today I spent several hours with my friend [Gleb](http://es.linkedin.com/in/glebm) trying to find a weird bug we we're having importing some rss feeds.
 
-We have a rake task that will grab an xml feed and import it to our system. When we call this rake task from the command line it would run fine, but if we run it from inside our application, we would get some wrong characters (you know, the usual ???) in the imported items.
+We have a rake task that will grab an xml feed and import it to our system. When we call this rake task from the command line it would run fine, but if we run it from inside our application, we would get some wrong characters (you know, the usual ???) in the imported items.<!-- -**-END-**- -->
 
 After trying a million ways to get this to work, we found that the problem is that Passenger doesn't pass the environment variables to the application processes, so our import task wouldn't know about our LANG variable. We have this set to LANG=en_us.UTF8 but our process would not see it, which would cause ruby to not use utf8 for the strings.
 
