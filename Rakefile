@@ -6,6 +6,7 @@ task :default => :server
 desc 'Build site with Jekyll'
 task :build do
   raise "Install pygments" unless system("which pygmentize")
+  sh 'compass compile --force'
   jekyll
 end
 
