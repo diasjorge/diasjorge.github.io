@@ -1,112 +1,51 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
   <head>
     <title>{{ page.title }}</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/highlight.css" media="screen, projection" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
-    <!--[if lt IE 8]>
-      <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
-    <![endif]-->
+    <meta charset="utf-8"/>
+    <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
+    <meta name="author" content="Jorge Dias"/>
+
+    <!-- Mobile Specific Metas
+         ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    <!-- CSS
+         ================================================== -->
+    <link rel="stylesheet" href="/stylesheets/main.css"/>
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
     <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="{{ site.feed_url }}" />
     <link rel="openid.server" href="http://www.myopenid.com/server"/>
     <link rel="openid.delegate" href="http://theturingmachine.myopenid.com/"/>
-    <meta name="google-site-verification" content="wQ__haSBogsWtunen8-TyALuFwjfEjhcYmZQSJ4usDI" />
   </head>
-  <body class="bp three-col main">
-    <div id="container">
-      <div id="header">
-	<span id="toplinks">
-	  <a href="http://github.com/diasjorge">On Github</a> |
-	  <a href="http://twitter.com/dias_jorge">On Twitter</a>
-	</span>
-	<h1><a href="/">Mr. Dias</a></h1>
-	<h4>Software Development Thoughts</h4>
+  <body>
+    <div class="container">
+      <div id="header" class="sixteen columns">
+        <div id="toplinks">
+          <a href="http://github.com/diasjorge">On Github</a> |
+          <a href="http://twitter.com/dias_jorge">On Twitter</a>
+        </div>
+        <h1><a href="/">Mr. Dias</a></h1>
+        <h4>Software Development Thoughts</h4>
       </div>
-      <div id="content">
-	{{ content }}
+      <div id="content" class="two-thirds column">
+        {{ content }}
       </div>
-      <div id="sidebar">
-	<div class="module">
-	  <h2>
-	    Tags
-	  </h2>
-	  <div class="cloud_wrap">
-	    <ul>
-	      {% for tag in site.iterable.tags %}
-	      <li>
-		<a style="font-size: {{ tag.posts | size | times:0.1 | plus: 1 }}em" href="{{site.baseurl}}/tags/{{tag.name}}">
-		  {{ tag.name }}
-		</a>
-	      </li>
-	      {% endfor %}
-	    </ul>
-	  </div>
-	</div>
-	<div class="module">
-	  <h2>
-	    Friend's Links
-	  </h2>
-	  <ul>
-	    <li>
-	      <a href="http://least-significant-bit.com">Least Significant Bit</a>
-	    </li>
-	    <li>
-	      <a href="http://jorgecalas.com/">Jorge Calas</a>
-	    </li>
-	  </ul>
-	</div>
-	<div class="module">
-	  <h2>
-	    Subscribe
-	  </h2>
-	  <ul>
-	    <li>
-	      <a href="{{ site.feed_url }}" class="feed_link">RSS</a>
-	    </li>
-	  </ul>
-	</div>
-	<div class="module">
-	  <h2>
-	    Monthly Archives
-	  </h2>
-	  <ul>
-	    {% for monthly_archive in site.monthly_archives reversed %}
-	    <li>
-	      <a href="{{ monthly_archive.url }}">{{ monthly_archive.name }}</a> ({{ monthly_archive.posts | size }} posts)
-	    </li>
-	    {% endfor %}
-	  </ul>
-	</div>
+      <div id="sidebar" class="one-third column">
+        {% include _sidebar.html %}
       </div>
-      <div id="footer">
-	&copy; 2010 Jorge Dias
+      <div id="footer" class="sixteen columns">
+        &copy; 2012 Jorge Dias
       </div>
+      {% include _analytics.html %}
+      {% include _disqus.html %}
     </div>
-    <script type="text/javascript">
-      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
-      try {
-        var pageTracker = _gat._getTracker("UA-15098892-1");
-        pageTracker._trackPageview();
-      } catch(err) {}
-    </script>
-    <script type="text/javascript">
-    //<![CDATA[
-    (function() {
-        var links = document.getElementsByTagName('a');
-        var query = '?';
-        for(var i = 0; i < links.length; i++) {
-          if(links[i].href.indexOf('#disqus_thread') >= 0) {
-            query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
-          }
-        }
-        document.write('<script type="text/javascript" src="http://disqus.com/forums/mrdias/get_num_replies.js' + query + '"></' + 'script>');
-    })();
-    //]]>
-</script>
   </body>
 </html>

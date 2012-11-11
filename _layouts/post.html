@@ -2,21 +2,23 @@
 layout: default
 ---
 <div class="article">
-  <div class="header">
-    <h2>
-      {{ page.title }}
-    </h2>
-    <div class="entrydate">{{ page.date | date_to_string }}</div>
+  <div class="wrapper">
+    <div class="header">
+      <h2>
+        {{ page.title }}
+      </h2>
+    </div>
+    <div class="content">
+      {{ content }}
+    </div>
+    <article class=hentry>
+      <p class="author vcard">
+        By Jorge Dias
+        on <time pubdate class=published datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_long_string }}</time>
+      </p>
+    </article>
   </div>
-  <div class="content">
-    {{ content }}
-  </div>
-  <article class=hentry>
-    <p class="author vcard">
-      By Jorge Dias
-      on <time pubdate class=published datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_long_string }}</time>
-    </p>
-  </article>
 </div>
-<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/mrdias/embed.js"></script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/mrdias/embed.js"></script>
 <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>

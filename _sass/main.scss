@@ -1,0 +1,98 @@
+@import "skeleton/base";
+@import "skeleton/layout";
+@import "skeleton/skeleton";
+@import "highlight";
+
+body {
+  background: url(/images/main_bg.gif);
+  font: 13px "Liberation Sans", Arial, Verdana, Helvetica, sans-serif;
+  color: #848484;
+}
+
+a {
+  color: #494949;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.article {
+  border-radius: 7px;
+  background: white;
+  padding: 6px;
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  .wrapper {
+    border: 1px dashed #D0D0D0;
+    padding: 10px;
+  }
+
+  .more {
+    color: #CD1F1F;
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+  .comments {
+    text-align: right;
+  }
+
+  .highlight {
+    overflow: scroll;
+    margin: 10px 0;
+
+    pre {
+      padding: 5px;
+      background-color: #F0EFEA;
+      border-radius: 3px;
+    }
+  }
+
+  .author {
+    border-top: 1px dashed #D0D0D0;
+    padding-top: 5px;
+    margin-top: 15px;
+    color: #8E8D8D;
+    font-size: 13px;
+  }
+}
+
+#header {
+  #toplinks {
+    text-align: right;
+  }
+
+  h1 {
+    margin-bottom: 5px;
+  }
+}
+
+#sidebar {
+  li {
+    margin-bottom: 5px;
+  }
+
+  .feed-link {
+    padding: 0 0 0 19px;
+    background: url("/images/feed-icon-14x14.png") no-repeat 0 50%;
+  }
+
+  .cloud-wrap {
+    ul {
+      li {
+        display: inline;
+      }
+    }
+  }
+}
+
+#footer {
+  color: #404040;
+  font-size: 12px;
+  margin: 0 auto;
+  padding: 15px 0;
+}

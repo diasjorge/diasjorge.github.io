@@ -6,19 +6,18 @@ task :default => :server
 desc 'Build site with Jekyll'
 task :build do
   raise "Install pygments" unless system("which pygmentize")
-  sh 'compass compile --force'
+  sh 'sass --update _sass:stylesheets --style compressed --force'
   jekyll
 end
 
 desc 'Start server with --auto'
 task :server do
-  sh 'compass compile --force'
+  sh 'sass --watch _sass:stylesheets'
   jekyll('--server --auto')
 end
 
 desc 'Build and deploy'
 task :deploy => :build do
-  sh 'compass compile -c prod_config.rb --force'
   sh 'rsync -rctzh --progress --delete _site/* deploy@mrdias.com:/var/www/apps/mrdias/'
 end
 
