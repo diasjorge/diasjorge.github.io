@@ -10,10 +10,8 @@ task :build do
   jekyll
 end
 
-desc 'Start server with --auto'
 task :server do
-  sh 'sass --watch _sass:stylesheets'
-  jekyll('--server --auto')
+  sh 'foreman start'
 end
 
 desc 'Build and deploy'

@@ -1,9 +1,9 @@
 url: "http://mrdias.com"
 feed_url: "http://feeds2.feedburner.com/mrdias"
-markdown: "rdiscount"
 pygments: true
 exclude:
   - "config.rb"
   - "Rakefile"
+  - "Procfile"
   - "Gemfile"
   - "Gemfile.lock"
