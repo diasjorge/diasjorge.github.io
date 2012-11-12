@@ -12,7 +12,7 @@ body {
 a {
   color: #494949;
   text-decoration: none;
-  &:hover {
+  &:hover, &:visited {
     text-decoration: none;
   }
 }
@@ -43,14 +43,11 @@ a {
   }
 
   .highlight {
-    overflow: scroll;
+    overflow-x: scroll;
     margin: 10px 0;
-
-    pre {
-      padding: 5px;
-      background-color: #F0EFEA;
-      border-radius: 3px;
-    }
+    padding: 5px;
+    background-color: #F0EFEA;
+    border-radius: 3px;
   }
 
   .author {
