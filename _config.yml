@@ -1,6 +1,7 @@
 url: "http://mrdias.com"
 feed_url: "http://feeds2.feedburner.com/mrdias"
 pygments: true
+disqus_shortname: "mrdias"
 exclude:
   - "config.rb"
   - "Rakefile"
