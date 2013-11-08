@@ -52,3 +52,39 @@
     {% endfor %}
   </ul>
 </div>
+<div class="module">
+  <h2>Github</h2>
+  <h4>Last Active Repos</h4>
+  <ul id="gh_repos">
+  </ul>
+  <script>
+   var github = {
+     success: function(response) {
+       var repos = [];
+       var length = response.data.length >= 10 ? 10: response.data.length
+       for (var i = 0; i < length; i++) {
+         repos.push(response.data[i]);
+       }
+       github.render(repos);
+     },
+     render: function(repos) {
+       var i = 0,
+       fragment = '',
+       target = 'gh_repos';
+       t = document.getElementById(target);
+
+       for (i = 0; i < repos.length; i++) {
+         fragment += '<li><a href="' + repos[i].html_url + '">' + repos[i].name + '</a><p>' + (repos[i].description || '') + '</p></li>';
+       }
+       t.innerHTML = fragment;
+     }
+   }
+  </script>
+  <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
+</div>
+<div class="module">
+  <h2>Tweeter</h2>
+  <h4>Recent Activity</h4>
+  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5"></a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
