@@ -10,6 +10,7 @@ task :build do
   jekyll
 end
 
+desc 'run server'
 task :server do
   sh 'foreman start'
 end

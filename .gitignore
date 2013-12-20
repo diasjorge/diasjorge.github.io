@@ -3,3 +3,4 @@ _site/
 *.sass-cache
 *sample_data
 /stylesheets/*
+/.rake_t_cache
