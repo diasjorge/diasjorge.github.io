@@ -6,7 +6,7 @@
     <ul>
       {% for tag in site.iterable.tags %}
       <li>
-        <a style="font-size: {{ tag.posts | size | times:0.18 | plus: 1 }}em" href="{{site.baseurl}}/tags/{{tag.name}}">
+        <a style="font-size: {{ tag.posts | size | times:0.18 | plus: 1 }}em" href="{{ site.url }}/tags/{{tag.name}}">
           {{ tag.name }}
         </a>
       </li>
