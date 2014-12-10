@@ -1,5 +1,6 @@
 ---
 title: Changing to devops
+layout: post
 tags: devops programming systems reflections
 ---
 
