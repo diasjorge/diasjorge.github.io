@@ -8,4 +8,4 @@ I was invited with my friend [Jean Carlos Meninno](http://meninno.com) to give a
 
 Here you can find the slides: [http://diasjorge.github.io/google-dev-fest-slides/](http://diasjorge.github.io/google-dev-fest-slides/)
 
-Hope you like them.
+Hope you like them.<!-- -**-END-**- -->
