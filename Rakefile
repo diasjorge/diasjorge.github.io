@@ -20,6 +20,8 @@ task :deploy => :build do
   sh 'rsync -rctzh --progress --delete _site/* deploy@mrdias.com:/var/www/apps/mrdias/'
 end
 
+task :release => :deploy
+
 def jekyll(opts = '')
   sh 'rm -rf _site'
   sh 'ejekyll ' + opts
