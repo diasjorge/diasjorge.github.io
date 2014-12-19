@@ -14,7 +14,7 @@ to fit a puzzle into your head. I think this is what I love the most
 about computers, that moment when you understand the machine, what it
 does and why it does it. It's the hack, making the computer do what
 you want. Getting out of my comfort zone is helping me appreciate the
-basics more.
+basics more.<!-- -**-END-**- -->
 
 During this time, I've played with many technologies, different
 programming languages, libraries, etc. It's not about a product
