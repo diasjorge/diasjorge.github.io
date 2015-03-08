@@ -8,3 +8,4 @@ exclude:
   - "Procfile"
   - "Gemfile"
   - "Gemfile.lock"
+  - "vendor"
