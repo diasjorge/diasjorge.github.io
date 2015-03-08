@@ -5,7 +5,8 @@ tags: docker rails
 ---
 
 This tutorial is an extraction from a talk I recently presented about
-docker and rails apps at the Barcelona on Rails user group.
+docker and rails apps at the Barcelona on Rails user group. I'll
+explain how to integrate docker into an existing rails app workflow.<!-- -**-END-**- -->
 
 ### Dockerizing our dependencies
 
