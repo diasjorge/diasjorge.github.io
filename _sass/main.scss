@@ -74,13 +74,19 @@ a {
     margin-bottom: 5px;
   }
 
+  @media (max-width: 750px) {
+    li {
+      margin: 16px 0;
+    }
+  }
+
   .feed-link {
     padding: 0 0 0 19px;
     background: url("/images/feed-icon-14x14.png") no-repeat 0 50%;
   }
 
   .cloud-wrap {
-    ul {
+    @media (min-width: 750px) {
       li {
         display: inline;
       }
