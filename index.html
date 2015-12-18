@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+  <head>
+    <title>Mr. Dias</title>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
+    <meta name="author" content="Jorge Dias"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    <link rel="stylesheet" href="/stylesheets/main.css"/>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
+        <![endif]-->
+
+    <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="http://feeds2.feedburner.com/mrdias" />
+    <link rel="openid.server" href="http://www.myopenid.com/server"/>
+    <link rel="openid.delegate" href="http://theturingmachine.myopenid.com/"/>
+  </head>
+  <body>
+    <div class="container">
+      <div id="header" class="sixteen columns">
+        <div id="toplinks">
+          <a href="http://github.com/diasjorge">
+            <img width="24" height="24" src="/images/github_24.png"/>
+          </a>
+          <a href="http://twitter.com/dias_jorge">
+            <img width="24" height="24" src="/images/twitter_24.png"/>
+          </a>
+          <a href="http://linkedin.com/in/jorgediasmartinez/en">
+            <img width="24" height="24" src="/images/linkedin_24.png"/>
+          </a>
+        </div>
+        <h1><a href="/">Mr. Dias</a></h1>
+        <h4>Software Development Thoughts</h4>
+      </div>
+      <div id="content" class="two-thirds column">
+        <ul class="posts">
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">08 Mar 2015</div>
+        <h2>
+          <a href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html">Using docker containers with your existing rails app</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>This tutorial is an extraction from a talk I recently presented about docker and rails apps at the Barcelona on Rails user group. I’ll explain how to integrate docker into an existing rails app workflow.<!-- -**-END-**- --></p>
+
+<h3 id="dockerizing_our_dependencies">Dockerizing our dependencies</h3>
+
+<p>The first step to integrate docker into our workflow is to start with our application dependencies.</p>
+
+<p>As an example I’ll use the open source app <a href="https://github.com/fulcrum-agile/fulcrum">fulcrum</a>. I assume this application is running locally as would be the case with an existing rails app. For this example we’ll use the postgresql database.</p>
+
+<p>So the first thing is to initialize our database container. For that we execute the following command.</p>
+<div class='highlight'><pre><code class='sh'>docker run -d --name fulcrum-postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum -e <span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+-p 5432:5432 postgres
+</code></pre></div>
+<p>So we’re creating a container and run it as a daemon (-d), we setup some environment variables (-e) for the username and password and make the ports available (-p HOSTPORT:CONTAINERPORT).</p>
+
+<p>Now we need to adjust our config/database.yml, it should look something like this:</p>
+<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>development</span><span class='p-Indicator'>:</span>
+  <span class='l-Scalar-Plain'>adapter</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgresql</span>
+  <span class='l-Scalar-Plain'>encoding</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>unicode</span>
+  <span class='l-Scalar-Plain'>database</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum_development</span>
+  <span class='l-Scalar-Plain'>pool</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>5</span>
+  <span class='l-Scalar-Plain'>host</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
+  <span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
+  <span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
+
+<span class='l-Scalar-Plain'>test</span><span class='p-Indicator'>:</span>
+  <span class='l-Scalar-Plain'>adapter</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgresql</span>
+  <span class='l-Scalar-Plain'>encoding</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>unicode</span>
+  <span class='l-Scalar-Plain'>database</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum_test</span>
+  <span class='l-Scalar-Plain'>pool</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>5</span>
+  <span class='l-Scalar-Plain'>host</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
+  <span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
+  <span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
+</code></pre></div>
+<p>And now we run our rails app</p>
+<div class='highlight'><pre><code class='sh'><span class='c'># Initialize the db</span>
+<span class='nv'>POSTGRES_HOST</span><span class='o'>=</span><span class='sb'>`</span>boot2docker ip<span class='sb'>`</span> <span class='se'>\</span>
+<span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+<span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+bundle <span class='nb'>exec </span>rake db:setup
+
+<span class='c'># Run the app</span>
+<span class='nv'>POSTGRES_HOST</span><span class='o'>=</span><span class='sb'>`</span>boot2docker ip<span class='sb'>`</span> <span class='se'>\</span>
+<span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+<span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+bundle <span class='nb'>exec </span>rails s
+</code></pre></div>
+<p>Please note that for the value for the <em>POSTGRES_HOST</em> I’m using boot2docker, if you’re running on linux or against another docker host replace this accordingly.</p>
+
+<p>Now when we visit localhost:3000 our app will be running against our database in a docker container.</p>
+
+<p>For a more complicated app, we’d do the same for the rest of our dependencies. By starting with the dependencies, we are preparing the road so we can have a more decoupled environment while maintaining our regular workflow.</p>
+
+<h3 id="dockerizing_the_app">Dockerizing the app</h3>
+
+<p>The next step is to run the application itself inside a container. For this we’ll need to create our Dockerfile.</p>
+
+<p>There are many different places to start from. We’ll use the official ruby 2.1.2 container since this is the ruby version our app needs, but defining our own from scratch is quite easy as well.</p>
+
+<p>Our Dockerfile should look like this</p>
+<div class='highlight'><pre><code class='dockerfile'><span class='k'>FROM</span><span class='s'> ruby:2.1.5</span>
+
+<span class='k'>RUN</span> apt-get update <span class='o'>&amp;&amp;</span> <span class='se'>\</span>
+    <span class='nv'>DEBIAN_FRONTEND</span><span class='o'>=</span>noninteractive apt-get install -y <span class='se'>\</span>
+    nodejs <span class='se'>\</span>
+    <span class='o'>&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+
+<span class='k'>WORKDIR</span><span class='s'> /app</span>
+
+<span class='k'>COPY</span><span class='s'> Gemfile* /app/</span>
+
+<span class='k'>RUN</span> bundle install -j4
+
+<span class='k'>ADD</span><span class='s'> . /app</span>
+
+<span class='c'># Let&#39;s create a user to run the app that is not root</span>
+<span class='k'>RUN</span> usr/sbin/useradd --create-home --home-dir /app --shell /bin/bash fulcrum
+
+<span class='k'>RUN</span> chown -R fulcrum:fulcrum /app
+
+<span class='k'>USER</span><span class='s'> fulcrum</span>
+
+<span class='k'>CMD</span><span class='s'> [&quot;rails&quot;, &quot;server&quot;]</span>
+</code></pre></div>
+<p>We also need to tell docker certain files we don’t want as part of our container, we create a .dockerignore file like this:</p>
+<div class='highlight'><pre><code class='sh'>.git
+.bundle
+vendor/bundle
+</code></pre></div>
+<p>After creating the files in the root of our app we execute:</p>
+<div class='highlight'><pre><code class='sh'>docker build -t fulcrum-web .
+</code></pre></div>
+<p>Once that is finised we can run our app like this:</p>
+<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_USERNAME</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+fulcrum-web
+</code></pre></div>
+<p>So what is this doing exactly? We’re linking our database container to our web container (–link), we’re exposing the port 3000 (-p) and we’re also setting environment variables (-e) with the values we used when creating our db container. After executing this we can go visit our app running on http://DOCKER_HOST:3000</p>
+
+<p>The first thing we can see is that we have to set many duplicate environment variables from the database when running our container, fortunately docker allows us to have access to a linked container environment variables.</p>
+
+<p>We can change now our config/database.yml replacing the username and password like this:</p>
+<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_USER&#39;] %&gt;</span>
+<span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_PASSWORD&#39;] %&gt;</span>
+</code></pre></div>
+<p>We rebuild our container again, and now we can start it simply like:</p>
+<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
+fulcrum-web
+</code></pre></div>
+<p>Now, recreating our container every time we make a file change is going the get very annoying quite soon. For this we can also leverage another docker facility called volumes. This will allow our container to have access to our local files. To do this simply we start our container like this:</p>
+<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
+-v <span class='nv'>$PWD</span>:/app <span class='se'>\</span>
+fulcrum-web
+</code></pre></div>
+<p>Note: Please make sure you delete your .bundle/config local file to avoid issues with bundler inside the container.</p>
+
+<h3 id="automating_our_setup_with_docker_compose">Automating our setup with docker compose</h3>
+
+<p>At this point we have our app running successfully inside a docker container, but having to be typing this commands constantly is not fun.</p>
+
+<p>To finish our setup we’ll use <a href="https://docs.docker.com/compose/">docker compose</a>.</p>
+
+<p>So let’s create our docker-compose.yml.</p>
+<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>web</span><span class='p-Indicator'>:</span>
+  <span class='l-Scalar-Plain'>build</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>.</span>
+  <span class='l-Scalar-Plain'>links</span><span class='p-Indicator'>:</span>
+    <span class='p-Indicator'>-</span> <span class='l-Scalar-Plain'>db:postgres</span>
+  <span class='l-Scalar-Plain'>environment</span><span class='p-Indicator'>:</span>
+    <span class='l-Scalar-Plain'>POSTGRES_HOST</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgres</span>
+  <span class='l-Scalar-Plain'>ports</span><span class='p-Indicator'>:</span>
+    <span class='p-Indicator'>-</span> <span class='s'>&quot;3000:3000&quot;</span>
+  <span class='l-Scalar-Plain'>volumes</span><span class='p-Indicator'>:</span>
+    <span class='p-Indicator'>-</span> <span class='l-Scalar-Plain'>.:/app</span>
+
+<span class='l-Scalar-Plain'>db</span><span class='p-Indicator'>:</span>
+  <span class='l-Scalar-Plain'>image</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgres</span>
+  <span class='l-Scalar-Plain'>environment</span><span class='p-Indicator'>:</span>
+    <span class='l-Scalar-Plain'>POSTGRES_USER</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum</span>
+    <span class='l-Scalar-Plain'>POSTGRES_PASSWORD</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum</span>
+</code></pre></div>
+<p>Now to run our app we simply do:</p>
+<div class='highlight'><pre><code class='sh'>docker-compose up
+</code></pre></div>
+<p>The first time we access our app it will complain our db is not created we can simply fix this by running:</p>
+<div class='highlight'><pre><code class='sh'>docker-compose run web rake db:setup
+</code></pre></div>
+<p>And last but not least if you want to run your tests then you can simply do:</p>
+<div class='highlight'><pre><code class='sh'>docker-compose run web rake db:test:prepare spec
+</code></pre></div>
+<h3 id="the_end">The end</h3>
+
+<p>So that’s it, I hope this tutorial helps you get started with docker with your existing rails applications. If you want more info about docker compose, check out my article about fig (docker compose’s predecesor) <a href="/2014/12/19/faster-docker-containers-development-using-fig.html">here</a></p>
+
+        
+        <p class="comments">
+          <a class="article-comments" href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">19 Dec 2014</div>
+        <h2>
+          <a href="/2014/12/19/faster-docker-containers-development-using-fig.html">Faster docker containers development using fig</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>Yesterday I had the opportunity to present a lightning talk on the <a href="http://www.meetup.com/docker-barcelona-spain/">Barcelona Docker Group</a> about working with <a href="http://www.fig.sh/">fig</a>.</p>
+
+<p>During the talk I presented a tool that is helping me focus on developing the different containers and make the changes to the Dockerfile and the apps themselves and leave out the details of using fig.</p>
+
+<p>The tool is called <a href="https://github.com/diasjorge/guard-fig">guard-fig</a>. [...] <a class="more" href="/2014/12/19/faster-docker-containers-development-using-fig.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2014/12/19/faster-docker-containers-development-using-fig.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">09 Dec 2014</div>
+        <h2>
+          <a href="/2014/12/09/changing-to-devops.html">Changing to devops</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>It’s been over 3 months since my change to the site operations team at Xing and time has really been flying by.</p>
+
+<p>Everything is new and I really don’t know what to do many times and that I find very delightful. The investigation, learning, figuring out how to achieve something, reading forums or stack overflow and trying to fit a puzzle into your head. I think this is what I love the most about computers, that moment when you understand the machine, what it does and why it does it. It’s the hack, making the computer do what you want. Getting out of my comfort zone is helping me appreciate the basics more. [...] <a class="more" href="/2014/12/09/changing-to-devops.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2014/12/09/changing-to-devops.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">03 Jul 2014</div>
+        <h2>
+          <a href="/2014/07/03/growing-a-garden.html">Growing a garden</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>A couple months ago I started growing a vegetable garden at home with my girlfriend. It’s been a great experience. She’s always been into plants, we have lots of them around the house but never had we tried to grow food. I think the fact that I can get something out of the experience that is more than just aesthetic but also functional (I can eat the vegetables) has made it more appealing for me.</p>
+
+<p>There have been some experiences so far that I somehow can relate with developing a software project.  [...] <a class="more" href="/2014/07/03/growing-a-garden.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2014/07/03/growing-a-garden.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">12 Oct 2013</div>
+        <h2>
+          <a href="/2013/10/12/barcelona-gdg-devfest-2013.html">Barcelona GDG Devfest 2013</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>I was invited with my friend <a href="http://meninno.com">Jean Carlos Meninno</a> to give a presentation on the <a href="http://bcn.gdgdevfest.com/">GDG DevFest Barcelona 2013</a>. It was a great opportunity to talk about the work we’re doing recently for XING and the things we’ve been learning about developing large scale backbone applications.</p>
+
+<p>Here you can find the slides: <a href="http://diasjorge.github.io/google-dev-fest-slides/">http://diasjorge.github.io/google-dev-fest-slides/</a></p>
+
+<p>Hope you like them. [...] <a class="more" href="/2013/10/12/barcelona-gdg-devfest-2013.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2013/10/12/barcelona-gdg-devfest-2013.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">10 Sep 2012</div>
+        <h2>
+          <a href="/2012/09/10/closed-doors-open-source.html">Closed doors open source</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>During my time working at <a href="http://xing.com">XING</a> I believe my single biggest contribution for the company is a side project I’ve developed called Xing scripts. This project started with a personal need for working with our development environment in a more automated way. I’m a big proponent of automating everything you can and so when I started working I realized that there were these tasks that I would do over and over again. Since I couldn’t bare doing all this manual work I started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-doors-open-source.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2012/09/10/closed-doors-open-source.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">11 Jul 2012</div>
+        <h2>
+          <a href="/2012/07/11/git-rebasing-without-conflicts.html">Git rebasing without conflicts</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called <a href="http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html">git-rerere</a>. [...] <a class="more" href="/2012/07/11/git-rebasing-without-conflicts.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2012/07/11/git-rebasing-without-conflicts.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">11 May 2012</div>
+        <h2>
+          <a href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html">Using chef to setup your OSX environment</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>Recently I had to reinstall my computer at work since I had to update to Lion and I could only do a fresh install, so I decided to try to automate the installation process since some of my colleagues are going through the same and it seems like every time we have to waste many hours or days to solve the same issues over and over. [...] <a class="more" href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">29 Feb 2012</div>
+        <h2>
+          <a href="/2012/02/29/slow-down-you-are-programming-too-fast.html">Slow down, you are programming too fast</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>As a programmer, the impetus to go as fast as you can is to be taken with caution as it helps you move forward but it can also hold you back. [...] <a class="more" href="/2012/02/29/slow-down-you-are-programming-too-fast.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2012/02/29/slow-down-you-are-programming-too-fast.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">21 Dec 2011</div>
+        <h2>
+          <a href="/2011/12/21/being-pragmatic.html">Being pragmatic</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>It is perhaps my experience but I’ve hardly had the opportunity to work on green field projects, but rather worked on legacy ones where most of the original developers were no longer part of the team or even none of them. Projects with little to no documentation and in some cases no tests at all. You probable know this feeling, it sucks, you want to do things but everything you touch breaks something else, where you obviously see that there was lack of care.  [...] <a class="more" href="/2011/12/21/being-pragmatic.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2011/12/21/being-pragmatic.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">29 Aug 2011</div>
+        <h2>
+          <a href="/2011/08/29/back-from-the-trenches.html">Back from the trenches</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>It’s been some agitated months lately for me, I quitted working at JustLanded after almost two years there and then went working for some consulting, the experience was not so great, actually it was really bad, the kind of experience that has made me learn to choose very carefully my future career moves and never again believe in marketing people. Fortunately I got an offer to work at <a href="https://xing.com">XING</a> offices in Barcelona, so I packed my stuff and moved there. Now this is a really good place to work, everything was as we talked, they’ve been very helpful with my relocation and the environment is great, lots of smart people that want to do a good job, so nowadays I’m very happy and enjoying my new city. [...] <a class="more" href="/2011/08/29/back-from-the-trenches.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2011/08/29/back-from-the-trenches.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">13 Jan 2011</div>
+        <h2>
+          <a href="/2011/01/13/avoid-empty-deploys-with-capistrano.html">Avoid Empty Deploys with Capistrano</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations. [...] <a class="more" href="/2011/01/13/avoid-empty-deploys-with-capistrano.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2011/01/13/avoid-empty-deploys-with-capistrano.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">17 Nov 2010</div>
+        <h2>
+          <a href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html">Passenger, RVM gemsets and Bundler</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>When using passenger with rvm I’ve had some issues with project specific gemsets, where bundler was unable to find the gems. After searching a lot I found out about using the “config/setup_load_paths.rb” file to tell passenger where to locate your gems, but then I had a new issue with rvm trying to use the system ruby instead of the ruby version of my .rvmrc file.</p>
+
+<p>After going to the irc channel, I got some help that help me fixed my problem. The culprit was my rvmrc file. [...] <a class="more" href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">04 Nov 2010</div>
+        <h2>
+          <a href="/2010/11/04/conferencia-rails-workshop.html">Conferencia Rails Workshop</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>As promised here are the slides for the “Conferencia Rails” workshop on process automation. Thanks to all the people that were there. I’m also releasing the redmine CLI I’ve created along with the CLI twitter client.</p>
+
+<p>The presentation was created using the <a href="http://slideshow.rubyforge.org/">slideshow</a> gem which generates an html document for you.</p>
+
+<p><a href="/workshop-slides/workshop.html">Slides</a> To start the presentation just hit the “LEFT” arrow key. You can also find a pdf version <a href="/workshop-slides/workshop.pdf">here</a>.</p>
+
+<p><a href="https://github.com/diasjorge/redmine-cli">Redmine CLI</a></p>
+
+<p><a href="https://github.com/diasjorge/ruby-cli-tweet">Ruby CLI Tweet</a></p>
+
+<p>Hope you enjoy it.</p>
+ [...] <a class="more" href="/2010/11/04/conferencia-rails-workshop.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2010/11/04/conferencia-rails-workshop.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">25 May 2010</div>
+        <h2>
+          <a href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html">Ruby Enterprise, Passenger and Encoding hell</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>Today I spent several hours with my friend <a href="http://es.linkedin.com/in/glebm">Gleb</a> trying to find a weird bug we we’re having importing some rss feeds.</p>
+
+<p>We have a rake task that will grab an xml feed and import it to our system. When we call this rake task from the command line it would run fine, but if we run it from inside our application, we would get some wrong characters (you know, the usual ???) in the imported items. [...] <a class="more" href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">11 Apr 2010</div>
+        <h2>
+          <a href="/2010/04/11/emacs-support-for-jekyll.html">Emacs support for Jekyll</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>If you’re using emacs to write your jekyll blog posts, there is a mode to help you with some common tasks. It is originally from <a href="http://metajack.im/2009/01/02/manage-jekyll-from-emacs/">metajack</a>. Recently I thought it could be a nice addition to have syntax highlight support for jekyll posts, so I got my hands dirty and after some hours of lisp hacking (this was my first attempt at lisp programming) it was a reallity. It is based on <a href="http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html">nxhtml</a> so you need it to work. [...] <a class="more" href="/2010/04/11/emacs-support-for-jekyll.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2010/04/11/emacs-support-for-jekyll.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">09 Mar 2010</div>
+        <h2>
+          <a href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html">Setting environment to run migrations with capistrano ext</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>If you’re using capistrano-ext to deploy to a different server, using a custom environment, you’ve probably noticed that it always tries to run the migrations for the production environment, like this:</p>
+<div class='highlight'><pre><code class='sh'><span class='nb'>cd </span>path_to_app/deploy/releases/20100309152738<span class='p'>;</span> rake <span class='nv'>RAILS_ENV</span><span class='o'>=</span>production  db:migrate
+</code></pre></div>
+<p>Digging through capistrano’s source I found the solution is really simple, just set the rails_env variable to the environment you want, in this example staging. So inside config/deploy/staging.rb</p>
+<div class='highlight'><pre><code class='ruby'><span class='n'>set</span> <span class='ss'>:rails_env</span><span class='p'>,</span> <span class='s2'>&quot;staging&quot;</span>
+</code></pre></div>
+<p>Then when migrations get executed they’ll have RAILS_ENV=staging.</p>
+ [...] <a class="more" href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">08 Mar 2010</div>
+        <h2>
+          <a href="/2010/03/08/monthly-archives-for-jekyll.html">Monthly archives for Jekyll</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>Recently I moved my blog to <a href="http://jekyllrb.com/">Jekyll</a>, while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found <a href="http://rfelix.com">Raoul Felix</a> approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called <a href="http://github.com/rfelix/jekyll_ext">jekyll_ext</a>. Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.</p>
+
+<p>Although I had archives generated for me, I was still missing a way to display this information on my site, so I decided to create my own extension. [...] <a class="more" href="/2010/03/08/monthly-archives-for-jekyll.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2010/03/08/monthly-archives-for-jekyll.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">02 Mar 2010</div>
+        <h2>
+          <a href="/2010/03/02/view-your-emails-with-cucumber.html">View your emails with cucumber</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        
+<p>I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages. [...] <a class="more" href="/2010/03/02/view-your-emails-with-cucumber.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2010/03/02/view-your-emails-with-cucumber.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">23 Feb 2010</div>
+        <h2>
+          <a href="/2010/02/23/activerecord-migrations-from-the-console.html">ActiveRecord migrations from the console</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        <p>If you ever run into the situation where one migration doesn&#8217;t complete sucessfully, and you&#8217;re stuck with a column in a table or a new table, so you can&#8217;t drop the migration or execute the migration again, you can always call the migration methods from the console like this: [...] <a class="more" href="/2010/02/23/activerecord-migrations-from-the-console.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2010/02/23/activerecord-migrations-from-the-console.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">12 Aug 2009</div>
+        <h2>
+          <a href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.html">IE issues with new Element and class with Prototype</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        <p>The problem we have is that this code</p>
+<div class="highlight"><pre><code class="js"><span class="k">new</span> <span class="nx">Element</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="o">:</span><span class="s1">&#39;klassName&#39;</span><span class="p">})</span>
+</code></pre></div><p>will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles.  [...] <a class="more" href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">12 Feb 2009</div>
+        <h2>
+          <a href="/2009/02/12/git-goodies.html">Git Goodies</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        <p>A couple days ago I had to gather some information from a git repository, so I&#8217;m sharing this small scripts with you.  [...] <a class="more" href="/2009/02/12/git-goodies.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2009/02/12/git-goodies.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">16 Dec 2008</div>
+        <h2>
+          <a href="/2008/12/16/will-paginate-and-ajax.html">Will Paginate And Ajax</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        <p>I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn&#8217;t customize the pagination url&#8217;s or I had to specify the paginator to use (will paginate&#8217;s default or mine for ajax), so I came up with this solution which fulfils all my needs. [...] <a class="more" href="/2008/12/16/will-paginate-and-ajax.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2008/12/16/will-paginate-and-ajax.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+  <li class="article">
+    <div class="wrapper">
+      <div class="header">
+        <div class="entrydate">09 Dec 2008</div>
+        <h2>
+          <a href="/2008/12/09/will-paginate-and-merb.html">Will Paginate And Merb</a>
+        </h2>
+      </div>
+      <div class="content">
+        
+        <p>I read something about how to do it in this <a href="http://merbist.com/2008/10/27/will_paginate-and-merb/">post</a> by The merbist, albeit the information was not complete.<br />
+So here are my instructions: [...] <a class="more" href="/2008/12/09/will-paginate-and-merb.html">read more</a>
+        
+        <p class="comments">
+          <a class="article-comments" href="/2008/12/09/will-paginate-and-merb.html#disqus_thread">Comments</a>
+        </p>
+      </div>
+    </div>
+  </li>
+  
+</ul>
+
+      </div>
+      <div id="sidebar" class="one-third column">
+        <div class="module">
+  <h2>
+    Tags
+  </h2>
+  <div class="cloud-wrap">
+    <ul>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/activerecord">
+          activerecord
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/ajax">
+          ajax
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/archives">
+          archives
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+          automation
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+          awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/backbone">
+          backbone
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+          capistrano
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/chef">
+          chef
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/conferencia_rails">
+          conferencia_rails
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/cucumber">
+          cucumber
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/development">
+          development
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/devops">
+          devops
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+          docker
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+          emacs
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/emails">
+          emails
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/encodings">
+          encodings
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/fig">
+          fig
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/gardening">
+          gardening
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/gdg">
+          gdg
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+          git
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/IE">
+          IE
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+          javascript
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+          jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/life">
+          life
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/marionette">
+          marionette
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/merb">
+          merb
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+          migrations
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/open_source">
+          open_source
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+          osx
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+          passenger
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/programming">
+          programming
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/prototype">
+          prototype
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+          rails
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/refactoring">
+          refactoring
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.9em" href="http://mrdias.com/tags/reflections">
+          reflections
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/ruby">
+          ruby
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/rvm">
+          rvm
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/shell">
+          shell
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/slides">
+          slides
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/systems">
+          systems
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/thor">
+          thor
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+          will_paginate
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<div class="module">
+  <h2>
+    Friend's Links
+  </h2>
+  <ul>
+    <li>
+      <a href="http://least-significant-bit.com">Least Significant Bit</a>
+    </li>
+    <li>
+      <a href="http://jorgecalas.com/">Jorge Calas</a>
+    </li>
+    <li>
+      <a href="http://travelswithmyfork.blogspot.com">Travels with my fork</a>
+    </li>
+  </ul>
+</div>
+<div class="module">
+  <h2>
+    Subscribe
+  </h2>
+  <ul>
+    <li>
+      <a href="http://feeds2.feedburner.com/mrdias" class="feed-link">RSS</a>
+    </li>
+  </ul>
+</div>
+<div class="module">
+  <h2>
+    Monthly Archives
+  </h2>
+  <ul>
+    
+    <li>
+      <a href="/2015/03">March 2015</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2014/12">December 2014</a> (2 posts)
+    </li>
+    
+    <li>
+      <a href="/2014/07">July 2014</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2013/10">October 2013</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2012/09">September 2012</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2012/07">July 2012</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2012/05">May 2012</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2012/02">February 2012</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2011/12">December 2011</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2011/08">August 2011</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2011/01">January 2011</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/11">November 2010</a> (2 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/05">May 2010</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/04">April 2010</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/03">March 2010</a> (3 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/02">February 2010</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2009/08">August 2009</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2009/02">February 2009</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2008/12">December 2008</a> (2 posts)
+    </li>
+    
+  </ul>
+</div>
+<div class="module">
+  <h2>Github</h2>
+  <h4>Last Active Repos</h4>
+  <ul id="gh_repos">
+  </ul>
+  <script>
+   var github = {
+     success: function(response) {
+       var repos = [];
+       var length = response.data.length >= 10 ? 10: response.data.length
+       for (var i = 0; i < length; i++) {
+         repos.push(response.data[i]);
+       }
+       github.render(repos);
+     },
+     render: function(repos) {
+       var i = 0,
+       fragment = '',
+       target = 'gh_repos';
+       t = document.getElementById(target);
+
+       for (i = 0; i < repos.length; i++) {
+         fragment += '<li><a href="' + repos[i].html_url + '">' + repos[i].name + '</a><p>' + (repos[i].description || '') + '</p></li>';
+       }
+       t.innerHTML = fragment;
+     }
+   }
+  </script>
+  <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
+</div>
+<div class="module">
+  <h2>Twitter</h2>
+  <h4>Recent Activity</h4>
+  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5"></a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+
+      </div>
+      <div id="footer" class="sixteen columns">
+        &copy; 2012 Jorge Dias
+      </div>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-15098892-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+      <script type="text/javascript">
+  //<![CDATA[
+    (function() {
+        var links = document.getElementsByTagName('a');
+        var query = '?';
+        for(var i = 0; i < links.length; i++) {
+          if(links[i].href.indexOf('#disqus_thread') >= 0) {
+            query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+          }
+        }
+        document.write('<script type="text/javascript" src="http://disqus.com/forums/mrdias/get_num_replies.js' + query + '"></' + 'script>');
+    })();
+    //]]>
+</script>
+
+    </div>
+  </body>
+</html>

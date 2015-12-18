@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+  <head>
+    <title>Using docker containers with your existing rails app</title>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
+    <meta name="author" content="Jorge Dias"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    <link rel="stylesheet" href="/stylesheets/main.css"/>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
+        <![endif]-->
+
+    <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="http://feeds2.feedburner.com/mrdias" />
+    <link rel="openid.server" href="http://www.myopenid.com/server"/>
+    <link rel="openid.delegate" href="http://theturingmachine.myopenid.com/"/>
+  </head>
+  <body>
+    <div class="container">
+      <div id="header" class="sixteen columns">
+        <div id="toplinks">
+          <a href="http://github.com/diasjorge">
+            <img width="24" height="24" src="/images/github_24.png"/>
+          </a>
+          <a href="http://twitter.com/dias_jorge">
+            <img width="24" height="24" src="/images/twitter_24.png"/>
+          </a>
+          <a href="http://linkedin.com/in/jorgediasmartinez/en">
+            <img width="24" height="24" src="/images/linkedin_24.png"/>
+          </a>
+        </div>
+        <h1><a href="/">Mr. Dias</a></h1>
+        <h4>Software Development Thoughts</h4>
+      </div>
+      <div id="content" class="two-thirds column">
+        <div class="article">
+  <div class="wrapper">
+    <div class="header">
+      <h2>
+        Using docker containers with your existing rails app
+      </h2>
+    </div>
+    <div class="content">
+      
+<p>This tutorial is an extraction from a talk I recently presented about docker and rails apps at the Barcelona on Rails user group. I’ll explain how to integrate docker into an existing rails app workflow.<!-- -**-END-**- --></p>
+
+<h3 id="dockerizing_our_dependencies">Dockerizing our dependencies</h3>
+
+<p>The first step to integrate docker into our workflow is to start with our application dependencies.</p>
+
+<p>As an example I’ll use the open source app <a href="https://github.com/fulcrum-agile/fulcrum">fulcrum</a>. I assume this application is running locally as would be the case with an existing rails app. For this example we’ll use the postgresql database.</p>
+
+<p>So the first thing is to initialize our database container. For that we execute the following command.</p>
+<div class='highlight'><pre><code class='sh'>docker run -d --name fulcrum-postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum -e <span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+-p 5432:5432 postgres
+</code></pre></div>
+<p>So we’re creating a container and run it as a daemon (-d), we setup some environment variables (-e) for the username and password and make the ports available (-p HOSTPORT:CONTAINERPORT).</p>
+
+<p>Now we need to adjust our config/database.yml, it should look something like this:</p>
+<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>development</span><span class='p-Indicator'>:</span>
+  <span class='l-Scalar-Plain'>adapter</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgresql</span>
+  <span class='l-Scalar-Plain'>encoding</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>unicode</span>
+  <span class='l-Scalar-Plain'>database</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum_development</span>
+  <span class='l-Scalar-Plain'>pool</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>5</span>
+  <span class='l-Scalar-Plain'>host</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
+  <span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
+  <span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
+
+<span class='l-Scalar-Plain'>test</span><span class='p-Indicator'>:</span>
+  <span class='l-Scalar-Plain'>adapter</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgresql</span>
+  <span class='l-Scalar-Plain'>encoding</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>unicode</span>
+  <span class='l-Scalar-Plain'>database</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum_test</span>
+  <span class='l-Scalar-Plain'>pool</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>5</span>
+  <span class='l-Scalar-Plain'>host</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
+  <span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
+  <span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
+</code></pre></div>
+<p>And now we run our rails app</p>
+<div class='highlight'><pre><code class='sh'><span class='c'># Initialize the db</span>
+<span class='nv'>POSTGRES_HOST</span><span class='o'>=</span><span class='sb'>`</span>boot2docker ip<span class='sb'>`</span> <span class='se'>\</span>
+<span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+<span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+bundle <span class='nb'>exec </span>rake db:setup
+
+<span class='c'># Run the app</span>
+<span class='nv'>POSTGRES_HOST</span><span class='o'>=</span><span class='sb'>`</span>boot2docker ip<span class='sb'>`</span> <span class='se'>\</span>
+<span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+<span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+bundle <span class='nb'>exec </span>rails s
+</code></pre></div>
+<p>Please note that for the value for the <em>POSTGRES_HOST</em> I’m using boot2docker, if you’re running on linux or against another docker host replace this accordingly.</p>
+
+<p>Now when we visit localhost:3000 our app will be running against our database in a docker container.</p>
+
+<p>For a more complicated app, we’d do the same for the rest of our dependencies. By starting with the dependencies, we are preparing the road so we can have a more decoupled environment while maintaining our regular workflow.</p>
+
+<h3 id="dockerizing_the_app">Dockerizing the app</h3>
+
+<p>The next step is to run the application itself inside a container. For this we’ll need to create our Dockerfile.</p>
+
+<p>There are many different places to start from. We’ll use the official ruby 2.1.2 container since this is the ruby version our app needs, but defining our own from scratch is quite easy as well.</p>
+
+<p>Our Dockerfile should look like this</p>
+<div class='highlight'><pre><code class='dockerfile'><span class='k'>FROM</span><span class='s'> ruby:2.1.5</span>
+
+<span class='k'>RUN</span> apt-get update <span class='o'>&amp;&amp;</span> <span class='se'>\</span>
+    <span class='nv'>DEBIAN_FRONTEND</span><span class='o'>=</span>noninteractive apt-get install -y <span class='se'>\</span>
+    nodejs <span class='se'>\</span>
+    <span class='o'>&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+
+<span class='k'>WORKDIR</span><span class='s'> /app</span>
+
+<span class='k'>COPY</span><span class='s'> Gemfile* /app/</span>
+
+<span class='k'>RUN</span> bundle install -j4
+
+<span class='k'>ADD</span><span class='s'> . /app</span>
+
+<span class='c'># Let&#39;s create a user to run the app that is not root</span>
+<span class='k'>RUN</span> usr/sbin/useradd --create-home --home-dir /app --shell /bin/bash fulcrum
+
+<span class='k'>RUN</span> chown -R fulcrum:fulcrum /app
+
+<span class='k'>USER</span><span class='s'> fulcrum</span>
+
+<span class='k'>CMD</span><span class='s'> [&quot;rails&quot;, &quot;server&quot;]</span>
+</code></pre></div>
+<p>We also need to tell docker certain files we don’t want as part of our container, we create a .dockerignore file like this:</p>
+<div class='highlight'><pre><code class='sh'>.git
+.bundle
+vendor/bundle
+</code></pre></div>
+<p>After creating the files in the root of our app we execute:</p>
+<div class='highlight'><pre><code class='sh'>docker build -t fulcrum-web .
+</code></pre></div>
+<p>Once that is finised we can run our app like this:</p>
+<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_USERNAME</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
+fulcrum-web
+</code></pre></div>
+<p>So what is this doing exactly? We’re linking our database container to our web container (–link), we’re exposing the port 3000 (-p) and we’re also setting environment variables (-e) with the values we used when creating our db container. After executing this we can go visit our app running on http://DOCKER_HOST:3000</p>
+
+<p>The first thing we can see is that we have to set many duplicate environment variables from the database when running our container, fortunately docker allows us to have access to a linked container environment variables.</p>
+
+<p>We can change now our config/database.yml replacing the username and password like this:</p>
+<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_USER&#39;] %&gt;</span>
+<span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_PASSWORD&#39;] %&gt;</span>
+</code></pre></div>
+<p>We rebuild our container again, and now we can start it simply like:</p>
+<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
+fulcrum-web
+</code></pre></div>
+<p>Now, recreating our container every time we make a file change is going the get very annoying quite soon. For this we can also leverage another docker facility called volumes. This will allow our container to have access to our local files. To do this simply we start our container like this:</p>
+<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
+-e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
+-v <span class='nv'>$PWD</span>:/app <span class='se'>\</span>
+fulcrum-web
+</code></pre></div>
+<p>Note: Please make sure you delete your .bundle/config local file to avoid issues with bundler inside the container.</p>
+
+<h3 id="automating_our_setup_with_docker_compose">Automating our setup with docker compose</h3>
+
+<p>At this point we have our app running successfully inside a docker container, but having to be typing this commands constantly is not fun.</p>
+
+<p>To finish our setup we’ll use <a href="https://docs.docker.com/compose/">docker compose</a>.</p>
+
+<p>So let’s create our docker-compose.yml.</p>
+<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>web</span><span class='p-Indicator'>:</span>
+  <span class='l-Scalar-Plain'>build</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>.</span>
+  <span class='l-Scalar-Plain'>links</span><span class='p-Indicator'>:</span>
+    <span class='p-Indicator'>-</span> <span class='l-Scalar-Plain'>db:postgres</span>
+  <span class='l-Scalar-Plain'>environment</span><span class='p-Indicator'>:</span>
+    <span class='l-Scalar-Plain'>POSTGRES_HOST</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgres</span>
+  <span class='l-Scalar-Plain'>ports</span><span class='p-Indicator'>:</span>
+    <span class='p-Indicator'>-</span> <span class='s'>&quot;3000:3000&quot;</span>
+  <span class='l-Scalar-Plain'>volumes</span><span class='p-Indicator'>:</span>
+    <span class='p-Indicator'>-</span> <span class='l-Scalar-Plain'>.:/app</span>
+
+<span class='l-Scalar-Plain'>db</span><span class='p-Indicator'>:</span>
+  <span class='l-Scalar-Plain'>image</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgres</span>
+  <span class='l-Scalar-Plain'>environment</span><span class='p-Indicator'>:</span>
+    <span class='l-Scalar-Plain'>POSTGRES_USER</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum</span>
+    <span class='l-Scalar-Plain'>POSTGRES_PASSWORD</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum</span>
+</code></pre></div>
+<p>Now to run our app we simply do:</p>
+<div class='highlight'><pre><code class='sh'>docker-compose up
+</code></pre></div>
+<p>The first time we access our app it will complain our db is not created we can simply fix this by running:</p>
+<div class='highlight'><pre><code class='sh'>docker-compose run web rake db:setup
+</code></pre></div>
+<p>And last but not least if you want to run your tests then you can simply do:</p>
+<div class='highlight'><pre><code class='sh'>docker-compose run web rake db:test:prepare spec
+</code></pre></div>
+<h3 id="the_end">The end</h3>
+
+<p>So that’s it, I hope this tutorial helps you get started with docker with your existing rails applications. If you want more info about docker compose, check out my article about fig (docker compose’s predecesor) <a href="/2014/12/19/faster-docker-containers-development-using-fig.html">here</a></p>
+
+    </div>
+    <article class=hentry>
+      <p class="author vcard">
+        By Jorge Dias
+        on <time pubdate class=published datetime="2015-03-08T00:00:00+01:00">08 March 2015</time>
+      </p>
+    </article>
+  </div>
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'mrdias';
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </div>
+      <div id="sidebar" class="one-third column">
+        <div class="module">
+  <h2>
+    Tags
+  </h2>
+  <div class="cloud-wrap">
+    <ul>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/activerecord">
+          activerecord
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/ajax">
+          ajax
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/archives">
+          archives
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+          automation
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+          awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/backbone">
+          backbone
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+          capistrano
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/chef">
+          chef
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/conferencia_rails">
+          conferencia_rails
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/cucumber">
+          cucumber
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/development">
+          development
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/devops">
+          devops
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+          docker
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+          emacs
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/emails">
+          emails
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/encodings">
+          encodings
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/fig">
+          fig
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/gardening">
+          gardening
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/gdg">
+          gdg
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+          git
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/IE">
+          IE
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+          javascript
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+          jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/life">
+          life
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/marionette">
+          marionette
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/merb">
+          merb
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+          migrations
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/open_source">
+          open_source
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+          osx
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+          passenger
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/programming">
+          programming
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/prototype">
+          prototype
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+          rails
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/refactoring">
+          refactoring
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.9em" href="http://mrdias.com/tags/reflections">
+          reflections
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/ruby">
+          ruby
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/rvm">
+          rvm
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/shell">
+          shell
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/slides">
+          slides
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/systems">
+          systems
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/thor">
+          thor
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+          will_paginate
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<div class="module">
+  <h2>
+    Friend's Links
+  </h2>
+  <ul>
+    <li>
+      <a href="http://least-significant-bit.com">Least Significant Bit</a>
+    </li>
+    <li>
+      <a href="http://jorgecalas.com/">Jorge Calas</a>
+    </li>
+    <li>
+      <a href="http://travelswithmyfork.blogspot.com">Travels with my fork</a>
+    </li>
+  </ul>
+</div>
+<div class="module">
+  <h2>
+    Subscribe
+  </h2>
+  <ul>
+    <li>
+      <a href="http://feeds2.feedburner.com/mrdias" class="feed-link">RSS</a>
+    </li>
+  </ul>
+</div>
+<div class="module">
+  <h2>
+    Monthly Archives
+  </h2>
+  <ul>
+    
+    <li>
+      <a href="/2015/03">March 2015</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2014/12">December 2014</a> (2 posts)
+    </li>
+    
+    <li>
+      <a href="/2014/07">July 2014</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2013/10">October 2013</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2012/09">September 2012</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2012/07">July 2012</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2012/05">May 2012</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2012/02">February 2012</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2011/12">December 2011</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2011/08">August 2011</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2011/01">January 2011</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/11">November 2010</a> (2 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/05">May 2010</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/04">April 2010</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/03">March 2010</a> (3 posts)
+    </li>
+    
+    <li>
+      <a href="/2010/02">February 2010</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2009/08">August 2009</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2009/02">February 2009</a> (1 posts)
+    </li>
+    
+    <li>
+      <a href="/2008/12">December 2008</a> (2 posts)
+    </li>
+    
+  </ul>
+</div>
+<div class="module">
+  <h2>Github</h2>
+  <h4>Last Active Repos</h4>
+  <ul id="gh_repos">
+  </ul>
+  <script>
+   var github = {
+     success: function(response) {
+       var repos = [];
+       var length = response.data.length >= 10 ? 10: response.data.length
+       for (var i = 0; i < length; i++) {
+         repos.push(response.data[i]);
+       }
+       github.render(repos);
+     },
+     render: function(repos) {
+       var i = 0,
+       fragment = '',
+       target = 'gh_repos';
+       t = document.getElementById(target);
+
+       for (i = 0; i < repos.length; i++) {
+         fragment += '<li><a href="' + repos[i].html_url + '">' + repos[i].name + '</a><p>' + (repos[i].description || '') + '</p></li>';
+       }
+       t.innerHTML = fragment;
+     }
+   }
+  </script>
+  <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
+</div>
+<div class="module">
+  <h2>Twitter</h2>
+  <h4>Recent Activity</h4>
+  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5"></a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+
+      </div>
+      <div id="footer" class="sixteen columns">
+        &copy; 2012 Jorge Dias
+      </div>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-15098892-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+      <script type="text/javascript">
+  //<![CDATA[
+    (function() {
+        var links = document.getElementsByTagName('a');
+        var query = '?';
+        for(var i = 0; i < links.length; i++) {
+          if(links[i].href.indexOf('#disqus_thread') >= 0) {
+            query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+          }
+        }
+        document.write('<script type="text/javascript" src="http://disqus.com/forums/mrdias/get_num_replies.js' + query + '"></' + 'script>');
+    })();
+    //]]>
+</script>
+
+    </div>
+  </body>
+</html>
