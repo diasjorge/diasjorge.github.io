@@ -15,9 +15,12 @@ task :server do
   sh 'foreman start'
 end
 
+desc 'run server'
+task :serve => :server
+
 desc 'Build and deploy'
 task :deploy => :build do
-  sh 'rsync -rctzh --progress --delete _site/* deploy@mrdias.com:/var/www/apps/mrdias/'
+  sh 'ghp-import -c mrdias.com -m "Deploy" -b master -p _site/'
 end
 
 task :release => :deploy
