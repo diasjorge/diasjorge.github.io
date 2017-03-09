@@ -47,9 +47,11 @@
       </h2>
     </div>
     <div class="content">
-      <p>I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn&#8217;t customize the pagination url&#8217;s or I had to specify the paginator to use (will paginate&#8217;s default or mine for ajax), so I came up with this solution which fulfils all my needs.<!-- -**-END-**- --></p>
-<p>First create the following class in your app/helpers.</p>
-<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">RemoteLinkRenderer</span> <span class="o">&lt;</span> <span class="no">WillPaginate</span><span class="o">::</span><span class="no">LinkRenderer</span>
+      I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn't customize the pagination url's or I had to specify the paginator to use (will paginate's default or mine for ajax), so I came up with this solution which fulfils all my needs.<!-- -**-END-**- -->
+
+First create the following class in your app/helpers.
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="k">class</span> <span class="nc">RemoteLinkRenderer</span> <span class="o">&lt;</span> <span class="no">WillPaginate</span><span class="o">::</span><span class="no">LinkRenderer</span>
   <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
     <span class="vi">@remote</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="ss">:remote</span><span class="p">)</span>
     <span class="k">super</span>
@@ -64,12 +66,18 @@
       <span class="vi">@template</span><span class="o">.</span><span class="n">link_to</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">url_for</span><span class="p">(</span><span class="n">page</span><span class="p">),</span> <span class="n">attributes</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div><p>Then you have to tell will_paginate which link_renderer to use, I do this in a rails initializer.</p>
-<div class="highlight"><pre><code class="ruby"><span class="no">WillPaginate</span><span class="o">::</span><span class="no">ViewHelpers</span><span class="o">.</span><span class="n">pagination_options</span><span class="o">[</span><span class="ss">:renderer</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;RemoteLinkRenderer&#39;</span>
-</code></pre></div><p>So with this solution, you can work like you would normally with will_paginate, but if you need to do an ajax link, then you&#8217;ll have to pass the options in the remote hash, something like this:</p>
-<div class="highlight"><pre><code class="ruby"><span class="n">will_paginate</span><span class="p">(</span><span class="vi">@comments</span><span class="p">,</span> <span class="ss">:remote</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:update</span> <span class="o">=&gt;</span> <span class="s1">&#39;comments&#39;</span><span class="p">})</span>
-</code></pre></div><p>That&#8217;s it enjoy. You can keep passing the same options you would normally do to will_paginate to customize the behaviour.</p>
+<span class="k">end</span></code></pre></figure>
+
+Then you have to tell will_paginate which link_renderer to use, I do this in a rails initializer.
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="no">WillPaginate</span><span class="o">::</span><span class="no">ViewHelpers</span><span class="o">.</span><span class="n">pagination_options</span><span class="o">[</span><span class="ss">:renderer</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;RemoteLinkRenderer&#39;</span></code></pre></figure>
+
+So with this solution, you can work like you would normally with will_paginate, but if you need to do an ajax link, then you'll have to pass the options in the remote hash, something like this:
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">will_paginate</span><span class="p">(</span><span class="vi">@comments</span><span class="p">,</span> <span class="ss">:remote</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:update</span> <span class="o">=&gt;</span> <span class="s1">&#39;comments&#39;</span><span class="p">})</span></code></pre></figure>
+
+That's it enjoy. You can keep passing the same options you would normally do to will_paginate to customize the behaviour.
+
     </div>
     <article class=hentry>
       <p class="author vcard">
@@ -119,14 +127,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -137,7 +151,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -173,13 +187,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -215,7 +229,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -227,14 +241,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -257,7 +277,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -269,13 +289,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -293,7 +313,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -347,7 +373,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -386,6 +412,10 @@
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)

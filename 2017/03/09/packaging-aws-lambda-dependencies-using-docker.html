@@ -4,7 +4,7 @@
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
   <head>
-    <title>Will Paginate And Merb</title>
+    <title>Packaging AWS Lambda dependencies using docker</title>
     <meta charset="utf-8"/>
     <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
     <meta name="author" content="Jorge Dias"/>
@@ -43,27 +43,56 @@
   <div class="wrapper">
     <div class="header">
       <h2>
-        Will Paginate And Merb
+        Packaging AWS Lambda dependencies using docker
       </h2>
     </div>
     <div class="content">
-      <p>I read something about how to do it in this <a href="http://merbist.com/2008/10/27/will_paginate-and-merb/">post</a> by The merbist, albeit the information was not complete.<br />
-So here are my instructions:<!-- -**-END-**- --></p>
-<p>Clone mislav&#8217;s will_paginate repo and build the gem from the agnostic branch.</p>
-<div class="highlight"><pre><code class="sh">git clone git://github.com/mislav/will_paginate.git
-<span class="nb">cd </span>will_paginate/
-git checkout origin/agnostic 
-gem build
-</code></pre></div><p>With this commands you&#8217;ve generated the will_paginate-3.0.0.gem.</p>
-<p>If you want to install it system-wide use your usual gem install.<br />
-If you want to bundle it in your project, as I did, then you&#8217;ll have to do:</p>
-<div class="highlight"><pre><code class="sh">thor merb:gem:install path/to/gem
-</code></pre></div><p>That&#8217;s it.</p>
+      <p>Recently I’ve been using AWS Lambda at work for some projects and one
+of the limitations that you have is trying to use packages with
+compiled dependencies.</p>
+
+<p>Compiling them on your machine won’t work and the “recommended” way is
+to start an EC2 instance and compile your dependencies there and then
+copy those to your machine back.</p>
+
+<p>Fortunately AWS now provides a docker image for amazon linux which
+we can leverage to build our depencies. We can avoid launching an
+instance and get faster results.</p>
+
+<p>Below I provide an example to build the dependencies for a python
+project but you can probably modify it for other cases.</p>
+
+<p>Just put the following content in a Makefile.</p>
+
+<figure class="highlight"><pre><code class="language-basemake" data-lang="basemake"><span></span><span class="nf">compile</span><span class="o">:</span>
+	yum install -y gcc libffi-devel openssl-devel python27-virtualenv
+	virtualenv /tmp/venv
+	/tmp/venv/bin/pip install --upgrade pip setuptools
+	/tmp/venv/bin/pip install -e .
+	cp -r /tmp/venv/lib/python2.7/site-packages/. ./aws_lambda_libs
+	cp -r /tmp/venv/lib64/python2.7/site-packages/. ./aws_lambda_libs
+
+<span class="nf">lambda-deps</span><span class="o">:</span>
+	@echo <span class="s2">&quot;--&gt; Compiling lambda dependencies&quot;</span>
+	docker run --rm -it -v <span class="si">${</span><span class="nv">CURDIR</span><span class="si">}</span>:/src -w /src amazonlinux make compile
+
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">lambda</span>-<span class="n">deps</span> <span class="n">compile</span></code></pre></figure>
+
+<p>Then you just need to execute:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>make lambda-deps</code></pre></figure>
+
+<p>When this process finishes you’ll have your dependencies compiled in aws_lambda_libs.</p>
+
+<p>Just include those contents at the root of your package.zip and deploy.</p>
+
+<p>Enjoy!</p>
+
     </div>
     <article class=hentry>
       <p class="author vcard">
         By Jorge Dias
-        on <time pubdate class=published datetime="2008-12-09T00:00:00+01:00">09 December 2008</time>
+        on <time pubdate class=published datetime="2017-03-09T00:00:00+01:00">09 March 2017</time>
       </p>
     </article>
   </div>
@@ -108,14 +137,20 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -126,7 +161,7 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -162,13 +197,13 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -204,7 +239,7 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -216,14 +251,20 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -246,7 +287,7 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -258,13 +299,13 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -282,7 +323,13 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -336,7 +383,7 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -375,6 +422,10 @@ If you want to bundle it in your project, as I did, then you&#8217;ll have to do
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)

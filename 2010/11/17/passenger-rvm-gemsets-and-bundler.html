@@ -47,25 +47,28 @@
       </h2>
     </div>
     <div class="content">
-      
-<p>When using passenger with rvm I’ve had some issues with project specific gemsets, where bundler was unable to find the gems. After searching a lot I found out about using the “config/setup_load_paths.rb” file to tell passenger where to locate your gems, but then I had a new issue with rvm trying to use the system ruby instead of the ruby version of my .rvmrc file.</p>
+      <p>When using passenger with rvm I’ve had some issues with project specific gemsets, where bundler was unable to find the gems.
+After searching a lot I found out about using the “config/setup_load_paths.rb” file to tell passenger where to locate your gems, but then I had a new issue with rvm trying to use the system ruby instead of the ruby version of my .rvmrc file.</p>
 
 <p>After going to the irc channel, I got some help that help me fixed my problem. The culprit was my rvmrc file.<!-- -**-END-**- --></p>
 
 <p>As I’ve seen on many blog posts the file looked something like this:</p>
-<div class='highlight'><pre><code class='sh'>rvm use --create ree@rails235
-</code></pre></div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>rvm use --create ree@rails235</code></pre></figure>
+
 <p>The solution was to generate the rvmrc file using rvm itself like this:</p>
-<div class='highlight'><pre><code class='sh'>rvm --create --rvmrc use ree@rails235
-</code></pre></div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>rvm --create --rvmrc use ree@rails235</code></pre></figure>
+
 <p>The file contents now look like this:</p>
-<div class='highlight'><pre><code class='sh'><span class='k'>if</span> <span class='o'>[[</span> -d <span class='s2'>&quot;</span><span class='si'>${</span><span class='nv'>rvm_path</span><span class='k'>:-</span><span class='nv'>$HOME</span><span class='p'>/.rvm</span><span class='si'>}</span><span class='s2'>/environments&quot;</span> <span class='se'>\</span>
-  <span class='o'>&amp;&amp;</span> -s <span class='s2'>&quot;</span><span class='si'>${</span><span class='nv'>rvm_path</span><span class='k'>:-</span><span class='nv'>$HOME</span><span class='p'>/.rvm</span><span class='si'>}</span><span class='s2'>/environments/ree-1.8.7-2010.02@rails235&quot;</span> <span class='o'>]]</span> <span class='p'>;</span> <span class='k'>then</span>
-  <span class='se'>\.</span> <span class='s2'>&quot;</span><span class='si'>${</span><span class='nv'>rvm_path</span><span class='k'>:-</span><span class='nv'>$HOME</span><span class='p'>/.rvm</span><span class='si'>}</span><span class='s2'>/environments/ree-1.8.7-2010.02@rails235&quot;</span>
-<span class='k'>else</span>
-  rvm --create use  <span class='s2'>&quot;ree-1.8.7-2010.02@rails235&quot;</span>
-<span class='k'>fi</span>
-</code></pre></div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span><span class="k">if</span> <span class="o">[[</span> -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rvm_path</span><span class="k">:-</span><span class="nv">$HOME</span><span class="p">/.rvm</span><span class="si">}</span><span class="s2">/environments&quot;</span> <span class="se">\</span>
+  <span class="o">&amp;&amp;</span> -s <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rvm_path</span><span class="k">:-</span><span class="nv">$HOME</span><span class="p">/.rvm</span><span class="si">}</span><span class="s2">/environments/ree-1.8.7-2010.02@rails235&quot;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+  <span class="se">\.</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rvm_path</span><span class="k">:-</span><span class="nv">$HOME</span><span class="p">/.rvm</span><span class="si">}</span><span class="s2">/environments/ree-1.8.7-2010.02@rails235&quot;</span>
+<span class="k">else</span>
+  rvm --create use  <span class="s2">&quot;ree-1.8.7-2010.02@rails235&quot;</span>
+<span class="k">fi</span></code></pre></figure>
+
 <p>And passenger is able to find my gems without any problems.</p>
 
 <p>Hope this helps you as I spent way too much time with this issue.</p>
@@ -119,14 +122,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -137,7 +146,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -173,13 +182,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -215,7 +224,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -227,14 +236,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -257,7 +272,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -269,13 +284,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -293,7 +308,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -347,7 +368,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -386,6 +407,10 @@
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)

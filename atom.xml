@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
- 
+
  <title>Mr Dias</title>
  <link href="http://mrdias.com/atom.xml" rel="self"/>
  <link href="http://mrdias.com/"/>
- <updated>2015-12-18T22:32:50+01:00</updated>
+ <updated>2017-03-09T23:05:14+01:00</updated>
  <id>http://mrdias.com/</id>
  <author>
    <name>Jorge Dias</name>
@@ -12,167 +12,266 @@
 
  
  <entry>
+   <title>Packaging AWS Lambda dependencies using docker</title>
+   <link href="http://mrdias.com/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html"/>
+   <updated>2017-03-09T00:00:00+01:00</updated>
+   <id>http://mrdias.com/2017/03/09/packaging-aws-lambda-dependencies-using-docker</id>
+   <content type="html">&lt;p&gt;Recently I’ve been using AWS Lambda at work for some projects and one
+of the limitations that you have is trying to use packages with
+compiled dependencies.&lt;/p&gt;
+
+&lt;p&gt;Compiling them on your machine won’t work and the “recommended” way is
+to start an EC2 instance and compile your dependencies there and then
+copy those to your machine back.&lt;/p&gt;
+
+&lt;p&gt;Fortunately AWS now provides a docker image for amazon linux which
+we can leverage to build our depencies. We can avoid launching an
+instance and get faster results.&lt;/p&gt;
+
+&lt;p&gt;Below I provide an example to build the dependencies for a python
+project but you can probably modify it for other cases.&lt;/p&gt;
+
+&lt;p&gt;Just put the following content in a Makefile.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-basemake&quot; data-lang=&quot;basemake&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+	yum install -y gcc libffi-devel openssl-devel python27-virtualenv
+	virtualenv /tmp/venv
+	/tmp/venv/bin/pip install --upgrade pip setuptools
+	/tmp/venv/bin/pip install -e .
+	cp -r /tmp/venv/lib/python2.7/site-packages/. ./aws_lambda_libs
+	cp -r /tmp/venv/lib64/python2.7/site-packages/. ./aws_lambda_libs
+
+&lt;span class=&quot;nf&quot;&gt;lambda-deps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+	@echo &lt;span class=&quot;s2&quot;&gt;&amp;quot;--&amp;gt; Compiling lambda dependencies&amp;quot;&lt;/span&gt;
+	docker run --rm -it -v &lt;span class=&quot;si&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;CURDIR&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;:/src -w /src amazonlinux make compile
+
+&lt;span class=&quot;nf&quot;&gt;.PHONY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lambda&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;deps&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;compile&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Then you just need to execute:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&lt;/span&gt;make lambda-deps&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;When this process finishes you’ll have your dependencies compiled in aws_lambda_libs.&lt;/p&gt;
+
+&lt;p&gt;Just include those contents at the root of your package.zip and deploy.&lt;/p&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Using docker containers with your existing rails app</title>
    <link href="http://mrdias.com/2015/03/08/using-docker-containers-with-your-existing-rails-app.html"/>
    <updated>2015-03-08T00:00:00+01:00</updated>
    <id>http://mrdias.com/2015/03/08/using-docker-containers-with-your-existing-rails-app</id>
-   <content type="html">
-&lt;p&gt;This tutorial is an extraction from a talk I recently presented about docker and rails apps at the Barcelona on Rails user group. I’ll explain how to integrate docker into an existing rails app workflow.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;This tutorial is an extraction from a talk I recently presented about
+docker and rails apps at the Barcelona on Rails user group. I’ll
+explain how to integrate docker into an existing rails app workflow.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;dockerizing_our_dependencies&quot;&gt;Dockerizing our dependencies&lt;/h3&gt;
+&lt;h3 id=&quot;dockerizing-our-dependencies&quot;&gt;Dockerizing our dependencies&lt;/h3&gt;
 
-&lt;p&gt;The first step to integrate docker into our workflow is to start with our application dependencies.&lt;/p&gt;
+&lt;p&gt;The first step to integrate docker into our workflow is to start with
+our application dependencies.&lt;/p&gt;
 
-&lt;p&gt;As an example I’ll use the open source app &lt;a href=&quot;https://github.com/fulcrum-agile/fulcrum&quot;&gt;fulcrum&lt;/a&gt;. I assume this application is running locally as would be the case with an existing rails app. For this example we’ll use the postgresql database.&lt;/p&gt;
+&lt;p&gt;As an example I’ll use the open source app
+&lt;a href=&quot;https://github.com/fulcrum-agile/fulcrum&quot;&gt;fulcrum&lt;/a&gt;. I assume this
+application is running locally as would be the case with an existing
+rails app. For this example we’ll use the postgresql database.&lt;/p&gt;
 
-&lt;p&gt;So the first thing is to initialize our database container. For that we execute the following command.&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;docker run -d --name fulcrum-postgres &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
--e &lt;span class=&#39;nv&#39;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;fulcrum -e &lt;span class=&#39;nv&#39;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;fulcrum &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
--p 5432:5432 postgres
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;So we’re creating a container and run it as a daemon (-d), we setup some environment variables (-e) for the username and password and make the ports available (-p HOSTPORT:CONTAINERPORT).&lt;/p&gt;
+&lt;p&gt;So the first thing is to initialize our database container. For that
+we execute the following command.&lt;/p&gt;
 
-&lt;p&gt;Now we need to adjust our config/database.yml, it should look something like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;yaml&#39;&gt;&lt;span class=&#39;l-Scalar-Plain&#39;&gt;development&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;adapter&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;postgresql&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;encoding&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;unicode&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;database&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;fulcrum_development&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;pool&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;5&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;host&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_HOST&amp;#39;] %&amp;gt;&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;username&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_USER&amp;#39;] %&amp;gt;&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;password&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_PASSWORD&amp;#39;] %&amp;gt;&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;docker run -d --name fulcrum-postgres &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+-e &lt;span class=&quot;nv&quot;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fulcrum -e &lt;span class=&quot;nv&quot;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fulcrum &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+-p &lt;span class=&quot;m&quot;&gt;5432&lt;/span&gt;:5432 postgres&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;span class=&#39;l-Scalar-Plain&#39;&gt;test&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;adapter&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;postgresql&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;encoding&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;unicode&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;database&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;fulcrum_test&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;pool&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;5&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;host&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_HOST&amp;#39;] %&amp;gt;&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;username&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_USER&amp;#39;] %&amp;gt;&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;password&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_PASSWORD&amp;#39;] %&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So we’re creating a container and run it as a daemon (-d), we
+setup some environment variables (-e) for the username and password and
+make the ports available (-p HOSTPORT:CONTAINERPORT).&lt;/p&gt;
+
+&lt;p&gt;Now we need to adjust our config/database.yml, it should look
+something like this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;development&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;adapter&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;postgresql&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;unicode&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;fulcrum_development&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;pool&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;5&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_HOST&amp;#39;] %&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_USER&amp;#39;] %&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_PASSWORD&amp;#39;] %&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;adapter&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;postgresql&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;unicode&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;fulcrum_test&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;pool&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;5&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_HOST&amp;#39;] %&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_USER&amp;#39;] %&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_PASSWORD&amp;#39;] %&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;And now we run our rails app&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;&lt;span class=&#39;c&#39;&gt;# Initialize the db&lt;/span&gt;
-&lt;span class=&#39;nv&#39;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;&lt;span class=&#39;sb&#39;&gt;`&lt;/span&gt;boot2docker ip&lt;span class=&#39;sb&#39;&gt;`&lt;/span&gt; &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-&lt;span class=&#39;nv&#39;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;fulcrum &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-&lt;span class=&#39;nv&#39;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;fulcrum &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-bundle &lt;span class=&#39;nb&#39;&gt;exec &lt;/span&gt;rake db:setup
 
-&lt;span class=&#39;c&#39;&gt;# Run the app&lt;/span&gt;
-&lt;span class=&#39;nv&#39;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;&lt;span class=&#39;sb&#39;&gt;`&lt;/span&gt;boot2docker ip&lt;span class=&#39;sb&#39;&gt;`&lt;/span&gt; &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-&lt;span class=&#39;nv&#39;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;fulcrum &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-&lt;span class=&#39;nv&#39;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;fulcrum &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-bundle &lt;span class=&#39;nb&#39;&gt;exec &lt;/span&gt;rails s
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Please note that for the value for the &lt;em&gt;POSTGRES_HOST&lt;/em&gt; I’m using boot2docker, if you’re running on linux or against another docker host replace this accordingly.&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Initialize the db&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;boot2docker ip&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fulcrum &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fulcrum &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; rake db:setup
 
-&lt;p&gt;Now when we visit localhost:3000 our app will be running against our database in a docker container.&lt;/p&gt;
+&lt;span class=&quot;c1&quot;&gt;# Run the app&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;boot2docker ip&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fulcrum &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fulcrum &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; rails s&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;For a more complicated app, we’d do the same for the rest of our dependencies. By starting with the dependencies, we are preparing the road so we can have a more decoupled environment while maintaining our regular workflow.&lt;/p&gt;
+&lt;p&gt;Please note that for the value for the &lt;em&gt;POSTGRES_HOST&lt;/em&gt; I’m using
+boot2docker, if you’re running on linux or against another docker host
+replace this accordingly.&lt;/p&gt;
 
-&lt;h3 id=&quot;dockerizing_the_app&quot;&gt;Dockerizing the app&lt;/h3&gt;
+&lt;p&gt;Now when we visit localhost:3000 our app will be running against our
+database in a docker container.&lt;/p&gt;
 
-&lt;p&gt;The next step is to run the application itself inside a container. For this we’ll need to create our Dockerfile.&lt;/p&gt;
+&lt;p&gt;For a more complicated app, we’d do the same for the rest of our
+dependencies. By starting with the dependencies, we are preparing the
+road so we can have a more decoupled environment while maintaining our
+regular workflow.&lt;/p&gt;
 
-&lt;p&gt;There are many different places to start from. We’ll use the official ruby 2.1.2 container since this is the ruby version our app needs, but defining our own from scratch is quite easy as well.&lt;/p&gt;
+&lt;h3 id=&quot;dockerizing-the-app&quot;&gt;Dockerizing the app&lt;/h3&gt;
+
+&lt;p&gt;The next step is to run the application itself inside a container. For
+this we’ll need to create our Dockerfile.&lt;/p&gt;
+
+&lt;p&gt;There are many different places to start from. We’ll use the official
+ruby 2.1.2 container since this is the ruby version our app needs, but
+defining our own from scratch is quite easy as well.&lt;/p&gt;
 
 &lt;p&gt;Our Dockerfile should look like this&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;dockerfile&#39;&gt;&lt;span class=&#39;k&#39;&gt;FROM&lt;/span&gt;&lt;span class=&#39;s&#39;&gt; ruby:2.1.5&lt;/span&gt;
 
-&lt;span class=&#39;k&#39;&gt;RUN&lt;/span&gt; apt-get update &lt;span class=&#39;o&#39;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-    &lt;span class=&#39;nv&#39;&gt;DEBIAN_FRONTEND&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;noninteractive apt-get install -y &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-    nodejs &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-    &lt;span class=&#39;o&#39;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf /var/lib/apt/lists/*
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; ruby:2.1.5&lt;/span&gt;
 
-&lt;span class=&#39;k&#39;&gt;WORKDIR&lt;/span&gt;&lt;span class=&#39;s&#39;&gt; /app&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;DEBIAN_FRONTEND&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;noninteractive apt-get install -y &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    nodejs &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf /var/lib/apt/lists/*
 
-&lt;span class=&#39;k&#39;&gt;COPY&lt;/span&gt;&lt;span class=&#39;s&#39;&gt; Gemfile* /app/&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; /app&lt;/span&gt;
 
-&lt;span class=&#39;k&#39;&gt;RUN&lt;/span&gt; bundle install -j4
+COPY Gemfile* /app/
 
-&lt;span class=&#39;k&#39;&gt;ADD&lt;/span&gt;&lt;span class=&#39;s&#39;&gt; . /app&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; bundle install -j4
 
-&lt;span class=&#39;c&#39;&gt;# Let&amp;#39;s create a user to run the app that is not root&lt;/span&gt;
-&lt;span class=&#39;k&#39;&gt;RUN&lt;/span&gt; usr/sbin/useradd --create-home --home-dir /app --shell /bin/bash fulcrum
+&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; . /app&lt;/span&gt;
 
-&lt;span class=&#39;k&#39;&gt;RUN&lt;/span&gt; chown -R fulcrum:fulcrum /app
+&lt;span class=&quot;c&quot;&gt;# Let&amp;#39;s create a user to run the app that is not root&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; usr/sbin/useradd --create-home --home-dir /app --shell /bin/bash fulcrum
 
-&lt;span class=&#39;k&#39;&gt;USER&lt;/span&gt;&lt;span class=&#39;s&#39;&gt; fulcrum&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; chown -R fulcrum:fulcrum /app
 
-&lt;span class=&#39;k&#39;&gt;CMD&lt;/span&gt;&lt;span class=&#39;s&#39;&gt; [&amp;quot;rails&amp;quot;, &amp;quot;server&amp;quot;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We also need to tell docker certain files we don’t want as part of our container, we create a .dockerignore file like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;.git
+USER fulcrum
+
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; [&amp;quot;rails&amp;quot;, &amp;quot;server&amp;quot;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;We also need to tell docker certain files we don’t want as part of our container,
+we create a .dockerignore file like this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;.git
 .bundle
-vendor/bundle
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+vendor/bundle&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;After creating the files in the root of our app we execute:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;docker build -t fulcrum-web .
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;docker build -t fulcrum-web .&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;Once that is finised we can run our app like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
--e &lt;span class=&#39;nv&#39;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;postgres &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
--e &lt;span class=&#39;nv&#39;&gt;POSTGRES_USERNAME&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;fulcrum &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
--e &lt;span class=&#39;nv&#39;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;fulcrum &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-fulcrum-web
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;So what is this doing exactly? We’re linking our database container to our web container (–link), we’re exposing the port 3000 (-p) and we’re also setting environment variables (-e) with the values we used when creating our db container. After executing this we can go visit our app running on http://DOCKER_HOST:3000&lt;/p&gt;
 
-&lt;p&gt;The first thing we can see is that we have to set many duplicate environment variables from the database when running our container, fortunately docker allows us to have access to a linked container environment variables.&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;docker run --rm -p &lt;span class=&quot;m&quot;&gt;3000&lt;/span&gt;:3000 --link fulcrum-postgres:postgres &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+-e &lt;span class=&quot;nv&quot;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;postgres &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+-e &lt;span class=&quot;nv&quot;&gt;POSTGRES_USERNAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fulcrum &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+-e &lt;span class=&quot;nv&quot;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fulcrum &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+fulcrum-web&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;We can change now our config/database.yml replacing the username and password like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;yaml&#39;&gt;&lt;span class=&#39;l-Scalar-Plain&#39;&gt;username&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_USER&amp;#39;] || ENV[&amp;#39;POSTGRES_ENV_POSTGRES_USER&amp;#39;] %&amp;gt;&lt;/span&gt;
-&lt;span class=&#39;l-Scalar-Plain&#39;&gt;password&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_PASSWORD&amp;#39;] || ENV[&amp;#39;POSTGRES_ENV_POSTGRES_PASSWORD&amp;#39;] %&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So what is this doing exactly? We’re linking our database container to
+our web container (–link), we’re exposing the port 3000 (-p) and
+we’re also setting environment variables (-e) with the values we used
+when creating our db container. After executing this we can go visit
+our app running on http://DOCKER_HOST:3000&lt;/p&gt;
+
+&lt;p&gt;The first thing we can see is that we have to set many duplicate
+environment variables from the database when running our container,
+fortunately docker allows us to have access to a linked container
+environment variables.&lt;/p&gt;
+
+&lt;p&gt;We can change now our config/database.yml replacing the username and
+password like this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_USER&amp;#39;] || ENV[&amp;#39;POSTGRES_ENV_POSTGRES_USER&amp;#39;] %&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;POSTGRES_PASSWORD&amp;#39;] || ENV[&amp;#39;POSTGRES_ENV_POSTGRES_PASSWORD&amp;#39;] %&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;We rebuild our container again, and now we can start it simply like:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
--e &lt;span class=&#39;nv&#39;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;postgres &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-fulcrum-web
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now, recreating our container every time we make a file change is going the get very annoying quite soon. For this we can also leverage another docker facility called volumes. This will allow our container to have access to our local files. To do this simply we start our container like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
--e &lt;span class=&#39;nv&#39;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;postgres &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
--v &lt;span class=&#39;nv&#39;&gt;$PWD&lt;/span&gt;:/app &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-fulcrum-web
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note: Please make sure you delete your .bundle/config local file to avoid issues with bundler inside the container.&lt;/p&gt;
 
-&lt;h3 id=&quot;automating_our_setup_with_docker_compose&quot;&gt;Automating our setup with docker compose&lt;/h3&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;docker run --rm -p &lt;span class=&quot;m&quot;&gt;3000&lt;/span&gt;:3000 --link fulcrum-postgres:postgres &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+-e &lt;span class=&quot;nv&quot;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;postgres &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+fulcrum-web&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;At this point we have our app running successfully inside a docker container, but having to be typing this commands constantly is not fun.&lt;/p&gt;
+&lt;p&gt;Now, recreating our container every time we make a file change is going
+the get very annoying quite soon. For this we can also leverage
+another docker facility called volumes. This will allow our container
+to have access to our local files. To do this simply we start our
+container like this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;docker run --rm -p &lt;span class=&quot;m&quot;&gt;3000&lt;/span&gt;:3000 --link fulcrum-postgres:postgres &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+-e &lt;span class=&quot;nv&quot;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;postgres &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+-v &lt;span class=&quot;nv&quot;&gt;$PWD&lt;/span&gt;:/app &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+fulcrum-web&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Note: Please make sure you delete your .bundle/config local file to
+avoid issues with bundler inside the container.&lt;/p&gt;
+
+&lt;h3 id=&quot;automating-our-setup-with-docker-compose&quot;&gt;Automating our setup with docker compose&lt;/h3&gt;
+
+&lt;p&gt;At this point we have our app running successfully inside a docker
+container, but having to be typing this commands constantly is not fun.&lt;/p&gt;
 
 &lt;p&gt;To finish our setup we’ll use &lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;docker compose&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;So let’s create our docker-compose.yml.&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;yaml&#39;&gt;&lt;span class=&#39;l-Scalar-Plain&#39;&gt;web&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;build&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;.&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;links&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-    &lt;span class=&#39;p-Indicator&#39;&gt;-&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;db:postgres&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;environment&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-    &lt;span class=&#39;l-Scalar-Plain&#39;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;postgres&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;ports&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-    &lt;span class=&#39;p-Indicator&#39;&gt;-&lt;/span&gt; &lt;span class=&#39;s&#39;&gt;&amp;quot;3000:3000&amp;quot;&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;volumes&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-    &lt;span class=&#39;p-Indicator&#39;&gt;-&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;.:/app&lt;/span&gt;
 
-&lt;span class=&#39;l-Scalar-Plain&#39;&gt;db&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;image&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;postgres&lt;/span&gt;
-  &lt;span class=&#39;l-Scalar-Plain&#39;&gt;environment&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt;
-    &lt;span class=&#39;l-Scalar-Plain&#39;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;fulcrum&lt;/span&gt;
-    &lt;span class=&#39;l-Scalar-Plain&#39;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&#39;p-Indicator&#39;&gt;:&lt;/span&gt; &lt;span class=&#39;l-Scalar-Plain&#39;&gt;fulcrum&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;.&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;db:postgres&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;POSTGRES_HOST&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;postgres&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;3000:3000&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;.:/app&lt;/span&gt;
+
+&lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;postgres&lt;/span&gt;
+  &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;fulcrum&lt;/span&gt;
+    &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&quot;p p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l l-Scalar l-Scalar-Plain&quot;&gt;fulcrum&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;Now to run our app we simply do:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;docker-compose up
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The first time we access our app it will complain our db is not created we can simply fix this by running:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;docker-compose run web rake db:setup
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And last but not least if you want to run your tests then you can simply do:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;docker-compose run web rake db:test:prepare spec
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;the_end&quot;&gt;The end&lt;/h3&gt;
 
-&lt;p&gt;So that’s it, I hope this tutorial helps you get started with docker with your existing rails applications. If you want more info about docker compose, check out my article about fig (docker compose’s predecesor) &lt;a href=&quot;/2014/12/19/faster-docker-containers-development-using-fig.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;docker-compose up&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The first time we access our app it will complain our db is not
+created we can simply fix this by running:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;docker-compose run web rake db:setup&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And last but not least if you want to run your tests then you can simply do:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;docker-compose run web rake db:test:prepare spec&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;the-end&quot;&gt;The end&lt;/h3&gt;
+
+&lt;p&gt;So that’s it, I hope this tutorial helps you get started with docker
+with your existing rails applications. If you want more info about
+docker compose, check out my article about fig (docker compose’s
+predecesor) &lt;a href=&quot;/2014/12/19/faster-docker-containers-development-using-fig.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 </content>
  </entry>
  
@@ -181,16 +280,27 @@ fulcrum-web
    <link href="http://mrdias.com/2014/12/19/faster-docker-containers-development-using-fig.html"/>
    <updated>2014-12-19T00:00:00+01:00</updated>
    <id>http://mrdias.com/2014/12/19/faster-docker-containers-development-using-fig</id>
-   <content type="html">
-&lt;p&gt;Yesterday I had the opportunity to present a lightning talk on the &lt;a href=&quot;http://www.meetup.com/docker-barcelona-spain/&quot;&gt;Barcelona Docker Group&lt;/a&gt; about working with &lt;a href=&quot;http://www.fig.sh/&quot;&gt;fig&lt;/a&gt;.&lt;/p&gt;
+   <content type="html">&lt;p&gt;Yesterday I had the opportunity to present a lightning talk on the
+&lt;a href=&quot;http://www.meetup.com/docker-barcelona-spain/&quot;&gt;Barcelona Docker Group&lt;/a&gt;
+about working with &lt;a href=&quot;http://www.fig.sh/&quot;&gt;fig&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;During the talk I presented a tool that is helping me focus on developing the different containers and make the changes to the Dockerfile and the apps themselves and leave out the details of using fig.&lt;/p&gt;
+&lt;p&gt;During the talk I presented a tool that is helping me focus on
+developing the different containers and make the changes to the
+Dockerfile and the apps themselves and leave out the details
+of using fig.&lt;/p&gt;
 
-&lt;p&gt;The tool is called &lt;a href=&quot;https://github.com/diasjorge/guard-fig&quot;&gt;guard-fig&lt;/a&gt;.&lt;!-- -**-END-**- --&gt; It builds on top of guard to detect changes to your fig projects and will stop and rebuild the corresponding containers as well as restarting the linked containers to keep everything working smoothly. It also offers configurable integration with boot2docker and building your whole project on start.&lt;/p&gt;
+&lt;p&gt;The tool is called
+&lt;a href=&quot;https://github.com/diasjorge/guard-fig&quot;&gt;guard-fig&lt;/a&gt;.&lt;!-- -**-END-**- --&gt;
+It builds on top of guard to detect changes to your fig projects and
+will stop and rebuild the corresponding containers as well as
+restarting the linked containers to keep everything working
+smoothly. It also offers configurable integration with boot2docker and
+building your whole project on start.&lt;/p&gt;
 
 &lt;p&gt;If you’re working with fig, give it a try and report any issues.&lt;/p&gt;
 
-&lt;p&gt;You can find the slides for my talk &lt;a href=&quot;https://github.com/diasjorge/docker-meetup-fig-lightning-talk/raw/master/slides.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;You can find the slides for my talk
+&lt;a href=&quot;https://github.com/diasjorge/docker-meetup-fig-lightning-talk/raw/master/slides.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Enjoy!&lt;/p&gt;
 </content>
@@ -201,16 +311,42 @@ fulcrum-web
    <link href="http://mrdias.com/2014/12/09/changing-to-devops.html"/>
    <updated>2014-12-09T00:00:00+01:00</updated>
    <id>http://mrdias.com/2014/12/09/changing-to-devops</id>
-   <content type="html">
-&lt;p&gt;It’s been over 3 months since my change to the site operations team at Xing and time has really been flying by.&lt;/p&gt;
+   <content type="html">&lt;p&gt;It’s been over 3 months since my change to the site operations team at
+Xing and time has really been flying by.&lt;/p&gt;
 
-&lt;p&gt;Everything is new and I really don’t know what to do many times and that I find very delightful. The investigation, learning, figuring out how to achieve something, reading forums or stack overflow and trying to fit a puzzle into your head. I think this is what I love the most about computers, that moment when you understand the machine, what it does and why it does it. It’s the hack, making the computer do what you want. Getting out of my comfort zone is helping me appreciate the basics more.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+&lt;p&gt;Everything is new and I really don’t know what to do many times and
+that I find very delightful. The investigation, learning, figuring out
+how to achieve something, reading forums or stack overflow and trying
+to fit a puzzle into your head. I think this is what I love the most
+about computers, that moment when you understand the machine, what it
+does and why it does it. It’s the hack, making the computer do what
+you want. Getting out of my comfort zone is helping me appreciate the
+basics more.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
-&lt;p&gt;During this time, I’ve played with many technologies, different programming languages, libraries, etc. It’s not about a product anymore I care, it’s about the platform. Even though I’m immersed in some low level details about the systems most of the day, the work itself feels at a higher level. The components are bigger and so are their interactions. I could compare caring about an app with caring for a model, the whole database instead of my schema.&lt;/p&gt;
+&lt;p&gt;During this time, I’ve played with many technologies, different
+programming languages, libraries, etc. It’s not about a product
+anymore I care, it’s about the platform.  Even though I’m immersed in
+some low level details about the systems most of the day, the work
+itself feels at a higher level. The components are bigger and so are
+their interactions. I could compare caring about an app with caring
+for a model, the whole database instead of my schema.&lt;/p&gt;
 
-&lt;p&gt;But not all is about technology, the human side is very interesting as well. I get to interact with most of the engineers working in the company, so I talk to a very diverse range of people. Different languages, cultures, backgrounds, etc and I have to say most people are actually very grateful when you help them out. Others just seem like they don’t know how to ask things and I have to work on my patience, frustration can sometimes make us say the right things in a very wrong way, this goes for both sides. I also find that I’m more mentally drained when I finish the work. I guess it just takes a lot of energy to be constantly solving other’s problems even if it’s also very regarding.&lt;/p&gt;
+&lt;p&gt;But not all is about technology, the human side is very interesting as
+well. I get to interact with most of the engineers working in the
+company, so I talk to a very diverse range of people. Different
+languages, cultures, backgrounds, etc and I have to say most people
+are actually very grateful when you help them out. Others just seem
+like they don’t know how to ask things and I have to work on my
+patience, frustration can sometimes make us say the right things in a
+very wrong way, this goes for both sides. I also find that I’m more
+mentally drained when I finish the work. I guess it just takes a lot
+of energy to be constantly solving other’s problems even if it’s also
+very regarding.&lt;/p&gt;
 
-&lt;p&gt;I’m really enjoying this big new learning experience. I feel there are so many opportunities as when I started learning Ruby on Rails around 8 years ago. I see this as a new beginning, an evolution from developing software to developing platforms.&lt;/p&gt;
+&lt;p&gt;I’m really enjoying this big new learning experience. I feel there are
+so many opportunities as when I started learning Ruby on Rails around
+8 years ago. I see this as a new beginning, an evolution from
+developing software to developing platforms.&lt;/p&gt;
 </content>
  </entry>
  
@@ -219,10 +355,10 @@ fulcrum-web
    <link href="http://mrdias.com/2014/07/03/growing-a-garden.html"/>
    <updated>2014-07-03T00:00:00+02:00</updated>
    <id>http://mrdias.com/2014/07/03/growing-a-garden</id>
-   <content type="html">
-&lt;p&gt;A couple months ago I started growing a vegetable garden at home with my girlfriend. It’s been a great experience. She’s always been into plants, we have lots of them around the house but never had we tried to grow food. I think the fact that I can get something out of the experience that is more than just aesthetic but also functional (I can eat the vegetables) has made it more appealing for me.&lt;/p&gt;
+   <content type="html">&lt;p&gt;A couple months ago I started growing a vegetable garden at home with my girlfriend. It’s been a great experience. She’s always been into plants, we have lots of them around the house but never had we tried to grow food. I think the fact that I can get something out of the experience that is more than just aesthetic but also functional (I can eat the vegetables) has made it more appealing for me.&lt;/p&gt;
 
-&lt;p&gt;There have been some experiences so far that I somehow can relate with developing a software project. &lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+&lt;p&gt;There have been some experiences so far that I somehow can relate with developing a software project.
+&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;A garden needs continuous care just like a software project. I need to constantly take care of it, I need to water it constantly just like a project needs your constant development.&lt;/p&gt;
 
@@ -247,8 +383,7 @@ fulcrum-web
    <link href="http://mrdias.com/2013/10/12/barcelona-gdg-devfest-2013.html"/>
    <updated>2013-10-12T00:00:00+02:00</updated>
    <id>http://mrdias.com/2013/10/12/barcelona-gdg-devfest-2013</id>
-   <content type="html">
-&lt;p&gt;I was invited with my friend &lt;a href=&quot;http://meninno.com&quot;&gt;Jean Carlos Meninno&lt;/a&gt; to give a presentation on the &lt;a href=&quot;http://bcn.gdgdevfest.com/&quot;&gt;GDG DevFest Barcelona 2013&lt;/a&gt;. It was a great opportunity to talk about the work we’re doing recently for XING and the things we’ve been learning about developing large scale backbone applications.&lt;/p&gt;
+   <content type="html">&lt;p&gt;I was invited with my friend &lt;a href=&quot;http://meninno.com&quot;&gt;Jean Carlos Meninno&lt;/a&gt; to give a presentation on the &lt;a href=&quot;http://bcn.gdgdevfest.com/&quot;&gt;GDG DevFest Barcelona 2013&lt;/a&gt;. It was a great opportunity to talk about the work we’re doing recently for XING and the things we’ve been learning about developing large scale backbone applications.&lt;/p&gt;
 
 &lt;p&gt;Here you can find the slides: &lt;a href=&quot;http://diasjorge.github.io/google-dev-fest-slides/&quot;&gt;http://diasjorge.github.io/google-dev-fest-slides/&lt;/a&gt;&lt;/p&gt;
 
@@ -261,14 +396,52 @@ fulcrum-web
    <link href="http://mrdias.com/2012/09/10/closed-doors-open-source.html"/>
    <updated>2012-09-10T00:00:00+02:00</updated>
    <id>http://mrdias.com/2012/09/10/closed-doors-open-source</id>
-   <content type="html">
-&lt;p&gt;During my time working at &lt;a href=&quot;http://xing.com&quot;&gt;XING&lt;/a&gt; I believe my single biggest contribution for the company is a side project I’ve developed called Xing scripts. This project started with a personal need for working with our development environment in a more automated way. I’m a big proponent of automating everything you can and so when I started working I realized that there were these tasks that I would do over and over again. Since I couldn’t bare doing all this manual work I started writing my own scripts.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;During my time working at &lt;a href=&quot;http://xing.com&quot;&gt;XING&lt;/a&gt; I believe my single
+biggest contribution for the company is a side project I’ve developed
+called Xing scripts. This project started with a personal need for
+working with our development environment in a more automated way. I’m
+a big proponent of automating everything you can and so when I started
+working I realized that there were these tasks that I would do over
+and over again. Since I couldn’t bare doing all this manual work I
+started writing my own scripts.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
-&lt;p&gt;One day I showed them to one of my fellow team members and he liked them very much. They were just a mix of quick and dirty ruby and bash scripts. Some other people wanted to use them too so I started packaging them as a ruby gem. And then this scripts began evolving. I kept adding more features and it felt good. Through word of mouth more people started hearing about them and asking for support for their own applications, so I did. With time the gem started to gain more traction inside the company and people have started sending patches to add other features and supporting many more applications. This has been very regarding for me, many people have praised me for the work I’ve put into this, since it helps them work much faster.&lt;/p&gt;
+&lt;p&gt;One day I showed them to one of my fellow team members and he liked
+them very much. They were just a mix of quick and dirty ruby and bash
+scripts. Some other people wanted to use them too so I started
+packaging them as a ruby gem. And then this scripts began evolving. I
+kept adding more features and it felt good. Through word of mouth more
+people started hearing about them and asking for support for their own
+applications, so I did. With time the gem started to gain more
+traction inside the company and people have started sending patches to
+add other features and supporting many more applications. This has
+been very regarding for me, many people have praised me for the work
+I’ve put into this, since it helps them work much faster.&lt;/p&gt;
 
-&lt;p&gt;When a new project is started one of the first things they do, or ask me, is for support with the xing scripts, this fact helps me feel like I’ve accomplished something very good and that my work on this project is important to many people and for the company as a whole. This feeling is the same when I do Open Source, when someone uses one of my projects or when I collaborate on another project. The lessons I’ve learned while working on this project have been many, from a technical point of view as well as personally. For my “regular” work I’m basically doing web stuff with Rails, but this has been an opportunity to work with Ruby on something non web. I had some experience doing command line applications but none of this scale. With the growth of the number of features and applications that need to be supported I’ve had to solve some very interesting problems. I’ve learned a lot about OOP and software design, testing CLIs and how they interact with other services, the importance of semantic versioning, creating a ChangeLog, writing proper documentation, giving support to the users, “selling” your project, etc. All these things that are not part of my daily work and that without this project I couldn’t have learned.&lt;/p&gt;
+&lt;p&gt;When a new project is started one of the first things they do, or ask
+me, is for support with the xing scripts, this fact helps me feel like
+I’ve accomplished something very good and that my work on this project
+is important to many people and for the company as a whole. This
+feeling is the same when I do Open Source, when someone uses one of my
+projects or when I collaborate on another project. The lessons I’ve
+learned while working on this project have been many, from a technical
+point of view as well as personally. For my “regular” work I’m
+basically doing web stuff with Rails, but this has been an opportunity
+to work with Ruby on something non web. I had some experience doing
+command line applications but none of this scale. With the growth of
+the number of features and applications that need to be supported I’ve
+had to solve some very interesting problems. I’ve learned a lot about
+OOP and software design, testing CLIs and how they interact with other
+services, the importance of semantic versioning, creating a ChangeLog,
+writing proper documentation, giving support to the users, “selling”
+your project, etc. All these things that are not part of my daily work
+and that without this project I couldn’t have learned.&lt;/p&gt;
 
-&lt;p&gt;I guess the lesson here is that you can create stuff to solve your own problems and maybe other people’s too. Other people might be struggling with the same problems and have their own solutions, so you can unite and work together. Open source doesn’t have to be code on github, it can be internal projects inside your company, whether they’re tools, libraries, silly web sites, etc. just share them.&lt;/p&gt;
+&lt;p&gt;I guess the lesson here is that you can create stuff to solve your own
+problems and maybe other people’s too. Other people might be
+struggling with the same problems and have their own solutions, so you
+can unite and work together. Open source doesn’t have to be code on
+github, it can be internal projects inside your company, whether
+they’re tools, libraries, silly web sites, etc. just share them.&lt;/p&gt;
 
 &lt;p&gt;Enjoy!&lt;/p&gt;
 </content>
@@ -279,21 +452,25 @@ fulcrum-web
    <link href="http://mrdias.com/2012/07/11/git-rebasing-without-conflicts.html"/>
    <updated>2012-07-11T00:00:00+02:00</updated>
    <id>http://mrdias.com/2012/07/11/git-rebasing-without-conflicts</id>
-   <content type="html">
-&lt;p&gt;Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called &lt;a href=&quot;http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html&quot;&gt;git-rerere&lt;/a&gt;.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called &lt;a href=&quot;http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html&quot;&gt;git-rerere&lt;/a&gt;.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;This command allows you to record the way you resolve conflicts and then reuse them when doing automerges in the future. But there’s a drawback to it, first you have to enable an option and second you have to record this solutions as you do them. If you didn’t know about this command before then you didn’t record those solutions and you’re at the same point where you started. Don’t worry there’s a solution it’s called &lt;a href=&quot;http://git.kernel.org/?p=git/git.git;a=blob;f=contrib/rerere-train.sh;h=2cfe1b936b0feef1bd40947ce6ab249f62a6ad55;hb=HEAD&quot;&gt;rerere-train&lt;/a&gt;, it’s a contrib script from git which recreates the rerere database from your existing commits, this is exactly what we need…awesome!!&lt;/p&gt;
 
-&lt;p&gt;So how do you use it? It’s very easy. First you have to enable git-rerere like:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;git config rerere.enabled &lt;span class=&#39;nb&#39;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So how do you use it? It’s very easy.
+First you have to enable git-rerere like:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;git config rerere.enabled &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;Then download the script to somewhere in your $PATH and then do:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;sh rerere-train.sh YOUR-LONG-RUNNING-BRANCH-NAME
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;sh rerere-train.sh YOUR-LONG-RUNNING-BRANCH-NAME&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;You have to wait some time so it does it’s work and it’ll depend on how long is the branch. After it finishes you can do the rebase. something like:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;git rebase -i master
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;git rebase -i master&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;And now git will know how to resolve the conflicts for you. Enjoy!&lt;/p&gt;
+
 </content>
  </entry>
  
@@ -302,8 +479,7 @@ fulcrum-web
    <link href="http://mrdias.com/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html"/>
    <updated>2012-05-11T00:00:00+02:00</updated>
    <id>http://mrdias.com/2012/05/11/using-chef-to-setup-your-development-environment-in-osx</id>
-   <content type="html">
-&lt;p&gt;Recently I had to reinstall my computer at work since I had to update to Lion and I could only do a fresh install, so I decided to try to automate the installation process since some of my colleagues are going through the same and it seems like every time we have to waste many hours or days to solve the same issues over and over.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;Recently I had to reinstall my computer at work since I had to update to Lion and I could only do a fresh install, so I decided to try to automate the installation process since some of my colleagues are going through the same and it seems like every time we have to waste many hours or days to solve the same issues over and over.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;A few days before I had stumbled upon this &lt;a href=&quot;http://jtimberman.housepub.org/blog/2012/01/28/iterm2-with-tmux/&quot;&gt;article&lt;/a&gt; just by coincidence and it gave me some light into what could be done. This article led to a &lt;a href=&quot;http://jtimberman.housepub.org/blog/2011/04/03/managing-my-workstations-with-chef/&quot;&gt;previous one&lt;/a&gt; by the same author about using chef to manage his workstations I knew what had to be done.&lt;/p&gt;
 
@@ -324,8 +500,7 @@ fulcrum-web
    <link href="http://mrdias.com/2012/02/29/slow-down-you-are-programming-too-fast.html"/>
    <updated>2012-02-29T00:00:00+01:00</updated>
    <id>http://mrdias.com/2012/02/29/slow-down-you-are-programming-too-fast</id>
-   <content type="html">
-&lt;p&gt;As a programmer, the impetus to go as fast as you can is to be taken with caution as it helps you move forward but it can also hold you back.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;As a programmer, the impetus to go as fast as you can is to be taken with caution as it helps you move forward but it can also hold you back.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;Many times I’ve heard about “being in the zone” and sometimes I’ve had this feeling when code is just flowing from your hands but this state of mind is very tricky as you start to relax and stop being conscious. Being aware of what you’re doing and the road that lays in front of you is key to achieve your goals and not fall in mental traps of comfort.&lt;/p&gt;
 
@@ -344,8 +519,7 @@ fulcrum-web
    <link href="http://mrdias.com/2011/12/21/being-pragmatic.html"/>
    <updated>2011-12-21T00:00:00+01:00</updated>
    <id>http://mrdias.com/2011/12/21/being-pragmatic</id>
-   <content type="html">
-&lt;p&gt;It is perhaps my experience but I’ve hardly had the opportunity to work on green field projects, but rather worked on legacy ones where most of the original developers were no longer part of the team or even none of them. Projects with little to no documentation and in some cases no tests at all. You probable know this feeling, it sucks, you want to do things but everything you touch breaks something else, where you obviously see that there was lack of care. &lt;!-- -**-END-**- --&gt;The point is not to criticize the developers who did this, they probably didn’t know any better and they probably tried to do their best given the constraints they had. But being the one who cleans that mess is not cool. So what can you do? Well don’t be that developer. Take care of your future self and others who may come after you and make it easier for them. Others will probably curse you anyway, you just can’t be perfect, but at least try to be invisible, try to give your best shot and don’t cut corners. Test your code and think from the outside, how the code is going to be used. May be you’re thinking that your boss is going to tell you to “not waste time” with tests or “just make things work”, and this is the point where you have to keep true to yourself and be a professional. You have to be ethic and do things well, but you also have to choose your battles right, not everything is a matter of life and death but also not everything is unimportant, choose right and you’ll earn the confidence of your peers and superiors.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;It is perhaps my experience but I’ve hardly had the opportunity to work on green field projects, but rather worked on legacy ones where most of the original developers were no longer part of the team or even none of them. Projects with little to no documentation and in some cases no tests at all. You probable know this feeling, it sucks, you want to do things but everything you touch breaks something else, where you obviously see that there was lack of care. &lt;!-- -**-END-**- --&gt;The point is not to criticize the developers who did this, they probably didn’t know any better and they probably tried to do their best given the constraints they had. But being the one who cleans that mess is not cool. So what can you do? Well don’t be that developer. Take care of your future self and others who may come after you and make it easier for them. Others will probably curse you anyway, you just can’t be perfect, but at least try to be invisible, try to give your best shot and don’t cut corners. Test your code and think from the outside, how the code is going to be used. May be you’re thinking that your boss is going to tell you to “not waste time” with tests or “just make things work”, and this is the point where you have to keep true to yourself and be a professional. You have to be ethic and do things well, but you also have to choose your battles right, not everything is a matter of life and death but also not everything is unimportant, choose right and you’ll earn the confidence of your peers and superiors.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;Sometimes a big refactoring is too much to tackle at the moment, then try to contain the mess, don’t add more to it if you can avoid it, resist the urge to go and rewrite it all. Sometimes parts of an application are not pretty, but they’re stable and you hardly have to modify them, don’t change a lot of code just to make it “better”. In other occassions you don’t like the “style” of the code, adapt to it, other people probably don’t like your “style” either. Sometimes a refactoring seems like the only choice, then go ahead but don’t underestimate the ones before you, as you may find some surprises in your way. Be patient, with time you will learn the parts of the application that are always changing and are hard to mantain and then you’ll have enough experience to do a proper refactoring, if you rewrite everything you don’t like then you’ll never learn why you don’t like it.&lt;/p&gt;
 </content>
@@ -356,8 +530,7 @@ fulcrum-web
    <link href="http://mrdias.com/2011/08/29/back-from-the-trenches.html"/>
    <updated>2011-08-29T00:00:00+02:00</updated>
    <id>http://mrdias.com/2011/08/29/back-from-the-trenches</id>
-   <content type="html">
-&lt;p&gt;It’s been some agitated months lately for me, I quitted working at JustLanded after almost two years there and then went working for some consulting, the experience was not so great, actually it was really bad, the kind of experience that has made me learn to choose very carefully my future career moves and never again believe in marketing people. Fortunately I got an offer to work at &lt;a href=&quot;https://xing.com&quot;&gt;XING&lt;/a&gt; offices in Barcelona, so I packed my stuff and moved there. Now this is a really good place to work, everything was as we talked, they’ve been very helpful with my relocation and the environment is great, lots of smart people that want to do a good job, so nowadays I’m very happy and enjoying my new city.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;It’s been some agitated months lately for me, I quitted working at JustLanded after almost two years there and then went working for some consulting, the experience was not so great, actually it was really bad, the kind of experience that has made me learn to choose very carefully my future career moves and never again believe in marketing people. Fortunately I got an offer to work at &lt;a href=&quot;https://xing.com&quot;&gt;XING&lt;/a&gt; offices in Barcelona, so I packed my stuff and moved there. Now this is a really good place to work, everything was as we talked, they’ve been very helpful with my relocation and the environment is great, lots of smart people that want to do a good job, so nowadays I’m very happy and enjoying my new city.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;Since moving to Barcelona I’ve been keeping myself very busy contributing to some open source projects as Rubinius, Rinari and lost of elisp stuff and it’s been awesome. I’ve also released a new project called &lt;a href=&quot;https://github.com/xing/filet&quot;&gt;filet&lt;/a&gt;, which is a DSL to write acceptance tests on top of Test::Unit, with some nice extra features, but that will be subject of a future post.&lt;/p&gt;
 
@@ -372,30 +545,31 @@ fulcrum-web
    <link href="http://mrdias.com/2011/01/13/avoid-empty-deploys-with-capistrano.html"/>
    <updated>2011-01-13T00:00:00+01:00</updated>
    <id>http://mrdias.com/2011/01/13/avoid-empty-deploys-with-capistrano</id>
-   <content type="html">
-&lt;p&gt;If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;  &lt;span class=&#39;n&#39;&gt;namespace&lt;/span&gt; &lt;span class=&#39;ss&#39;&gt;:deploy&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt;
-    &lt;span class=&#39;n&#39;&gt;task&lt;/span&gt; &lt;span class=&#39;ss&#39;&gt;:check_changes&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt;
-      &lt;span class=&#39;k&#39;&gt;if&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;current_revision&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;==&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;real_revision&lt;/span&gt;
-        &lt;span class=&#39;no&#39;&gt;Capistrano&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;::&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;CLI&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;ui&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;say&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;&amp;quot;You don&amp;#39;t have any changes to deploy&amp;quot;&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
+   <content type="html">&lt;p&gt;If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
-        &lt;span class=&#39;n&#39;&gt;agree&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;no&#39;&gt;Capistrano&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;::&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;CLI&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;ui&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;agree&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;&amp;quot;Continue (Yes, [No]) &amp;quot;&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;q&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;
-          &lt;span class=&#39;n&#39;&gt;q&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;default&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;s1&#39;&gt;&amp;#39;n&amp;#39;&lt;/span&gt;
-        &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:deploy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:check_changes&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;current_revision&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;real_revision&lt;/span&gt;
+        &lt;span class=&quot;no&quot;&gt;Capistrano&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;CLI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;say&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;You don&amp;#39;t have any changes to deploy&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-        &lt;span class=&#39;nb&#39;&gt;exit&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;unless&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;agree&lt;/span&gt;
-      &lt;span class=&#39;k&#39;&gt;else&lt;/span&gt;
-        &lt;span class=&#39;c1&#39;&gt;# current_revision depends on current_path&lt;/span&gt;
-        &lt;span class=&#39;n&#39;&gt;reset!&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;ss&#39;&gt;:current_path&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
-        &lt;span class=&#39;n&#39;&gt;reset!&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;ss&#39;&gt;:current_revision&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
-        &lt;span class=&#39;n&#39;&gt;reset!&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;ss&#39;&gt;:real_revision&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
-      &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-  &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+        &lt;span class=&quot;n&quot;&gt;agree&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Capistrano&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;CLI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;agree&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Continue (Yes, [No]) &amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;n&amp;#39;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+        &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;agree&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# current_revision depends on current_path&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;reset!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:current_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;reset!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:current_revision&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;reset!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:real_revision&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;What this does is check that we have different revisions deployed between our deployed version and the version in repositories and it will ask for confirmation in case they are the same. Just include the above code in your deploy recipe and then for the environment you want to deploy to just include the following:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;  &lt;span class=&#39;n&#39;&gt;before&lt;/span&gt; &lt;span class=&#39;s2&#39;&gt;&amp;quot;deploy:update_code&amp;quot;&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;s2&#39;&gt;&amp;quot;deploy:check_changes&amp;quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;before&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;deploy:update_code&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;deploy:check_changes&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;If you’re doing any kind of automated deployment, let’s say from you continuous integration server to your staging server don’t include that code since it will sometimes just wait for an answer that is never going to come.&lt;/p&gt;
 
 &lt;p&gt;Hope this helps you and happy deployments!&lt;/p&gt;
@@ -407,25 +581,28 @@ fulcrum-web
    <link href="http://mrdias.com/2010/11/17/passenger-rvm-gemsets-and-bundler.html"/>
    <updated>2010-11-17T00:00:00+01:00</updated>
    <id>http://mrdias.com/2010/11/17/passenger-rvm-gemsets-and-bundler</id>
-   <content type="html">
-&lt;p&gt;When using passenger with rvm I’ve had some issues with project specific gemsets, where bundler was unable to find the gems. After searching a lot I found out about using the “config/setup_load_paths.rb” file to tell passenger where to locate your gems, but then I had a new issue with rvm trying to use the system ruby instead of the ruby version of my .rvmrc file.&lt;/p&gt;
+   <content type="html">&lt;p&gt;When using passenger with rvm I’ve had some issues with project specific gemsets, where bundler was unable to find the gems.
+After searching a lot I found out about using the “config/setup_load_paths.rb” file to tell passenger where to locate your gems, but then I had a new issue with rvm trying to use the system ruby instead of the ruby version of my .rvmrc file.&lt;/p&gt;
 
 &lt;p&gt;After going to the irc channel, I got some help that help me fixed my problem. The culprit was my rvmrc file.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;As I’ve seen on many blog posts the file looked something like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;rvm use --create ree@rails235
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;rvm use --create ree@rails235&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;The solution was to generate the rvmrc file using rvm itself like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;rvm --create --rvmrc use ree@rails235
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;rvm --create --rvmrc use ree@rails235&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;The file contents now look like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;&lt;span class=&#39;k&#39;&gt;if&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;[[&lt;/span&gt; -d &lt;span class=&#39;s2&#39;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;${&lt;/span&gt;&lt;span class=&#39;nv&#39;&gt;rvm_path&lt;/span&gt;&lt;span class=&#39;k&#39;&gt;:-&lt;/span&gt;&lt;span class=&#39;nv&#39;&gt;$HOME&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;/.rvm&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;/environments&amp;quot;&lt;/span&gt; &lt;span class=&#39;se&#39;&gt;\&lt;/span&gt;
-  &lt;span class=&#39;o&#39;&gt;&amp;amp;&amp;amp;&lt;/span&gt; -s &lt;span class=&#39;s2&#39;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;${&lt;/span&gt;&lt;span class=&#39;nv&#39;&gt;rvm_path&lt;/span&gt;&lt;span class=&#39;k&#39;&gt;:-&lt;/span&gt;&lt;span class=&#39;nv&#39;&gt;$HOME&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;/.rvm&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;/environments/ree-1.8.7-2010.02@rails235&amp;quot;&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;]]&lt;/span&gt; &lt;span class=&#39;p&#39;&gt;;&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;then&lt;/span&gt;
-  &lt;span class=&#39;se&#39;&gt;\.&lt;/span&gt; &lt;span class=&#39;s2&#39;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;${&lt;/span&gt;&lt;span class=&#39;nv&#39;&gt;rvm_path&lt;/span&gt;&lt;span class=&#39;k&#39;&gt;:-&lt;/span&gt;&lt;span class=&#39;nv&#39;&gt;$HOME&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;/.rvm&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;/environments/ree-1.8.7-2010.02@rails235&amp;quot;&lt;/span&gt;
-&lt;span class=&#39;k&#39;&gt;else&lt;/span&gt;
-  rvm --create use  &lt;span class=&#39;s2&#39;&gt;&amp;quot;ree-1.8.7-2010.02@rails235&amp;quot;&lt;/span&gt;
-&lt;span class=&#39;k&#39;&gt;fi&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; -d &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rvm_path&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;/.rvm&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/environments&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; -s &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rvm_path&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;/.rvm&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/environments/ree-1.8.7-2010.02@rails235&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+  &lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rvm_path&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;/.rvm&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/environments/ree-1.8.7-2010.02@rails235&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+  rvm --create use  &lt;span class=&quot;s2&quot;&gt;&amp;quot;ree-1.8.7-2010.02@rails235&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;And passenger is able to find my gems without any problems.&lt;/p&gt;
 
 &lt;p&gt;Hope this helps you as I spent way too much time with this issue.&lt;/p&gt;
@@ -437,8 +614,7 @@ fulcrum-web
    <link href="http://mrdias.com/2010/11/04/conferencia-rails-workshop.html"/>
    <updated>2010-11-04T00:00:00+01:00</updated>
    <id>http://mrdias.com/2010/11/04/conferencia-rails-workshop</id>
-   <content type="html">
-&lt;p&gt;As promised here are the slides for the “Conferencia Rails” workshop on process automation. Thanks to all the people that were there. I’m also releasing the redmine CLI I’ve created along with the CLI twitter client.&lt;/p&gt;
+   <content type="html">&lt;p&gt;As promised here are the slides for the “Conferencia Rails” workshop on process automation. Thanks to all the people that were there. I’m also releasing the redmine CLI I’ve created along with the CLI twitter client.&lt;/p&gt;
 
 &lt;p&gt;The presentation was created using the &lt;a href=&quot;http://slideshow.rubyforge.org/&quot;&gt;slideshow&lt;/a&gt; gem which generates an html document for you.&lt;/p&gt;
 
@@ -457,8 +633,7 @@ fulcrum-web
    <link href="http://mrdias.com/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html"/>
    <updated>2010-05-25T00:00:00+02:00</updated>
    <id>http://mrdias.com/2010/05/25/ruby-enterprise-passenger-and-encoding-hell</id>
-   <content type="html">
-&lt;p&gt;Today I spent several hours with my friend &lt;a href=&quot;http://es.linkedin.com/in/glebm&quot;&gt;Gleb&lt;/a&gt; trying to find a weird bug we we’re having importing some rss feeds.&lt;/p&gt;
+   <content type="html">&lt;p&gt;Today I spent several hours with my friend &lt;a href=&quot;http://es.linkedin.com/in/glebm&quot;&gt;Gleb&lt;/a&gt; trying to find a weird bug we we’re having importing some rss feeds.&lt;/p&gt;
 
 &lt;p&gt;We have a rake task that will grab an xml feed and import it to our system. When we call this rake task from the command line it would run fine, but if we run it from inside our application, we would get some wrong characters (you know, the usual ???) in the imported items.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
@@ -473,12 +648,11 @@ fulcrum-web
    <link href="http://mrdias.com/2010/04/11/emacs-support-for-jekyll.html"/>
    <updated>2010-04-11T00:00:00+02:00</updated>
    <id>http://mrdias.com/2010/04/11/emacs-support-for-jekyll</id>
-   <content type="html">
-&lt;p&gt;If you’re using emacs to write your jekyll blog posts, there is a mode to help you with some common tasks. It is originally from &lt;a href=&quot;http://metajack.im/2009/01/02/manage-jekyll-from-emacs/&quot;&gt;metajack&lt;/a&gt;. Recently I thought it could be a nice addition to have syntax highlight support for jekyll posts, so I got my hands dirty and after some hours of lisp hacking (this was my first attempt at lisp programming) it was a reallity. It is based on &lt;a href=&quot;http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html&quot;&gt;nxhtml&lt;/a&gt; so you need it to work.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;If you’re using emacs to write your jekyll blog posts, there is a mode to help you with some common tasks. It is originally from &lt;a href=&quot;http://metajack.im/2009/01/02/manage-jekyll-from-emacs/&quot;&gt;metajack&lt;/a&gt;. Recently I thought it could be a nice addition to have syntax highlight support for jekyll posts, so I got my hands dirty and after some hours of lisp hacking (this was my first attempt at lisp programming) it was a reallity. It is based on &lt;a href=&quot;http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html&quot;&gt;nxhtml&lt;/a&gt; so you need it to work.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;Here is an screenshot of it at work:&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#39;http://lh5.ggpht.com/_uASPsTfW2ao/S8IdbhfcsiI/AAAAAAAAAD0/oyN3znNuWXg/jekyll-highlight.png&#39; target=&#39;_blank&#39;&gt;&lt;img src=&#39;http://lh5.ggpht.com/_uASPsTfW2ao/S8IdbhfcsiI/AAAAAAAAAD0/oyN3znNuWXg/s400/jekyll-highlight.png&#39; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://lh5.ggpht.com/_uASPsTfW2ao/S8IdbhfcsiI/AAAAAAAAAD0/oyN3znNuWXg/jekyll-highlight.png&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;http://lh5.ggpht.com/_uASPsTfW2ao/S8IdbhfcsiI/AAAAAAAAAD0/oyN3znNuWXg/s400/jekyll-highlight.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;You can get it &lt;a href=&quot;http://github.com/diasjorge/jekyll.el&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </content>
@@ -489,13 +663,14 @@ fulcrum-web
    <link href="http://mrdias.com/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html"/>
    <updated>2010-03-09T00:00:00+01:00</updated>
    <id>http://mrdias.com/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext</id>
-   <content type="html">
-&lt;p&gt;If you’re using capistrano-ext to deploy to a different server, using a custom environment, you’ve probably noticed that it always tries to run the migrations for the production environment, like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;sh&#39;&gt;&lt;span class=&#39;nb&#39;&gt;cd &lt;/span&gt;path_to_app/deploy/releases/20100309152738&lt;span class=&#39;p&#39;&gt;;&lt;/span&gt; rake &lt;span class=&#39;nv&#39;&gt;RAILS_ENV&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;=&lt;/span&gt;production  db:migrate
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+   <content type="html">&lt;p&gt;If you’re using capistrano-ext to deploy to a different server, using a custom environment, you’ve probably noticed that it always tries to run the migrations for the production environment, like this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; path_to_app/deploy/releases/20100309152738&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; rake &lt;span class=&quot;nv&quot;&gt;RAILS_ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;production  db:migrate&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;Digging through capistrano’s source I found the solution is really simple, just set the rails_env variable to the environment you want, in this example staging. So inside config/deploy/staging.rb&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;&lt;span class=&#39;n&#39;&gt;set&lt;/span&gt; &lt;span class=&#39;ss&#39;&gt;:rails_env&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;s2&#39;&gt;&amp;quot;staging&amp;quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:rails_env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;staging&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;Then when migrations get executed they’ll have RAILS_ENV=staging.&lt;/p&gt;
 </content>
  </entry>
@@ -505,59 +680,61 @@ fulcrum-web
    <link href="http://mrdias.com/2010/03/08/monthly-archives-for-jekyll.html"/>
    <updated>2010-03-08T00:00:00+01:00</updated>
    <id>http://mrdias.com/2010/03/08/monthly-archives-for-jekyll</id>
-   <content type="html">
-&lt;p&gt;Recently I moved my blog to &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;, while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found &lt;a href=&quot;http://rfelix.com&quot;&gt;Raoul Felix&lt;/a&gt; approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called &lt;a href=&quot;http://github.com/rfelix/jekyll_ext&quot;&gt;jekyll_ext&lt;/a&gt;. Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.&lt;/p&gt;
+   <content type="html">&lt;p&gt;Recently I moved my blog to &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;, while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found &lt;a href=&quot;http://rfelix.com&quot;&gt;Raoul Felix&lt;/a&gt; approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called &lt;a href=&quot;http://github.com/rfelix/jekyll_ext&quot;&gt;jekyll_ext&lt;/a&gt;. Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.&lt;/p&gt;
 
 &lt;p&gt;Although I had archives generated for me, I was still missing a way to display this information on my site, so I decided to create my own extension.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
-&lt;p&gt;I added the following code inside &lt;em&gt;extensions/archive&lt;/em&gt;iterator.rb, which will provide me with an array of all the months when I’ve written posts:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;&lt;span class=&#39;k&#39;&gt;module&lt;/span&gt; &lt;span class=&#39;nn&#39;&gt;Jekyll&lt;/span&gt;
-  &lt;span class=&#39;no&#39;&gt;AOP&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;around&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;Site&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;ss&#39;&gt;:site_payload&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;args&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;proceed&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;nb&#39;&gt;abort&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;
-    &lt;span class=&#39;n&#39;&gt;monthly_archives&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;[]&lt;/span&gt;
+&lt;p&gt;I added the following code inside _extensions/archive_iterator.rb, which will provide me with an array of all the months when I’ve written posts:&lt;/p&gt;
 
-    &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;collated&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;each&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;year&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;nb&#39;&gt;hash&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;
-      &lt;span class=&#39;nb&#39;&gt;hash&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;each&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;month&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;days&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;
-        &lt;span class=&#39;n&#39;&gt;monthly_archives&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&#39;p&#39;&gt;{&lt;/span&gt;
-          &lt;span class=&#39;s1&#39;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;  &lt;span class=&#39;o&#39;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#39;s2&#39;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;#{&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;Date&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;::&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;MONTHNAMES&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;month&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;]&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt; &lt;/span&gt;&lt;span class=&#39;si&#39;&gt;#{&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;year&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt;
-          &lt;span class=&#39;s1&#39;&gt;&amp;#39;url&amp;#39;&lt;/span&gt;   &lt;span class=&#39;o&#39;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#39;s2&#39;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;#{&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;year&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;/&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;#{&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;month&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt;
-          &lt;span class=&#39;s1&#39;&gt;&amp;#39;posts&amp;#39;&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;days&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;values&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;flatten&lt;/span&gt;
-        &lt;span class=&#39;p&#39;&gt;}&lt;/span&gt;
-      &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Jekyll&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;AOP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;around&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:site_payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;proceed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;abort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;monthly_archives&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
 
-    &lt;span class=&#39;n&#39;&gt;result&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;proceed&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;call&lt;/span&gt;
-    &lt;span class=&#39;n&#39;&gt;result&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;s1&#39;&gt;&amp;#39;site&amp;#39;&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;][&lt;/span&gt;&lt;span class=&#39;s1&#39;&gt;&amp;#39;monthly_archives&amp;#39;&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;monthly_archives&lt;/span&gt;
-    &lt;span class=&#39;n&#39;&gt;result&lt;/span&gt;
-  &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-&lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;month&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;days&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;monthly_archives&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;s1&quot;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;MONTHNAMES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;month&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;s1&quot;&gt;&amp;#39;url&amp;#39;&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;month&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;s1&quot;&gt;&amp;#39;posts&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;days&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;proceed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;site&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;monthly_archives&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;monthly_archives&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;The information for the archive was gathered from the archive_gen extension, although I had to slightly modify. Instead of processing the information after render, I had to do it before rendering, so the information would be available when the pages are created, like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;&lt;span class=&#39;no&#39;&gt;AOP&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;before&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;Site&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;ss&#39;&gt;:render&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;result&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;args&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;
-  &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;posts&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;reverse&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;each&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;post&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;
-    &lt;span class=&#39;n&#39;&gt;y&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;m&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;d&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;post&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;date&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;year&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;post&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;date&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;month&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;post&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;date&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;day&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;unless&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;collated&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;key?&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;y&lt;/span&gt;
-      &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;collated&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;[&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;y&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;p&#39;&gt;{}&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;unless&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;collated&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;y&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;].&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;key?&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;m&lt;/span&gt;
-      &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;collated&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;[&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;y&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;][&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;m&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;p&#39;&gt;{}&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;unless&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;collated&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;[&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;y&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;][&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;m&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;].&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;key?&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;d&lt;/span&gt;
-      &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;collated&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;[&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;y&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;][&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;m&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;][&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;d&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;[]&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-    &lt;span class=&#39;n&#39;&gt;site_instance&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;collated&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;[&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;y&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;][&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;m&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;][&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;d&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;+=&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;[&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;post&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;]&lt;/span&gt;
-  &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-&lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AOP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;before&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;posts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reverse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;month&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;day&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;][&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;][&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;][&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;][&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;site_instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;][&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;][&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 &lt;p&gt;Then inside my layout I was able to easily display this information like this:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;html&#39;&gt;&lt;span class=&#39;nt&#39;&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;ul&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
   { % for monthly_archive in site.monthly_archives reversed % }
-  &lt;span class=&#39;nt&#39;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;
-    &lt;span class=&#39;nt&#39;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&#39;na&#39;&gt;href=&lt;/span&gt;&lt;span class=&#39;s&#39;&gt;&amp;quot;//&amp;quot;&lt;/span&gt;&lt;span class=&#39;nt&#39;&gt;&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt; (0 posts)
-  &lt;span class=&#39;nt&#39;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;li&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; (0 posts)
+  &lt;span class=&quot;p&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;li&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
   { % endfor % }
-&lt;span class=&#39;nt&#39;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note the extra space between ‘{’ and ‘%’, this is to avoid liquid interpreting the code inside the tags. You can view all the source code &lt;a href=&quot;http://gist.github.com/324737&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;span class=&quot;p&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;ul&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Note the extra space between ‘{‘ and ‘%’, this is to avoid liquid interpreting the code inside the tags. You can view all the source code &lt;a href=&quot;http://gist.github.com/324737&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </content>
  </entry>
  
@@ -566,68 +743,80 @@ fulcrum-web
    <link href="http://mrdias.com/2010/03/02/view-your-emails-with-cucumber.html"/>
    <updated>2010-03-02T00:00:00+01:00</updated>
    <id>http://mrdias.com/2010/03/02/view-your-emails-with-cucumber</id>
-   <content type="html">
-&lt;p&gt;I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;Inside a support file for cucumber, like features/support/open_email.rb, insert the following code:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;&lt;span class=&#39;k&#39;&gt;module&lt;/span&gt; &lt;span class=&#39;nn&#39;&gt;SaveAndOpenEmail&lt;/span&gt;
-  &lt;span class=&#39;kp&#39;&gt;include&lt;/span&gt; &lt;span class=&#39;no&#39;&gt;Webrat&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;::&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;SaveAndOpenPage&lt;/span&gt;
-  &lt;span class=&#39;k&#39;&gt;def&lt;/span&gt; &lt;span class=&#39;nf&#39;&gt;save_and_open_email&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;email&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;return&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;unless&lt;/span&gt; &lt;span class=&#39;no&#39;&gt;File&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;exist?&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;saved_page_dir&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
- 
-    &lt;span class=&#39;n&#39;&gt;filename&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;s2&#39;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;#{&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;saved_page_dir&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;/email-&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;#{&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;Time&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;now&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;to_i&lt;/span&gt;&lt;span class=&#39;si&#39;&gt;}&lt;/span&gt;&lt;span class=&#39;s2&#39;&gt;.html&amp;quot;&lt;/span&gt;
- 
-    &lt;span class=&#39;no&#39;&gt;File&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;open&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;filename&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;,&lt;/span&gt; &lt;span class=&#39;s2&#39;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt; &lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;f&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;|&lt;/span&gt;
-      &lt;span class=&#39;n&#39;&gt;f&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;write&lt;/span&gt; &lt;span class=&#39;n&#39;&gt;email&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;to_s&lt;/span&gt;
-    &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
- 
-    &lt;span class=&#39;n&#39;&gt;open_in_browser&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;filename&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
-  &lt;span class=&#39;k&#39;&gt;end&lt;/span&gt; 
-&lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
- 
-&lt;span class=&#39;no&#39;&gt;World&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;SaveAndOpenEmail&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then in your step definitions, you can implement a step like this&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;&lt;span class=&#39;no&#39;&gt;Then&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;sr&#39;&gt;/^show me the emails?$/&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt;
-  &lt;span class=&#39;n&#39;&gt;save_and_open_email&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;current_email&lt;/span&gt;&lt;span class=&#39;p&#39;&gt;)&lt;/span&gt;
-&lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: As of version 0.2.2 of pickle, they already include this functionality, although it has a bug which has not been fixed. If you try to call that step, you will see:&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;&lt;span class=&#39;n&#39;&gt;undefined&lt;/span&gt; &lt;span class=&#39;nb&#39;&gt;method&lt;/span&gt; &lt;span class=&#39;sb&#39;&gt;`open_in_browser&amp;#39; for #&amp;lt;Cucumber::Rails::World:0x..fdb4951fa&amp;gt; (NoMethodError)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To fix it, as a workaround do this in features/support/email.rb&lt;/p&gt;
-&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&lt;code class=&#39;ruby&#39;&gt;&lt;span class=&#39;nb&#39;&gt;require&lt;/span&gt; &lt;span class=&#39;s1&#39;&gt;&amp;#39;pickle/email&amp;#39;&lt;/span&gt;
 
-&lt;span class=&#39;no&#39;&gt;Pickle&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;::&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;Email&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;.&lt;/span&gt;&lt;span class=&#39;n&#39;&gt;module_eval&lt;/span&gt; &lt;span class=&#39;k&#39;&gt;do&lt;/span&gt;
-  &lt;span class=&#39;kp&#39;&gt;include&lt;/span&gt; &lt;span class=&#39;no&#39;&gt;Webrat&lt;/span&gt;&lt;span class=&#39;o&#39;&gt;::&lt;/span&gt;&lt;span class=&#39;no&#39;&gt;SaveAndOpenPage&lt;/span&gt;
-&lt;span class=&#39;k&#39;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;SaveAndOpenEmail&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Webrat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SaveAndOpenPage&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;save_and_open_email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exist?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;saved_page_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ 
+    &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;saved_page_dir&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/email-&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_i&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.html&amp;quot;&lt;/span&gt;
+ 
+    &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_s&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+ 
+    &lt;span class=&quot;n&quot;&gt;open_in_browser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+ 
+&lt;span class=&quot;no&quot;&gt;World&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SaveAndOpenEmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Then in your step definitions, you can implement a step like this&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^show me the emails?$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;save_and_open_email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: As of version 0.2.2 of pickle, they already include this functionality, although it has a bug which has not been fixed. If you try to call that step, you will see:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;undefined&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;method&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`open_in_browser&amp;#39; for #&amp;lt;Cucumber::Rails::World:0x..fdb4951fa&amp;gt; (NoMethodError)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;To fix it, as a workaround do this in features/support/email.rb&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;pickle/email&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Pickle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Email&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module_eval&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Webrat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SaveAndOpenPage&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</content>
  </entry>
  
  <entry>
    <title>ActiveRecord migrations from the console</title>
-   <link href="http://mrdias.com/2010/02/23/activerecord-migrations-from-the-console.html"/>
+   <link href="http://mrdias.com/2010/02/23/activerecord-migrations-from-the-console.textile"/>
    <updated>2010-02-23T00:00:00+01:00</updated>
    <id>http://mrdias.com/2010/02/23/activerecord-migrations-from-the-console</id>
-   <content type="html">&lt;p&gt;If you ever run into the situation where one migration doesn&amp;#8217;t complete sucessfully, and you&amp;#8217;re stuck with a column in a table or a new table, so you can&amp;#8217;t drop the migration or execute the migration again, you can always call the migration methods from the console like this:&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Migration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drop_table&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:table_name&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Migration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remove_column&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:table_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:column_name&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Hopefully this will help you when you&amp;#8217;re developing your migrations.&lt;/p&gt;</content>
+   <content type="html">If you ever run into the situation where one migration doesn't complete sucessfully, and you're stuck with a column in a table or a new table, so you can't drop the migration or execute the migration again, you can always call the migration methods from the console like this:&lt;!-- -**-END-**- --&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Migration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drop_table&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:table_name&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Migration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remove_column&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:table_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:column_name&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+Hopefully this will help you when you're developing your migrations.</content>
  </entry>
  
  <entry>
    <title>IE issues with new Element and class with Prototype</title>
-   <link href="http://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.html"/>
+   <link href="http://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile"/>
    <updated>2009-08-12T00:00:00+02:00</updated>
    <id>http://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype</id>
-   <content type="html">&lt;p&gt;The problem we have is that this code&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;class&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;klassName&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles. &lt;!-- -**-END-**- --&gt;&lt;/p&gt;
-&lt;p&gt;One of the workarounds would be to explicitly add the class name, like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClassName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;klassName&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The problem with this approach is that at work, we have a huge javascript codebase, so instead, we are going to monkey patch Prototype. We&amp;#8217;re working against version 1.6.0.3 of prototype, that&amp;#8217;s why we add the alert, so when we update, we&amp;#8217;ll catch this and check if it was fixed on core.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// This is a dirty hack to protoype, so IE, will take class names on new Element&lt;/span&gt;
+   <content type="html">The problem we have is that this code
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;class&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;klassName&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles. &lt;!-- -**-END-**- --&gt;
+
+One of the workarounds would be to explicitly add the class name, like this:
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClassName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;klassName&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+The problem with this approach is that at work, we have a huge javascript codebase, so instead, we are going to monkey patch Prototype. We're working against version 1.6.0.3 of prototype, that's why we add the alert, so when we update, we'll catch this and check if it was fixed on core.
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// This is a dirty hack to protoype, so IE, will take class names on new Element&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;// new Element(&amp;#39;div&amp;#39;, {&amp;#39;class&amp;#39;:&amp;#39;klassName&amp;#39;}) doesn&amp;#39;t work on IE but does on firefox&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;// in IE, we wouldn&amp;#39;t get the className set.&lt;/span&gt;
 
@@ -650,31 +839,37 @@ fulcrum-web
    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
    &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+ &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</content>
  </entry>
  
  <entry>
    <title>Git Goodies</title>
-   <link href="http://mrdias.com/2009/02/12/git-goodies.html"/>
+   <link href="http://mrdias.com/2009/02/12/git-goodies.textile"/>
    <updated>2009-02-12T00:00:00+01:00</updated>
    <id>http://mrdias.com/2009/02/12/git-goodies</id>
-   <content type="html">&lt;p&gt;A couple days ago I had to gather some information from a git repository, so I&amp;#8217;m sharing this small scripts with you. &lt;!-- -**-END-**- --&gt;&lt;/p&gt;
-&lt;p&gt;List of all authors on a git repo:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;git log --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;short &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep Author: &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; awk &lt;span class=&quot;s1&quot;&gt;&amp;#39;{print $2}&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;List all modified files since a revision:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;git-whatchanged revision.. --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;oneline &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep &lt;span class=&quot;s1&quot;&gt;&amp;#39;^:&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; awk &lt;span class=&quot;s1&quot;&gt;&amp;#39;{print $6}&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+   <content type="html">A couple days ago I had to gather some information from a git repository, so I'm sharing this small scripts with you. &lt;!-- -**-END-**- --&gt;
+
+List of all authors on a git repo:
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;git log --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;short &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep Author: &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; awk &lt;span class=&quot;s1&quot;&gt;&amp;#39;{print $2}&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+List all modified files since a revision:
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;git-whatchanged revision.. --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;oneline &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep &lt;span class=&quot;s1&quot;&gt;&amp;#39;^:&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; awk &lt;span class=&quot;s1&quot;&gt;&amp;#39;{print $6}&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</content>
  </entry>
  
  <entry>
    <title>Will Paginate And Ajax</title>
-   <link href="http://mrdias.com/2008/12/16/will-paginate-and-ajax.html"/>
+   <link href="http://mrdias.com/2008/12/16/will-paginate-and-ajax.textile"/>
    <updated>2008-12-16T00:00:00+01:00</updated>
    <id>http://mrdias.com/2008/12/16/will-paginate-and-ajax</id>
-   <content type="html">&lt;p&gt;I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn&amp;#8217;t customize the pagination url&amp;#8217;s or I had to specify the paginator to use (will paginate&amp;#8217;s default or mine for ajax), so I came up with this solution which fulfils all my needs.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
-&lt;p&gt;First create the following class in your app/helpers.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RemoteLinkRenderer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;WillPaginate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;LinkRenderer&lt;/span&gt;
+   <content type="html">I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn't customize the pagination url's or I had to specify the paginator to use (will paginate's default or mine for ajax), so I came up with this solution which fulfils all my needs.&lt;!-- -**-END-**- --&gt;
+
+First create the following class in your app/helpers.
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RemoteLinkRenderer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;WillPaginate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;LinkRenderer&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;prepare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;vi&quot;&gt;@remote&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:remote&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;
@@ -689,32 +884,45 @@ fulcrum-web
       &lt;span class=&quot;vi&quot;&gt;@template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;attributes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then you have to tell will_paginate which link_renderer to use, I do this in a rails initializer.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;WillPaginate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ViewHelpers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pagination_options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:renderer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;RemoteLinkRenderer&amp;#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So with this solution, you can work like you would normally with will_paginate, but if you need to do an ajax link, then you&amp;#8217;ll have to pass the options in the remote hash, something like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;will_paginate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@comments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:remote&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:update&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;comments&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;That&amp;#8217;s it enjoy. You can keep passing the same options you would normally do to will_paginate to customize the behaviour.&lt;/p&gt;</content>
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+Then you have to tell will_paginate which link_renderer to use, I do this in a rails initializer.
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;WillPaginate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ViewHelpers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pagination_options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:renderer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;RemoteLinkRenderer&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+So with this solution, you can work like you would normally with will_paginate, but if you need to do an ajax link, then you'll have to pass the options in the remote hash, something like this:
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;will_paginate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@comments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:remote&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:update&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;comments&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+That's it enjoy. You can keep passing the same options you would normally do to will_paginate to customize the behaviour.
+</content>
  </entry>
  
  <entry>
    <title>Will Paginate And Merb</title>
-   <link href="http://mrdias.com/2008/12/09/will-paginate-and-merb.html"/>
+   <link href="http://mrdias.com/2008/12/09/will-paginate-and-merb.textile"/>
    <updated>2008-12-09T00:00:00+01:00</updated>
    <id>http://mrdias.com/2008/12/09/will-paginate-and-merb</id>
-   <content type="html">&lt;p&gt;I read something about how to do it in this &lt;a href=&quot;http://merbist.com/2008/10/27/will_paginate-and-merb/&quot;&gt;post&lt;/a&gt; by The merbist, albeit the information was not complete.&lt;br /&gt;
-So here are my instructions:&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
-&lt;p&gt;Clone mislav&amp;#8217;s will_paginate repo and build the gem from the agnostic branch.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;git clone git://github.com/mislav/will_paginate.git
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;will_paginate/
+   <content type="html">I read something about how to do it in this &quot;post&quot;:http://merbist.com/2008/10/27/will_paginate-and-merb/ by The merbist, albeit the information was not complete.
+So here are my instructions:&lt;!-- -**-END-**- --&gt;
+
+Clone mislav's will_paginate repo and build the gem from the agnostic branch.
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;git clone git://github.com/mislav/will_paginate.git
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; will_paginate/
 git checkout origin/agnostic 
-gem build
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With this commands you&amp;#8217;ve generated the will_paginate-3.0.0.gem.&lt;/p&gt;
-&lt;p&gt;If you want to install it system-wide use your usual gem install.&lt;br /&gt;
-If you want to bundle it in your project, as I did, then you&amp;#8217;ll have to do:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;thor merb:gem:install path/to/gem
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;That&amp;#8217;s it.&lt;/p&gt;</content>
+gem build&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+With this commands you've generated the will_paginate-3.0.0.gem.
+
+If you want to install it system-wide use your usual gem install.
+If you want to bundle it in your project, as I did, then you'll have to do:
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span&gt;&lt;/span&gt;thor merb:gem:install path/to/gem&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+That's it.
+</content>
  </entry>
  
- 
+
 </feed>

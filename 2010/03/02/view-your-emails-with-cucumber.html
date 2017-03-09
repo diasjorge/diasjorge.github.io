@@ -47,42 +47,46 @@
       </h2>
     </div>
     <div class="content">
-      
-<p>I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages.<!-- -**-END-**- --></p>
+      <p>I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages.<!-- -**-END-**- --></p>
 
 <p>Inside a support file for cucumber, like features/support/open_email.rb, insert the following code:</p>
-<div class='highlight'><pre><code class='ruby'><span class='k'>module</span> <span class='nn'>SaveAndOpenEmail</span>
-  <span class='kp'>include</span> <span class='no'>Webrat</span><span class='o'>::</span><span class='no'>SaveAndOpenPage</span>
-  <span class='k'>def</span> <span class='nf'>save_and_open_email</span><span class='p'>(</span><span class='n'>email</span><span class='p'>)</span>
-    <span class='k'>return</span> <span class='k'>unless</span> <span class='no'>File</span><span class='o'>.</span><span class='n'>exist?</span><span class='p'>(</span><span class='n'>saved_page_dir</span><span class='p'>)</span>
- 
-    <span class='n'>filename</span> <span class='o'>=</span> <span class='s2'>&quot;</span><span class='si'>#{</span><span class='n'>saved_page_dir</span><span class='si'>}</span><span class='s2'>/email-</span><span class='si'>#{</span><span class='no'>Time</span><span class='o'>.</span><span class='n'>now</span><span class='o'>.</span><span class='n'>to_i</span><span class='si'>}</span><span class='s2'>.html&quot;</span>
- 
-    <span class='no'>File</span><span class='o'>.</span><span class='n'>open</span><span class='p'>(</span><span class='n'>filename</span><span class='p'>,</span> <span class='s2'>&quot;w&quot;</span><span class='p'>)</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>f</span><span class='o'>|</span>
-      <span class='n'>f</span><span class='o'>.</span><span class='n'>write</span> <span class='n'>email</span><span class='o'>.</span><span class='n'>to_s</span>
-    <span class='k'>end</span>
- 
-    <span class='n'>open_in_browser</span><span class='p'>(</span><span class='n'>filename</span><span class='p'>)</span>
-  <span class='k'>end</span> 
-<span class='k'>end</span>
- 
-<span class='no'>World</span><span class='p'>(</span><span class='no'>SaveAndOpenEmail</span><span class='p'>)</span>
-</code></pre></div>
-<p>Then in your step definitions, you can implement a step like this</p>
-<div class='highlight'><pre><code class='ruby'><span class='no'>Then</span><span class='p'>(</span><span class='sr'>/^show me the emails?$/</span><span class='p'>)</span> <span class='k'>do</span>
-  <span class='n'>save_and_open_email</span><span class='p'>(</span><span class='n'>current_email</span><span class='p'>)</span>
-<span class='k'>end</span>
-</code></pre></div>
-<p><strong>UPDATE</strong>: As of version 0.2.2 of pickle, they already include this functionality, although it has a bug which has not been fixed. If you try to call that step, you will see:</p>
-<div class='highlight'><pre><code class='ruby'><span class='n'>undefined</span> <span class='nb'>method</span> <span class='sb'>`open_in_browser&#39; for #&lt;Cucumber::Rails::World:0x..fdb4951fa&gt; (NoMethodError)</span>
-</code></pre></div>
-<p>To fix it, as a workaround do this in features/support/email.rb</p>
-<div class='highlight'><pre><code class='ruby'><span class='nb'>require</span> <span class='s1'>&#39;pickle/email&#39;</span>
 
-<span class='no'>Pickle</span><span class='o'>::</span><span class='no'>Email</span><span class='o'>.</span><span class='n'>module_eval</span> <span class='k'>do</span>
-  <span class='kp'>include</span> <span class='no'>Webrat</span><span class='o'>::</span><span class='no'>SaveAndOpenPage</span>
-<span class='k'>end</span>
-</code></pre></div>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="k">module</span> <span class="nn">SaveAndOpenEmail</span>
+  <span class="kp">include</span> <span class="no">Webrat</span><span class="o">::</span><span class="no">SaveAndOpenPage</span>
+  <span class="k">def</span> <span class="nf">save_and_open_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">unless</span> <span class="no">File</span><span class="o">.</span><span class="n">exist?</span><span class="p">(</span><span class="n">saved_page_dir</span><span class="p">)</span>
+ 
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">saved_page_dir</span><span class="si">}</span><span class="s2">/email-</span><span class="si">#{</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">to_i</span><span class="si">}</span><span class="s2">.html&quot;</span>
+ 
+    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="n">email</span><span class="o">.</span><span class="n">to_s</span>
+    <span class="k">end</span>
+ 
+    <span class="n">open_in_browser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+  <span class="k">end</span> 
+<span class="k">end</span>
+ 
+<span class="no">World</span><span class="p">(</span><span class="no">SaveAndOpenEmail</span><span class="p">)</span></code></pre></figure>
+
+<p>Then in your step definitions, you can implement a step like this</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="no">Then</span><span class="p">(</span><span class="sr">/^show me the emails?$/</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">save_and_open_email</span><span class="p">(</span><span class="n">current_email</span><span class="p">)</span>
+<span class="k">end</span></code></pre></figure>
+
+<p><strong>UPDATE</strong>: As of version 0.2.2 of pickle, they already include this functionality, although it has a bug which has not been fixed. If you try to call that step, you will see:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`open_in_browser&#39; for #&lt;Cucumber::Rails::World:0x..fdb4951fa&gt; (NoMethodError)</span></code></pre></figure>
+
+<p>To fix it, as a workaround do this in features/support/email.rb</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="nb">require</span> <span class="s1">&#39;pickle/email&#39;</span>
+
+<span class="no">Pickle</span><span class="o">::</span><span class="no">Email</span><span class="o">.</span><span class="n">module_eval</span> <span class="k">do</span>
+  <span class="kp">include</span> <span class="no">Webrat</span><span class="o">::</span><span class="no">SaveAndOpenPage</span>
+<span class="k">end</span></code></pre></figure>
+
+
     </div>
     <article class=hentry>
       <p class="author vcard">
@@ -132,14 +136,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -150,7 +160,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -186,13 +196,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -228,7 +238,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -240,14 +250,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -270,7 +286,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -282,13 +298,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -306,7 +322,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -360,7 +382,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -399,6 +421,10 @@
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)

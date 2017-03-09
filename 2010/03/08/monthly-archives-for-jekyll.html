@@ -47,59 +47,61 @@
       </h2>
     </div>
     <div class="content">
-      
-<p>Recently I moved my blog to <a href="http://jekyllrb.com/">Jekyll</a>, while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found <a href="http://rfelix.com">Raoul Felix</a> approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called <a href="http://github.com/rfelix/jekyll_ext">jekyll_ext</a>. Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.</p>
+      <p>Recently I moved my blog to <a href="http://jekyllrb.com/">Jekyll</a>, while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found <a href="http://rfelix.com">Raoul Felix</a> approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called <a href="http://github.com/rfelix/jekyll_ext">jekyll_ext</a>. Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.</p>
 
 <p>Although I had archives generated for me, I was still missing a way to display this information on my site, so I decided to create my own extension.<!-- -**-END-**- --></p>
 
-<p>I added the following code inside <em>extensions/archive</em>iterator.rb, which will provide me with an array of all the months when I’ve written posts:</p>
-<div class='highlight'><pre><code class='ruby'><span class='k'>module</span> <span class='nn'>Jekyll</span>
-  <span class='no'>AOP</span><span class='o'>.</span><span class='n'>around</span><span class='p'>(</span><span class='no'>Site</span><span class='p'>,</span> <span class='ss'>:site_payload</span><span class='p'>)</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>site_instance</span><span class='p'>,</span> <span class='n'>args</span><span class='p'>,</span> <span class='n'>proceed</span><span class='p'>,</span> <span class='nb'>abort</span><span class='o'>|</span>
-    <span class='n'>monthly_archives</span> <span class='o'>=</span> <span class='o'>[]</span>
+<p>I added the following code inside _extensions/archive_iterator.rb, which will provide me with an array of all the months when I’ve written posts:</p>
 
-    <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>collated</span><span class='o'>.</span><span class='n'>each</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>year</span><span class='p'>,</span> <span class='nb'>hash</span><span class='o'>|</span>
-      <span class='nb'>hash</span><span class='o'>.</span><span class='n'>each</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>month</span><span class='p'>,</span> <span class='n'>days</span><span class='o'>|</span>
-        <span class='n'>monthly_archives</span> <span class='o'>&lt;&lt;</span> <span class='p'>{</span>
-          <span class='s1'>&#39;name&#39;</span>  <span class='o'>=&gt;</span> <span class='s2'>&quot;</span><span class='si'>#{</span><span class='no'>Date</span><span class='o'>::</span><span class='no'>MONTHNAMES</span><span class='o'>[</span><span class='n'>month</span><span class='o'>]</span><span class='si'>}</span><span class='s2'> </span><span class='si'>#{</span><span class='n'>year</span><span class='si'>}</span><span class='s2'>&quot;</span><span class='p'>,</span>
-          <span class='s1'>&#39;url&#39;</span>   <span class='o'>=&gt;</span> <span class='s2'>&quot;</span><span class='si'>#{</span><span class='n'>year</span><span class='si'>}</span><span class='s2'>/</span><span class='si'>#{</span><span class='n'>month</span><span class='si'>}</span><span class='s2'>&quot;</span><span class='p'>,</span>
-          <span class='s1'>&#39;posts&#39;</span> <span class='o'>=&gt;</span> <span class='n'>days</span><span class='o'>.</span><span class='n'>values</span><span class='o'>.</span><span class='n'>flatten</span>
-        <span class='p'>}</span>
-      <span class='k'>end</span>
-    <span class='k'>end</span>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="k">module</span> <span class="nn">Jekyll</span>
+  <span class="no">AOP</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="no">Site</span><span class="p">,</span> <span class="ss">:site_payload</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">site_instance</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">proceed</span><span class="p">,</span> <span class="nb">abort</span><span class="o">|</span>
+    <span class="n">monthly_archives</span> <span class="o">=</span> <span class="o">[]</span>
 
-    <span class='n'>result</span> <span class='o'>=</span> <span class='n'>proceed</span><span class='o'>.</span><span class='n'>call</span>
-    <span class='n'>result</span><span class='o'>[</span><span class='s1'>&#39;site&#39;</span><span class='o'>][</span><span class='s1'>&#39;monthly_archives&#39;</span><span class='o'>]</span> <span class='o'>=</span> <span class='n'>monthly_archives</span>
-    <span class='n'>result</span>
-  <span class='k'>end</span>
-<span class='k'>end</span>
-</code></pre></div>
+    <span class="n">site_instance</span><span class="o">.</span><span class="n">collated</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">year</span><span class="p">,</span> <span class="nb">hash</span><span class="o">|</span>
+      <span class="nb">hash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">month</span><span class="p">,</span> <span class="n">days</span><span class="o">|</span>
+        <span class="n">monthly_archives</span> <span class="o">&lt;&lt;</span> <span class="p">{</span>
+          <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Date</span><span class="o">::</span><span class="no">MONTHNAMES</span><span class="o">[</span><span class="n">month</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="s1">&#39;url&#39;</span>   <span class="o">=&gt;</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">year</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">month</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="s1">&#39;posts&#39;</span> <span class="o">=&gt;</span> <span class="n">days</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span>
+        <span class="p">}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">proceed</span><span class="o">.</span><span class="n">call</span>
+    <span class="n">result</span><span class="o">[</span><span class="s1">&#39;site&#39;</span><span class="o">][</span><span class="s1">&#39;monthly_archives&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="n">monthly_archives</span>
+    <span class="n">result</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></figure>
+
 <p>The information for the archive was gathered from the archive_gen extension, although I had to slightly modify. Instead of processing the information after render, I had to do it before rendering, so the information would be available when the pages are created, like this:</p>
-<div class='highlight'><pre><code class='ruby'><span class='no'>AOP</span><span class='o'>.</span><span class='n'>before</span><span class='p'>(</span><span class='no'>Site</span><span class='p'>,</span> <span class='ss'>:render</span><span class='p'>)</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>site_instance</span><span class='p'>,</span> <span class='n'>result</span><span class='p'>,</span> <span class='n'>args</span><span class='o'>|</span>
-  <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>posts</span><span class='o'>.</span><span class='n'>reverse</span><span class='o'>.</span><span class='n'>each</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>post</span><span class='o'>|</span>
-    <span class='n'>y</span><span class='p'>,</span> <span class='n'>m</span><span class='p'>,</span> <span class='n'>d</span> <span class='o'>=</span> <span class='n'>post</span><span class='o'>.</span><span class='n'>date</span><span class='o'>.</span><span class='n'>year</span><span class='p'>,</span> <span class='n'>post</span><span class='o'>.</span><span class='n'>date</span><span class='o'>.</span><span class='n'>month</span><span class='p'>,</span> <span class='n'>post</span><span class='o'>.</span><span class='n'>date</span><span class='o'>.</span><span class='n'>day</span>
-    <span class='k'>unless</span> <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>collated</span><span class='o'>.</span><span class='n'>key?</span> <span class='n'>y</span>
-      <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>collated</span><span class='o'>[</span> <span class='n'>y</span> <span class='o'>]</span> <span class='o'>=</span> <span class='p'>{}</span>
-    <span class='k'>end</span>
-    <span class='k'>unless</span> <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>collated</span><span class='o'>[</span><span class='n'>y</span><span class='o'>].</span><span class='n'>key?</span> <span class='n'>m</span>
-      <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>collated</span><span class='o'>[</span> <span class='n'>y</span> <span class='o'>][</span> <span class='n'>m</span> <span class='o'>]</span> <span class='o'>=</span> <span class='p'>{}</span>
-    <span class='k'>end</span>
-    <span class='k'>unless</span> <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>collated</span><span class='o'>[</span> <span class='n'>y</span> <span class='o'>][</span> <span class='n'>m</span> <span class='o'>].</span><span class='n'>key?</span> <span class='n'>d</span>
-      <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>collated</span><span class='o'>[</span> <span class='n'>y</span> <span class='o'>][</span> <span class='n'>m</span> <span class='o'>][</span> <span class='n'>d</span> <span class='o'>]</span> <span class='o'>=</span> <span class='o'>[]</span>
-    <span class='k'>end</span>
-    <span class='n'>site_instance</span><span class='o'>.</span><span class='n'>collated</span><span class='o'>[</span> <span class='n'>y</span> <span class='o'>][</span> <span class='n'>m</span> <span class='o'>][</span> <span class='n'>d</span> <span class='o'>]</span> <span class='o'>+=</span> <span class='o'>[</span> <span class='n'>post</span> <span class='o'>]</span>
-  <span class='k'>end</span>
-<span class='k'>end</span>
-</code></pre></div>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="no">AOP</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="no">Site</span><span class="p">,</span> <span class="ss">:render</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">site_instance</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+  <span class="n">site_instance</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span>
+    <span class="n">y</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">post</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">post</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">day</span>
+    <span class="k">unless</span> <span class="n">site_instance</span><span class="o">.</span><span class="n">collated</span><span class="o">.</span><span class="n">key?</span> <span class="n">y</span>
+      <span class="n">site_instance</span><span class="o">.</span><span class="n">collated</span><span class="o">[</span> <span class="n">y</span> <span class="o">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">end</span>
+    <span class="k">unless</span> <span class="n">site_instance</span><span class="o">.</span><span class="n">collated</span><span class="o">[</span><span class="n">y</span><span class="o">].</span><span class="n">key?</span> <span class="n">m</span>
+      <span class="n">site_instance</span><span class="o">.</span><span class="n">collated</span><span class="o">[</span> <span class="n">y</span> <span class="o">][</span> <span class="n">m</span> <span class="o">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">end</span>
+    <span class="k">unless</span> <span class="n">site_instance</span><span class="o">.</span><span class="n">collated</span><span class="o">[</span> <span class="n">y</span> <span class="o">][</span> <span class="n">m</span> <span class="o">].</span><span class="n">key?</span> <span class="n">d</span>
+      <span class="n">site_instance</span><span class="o">.</span><span class="n">collated</span><span class="o">[</span> <span class="n">y</span> <span class="o">][</span> <span class="n">m</span> <span class="o">][</span> <span class="n">d</span> <span class="o">]</span> <span class="o">=</span> <span class="o">[]</span>
+    <span class="k">end</span>
+    <span class="n">site_instance</span><span class="o">.</span><span class="n">collated</span><span class="o">[</span> <span class="n">y</span> <span class="o">][</span> <span class="n">m</span> <span class="o">][</span> <span class="n">d</span> <span class="o">]</span> <span class="o">+=</span> <span class="o">[</span> <span class="n">post</span> <span class="o">]</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></figure>
+
 <p>Then inside my layout I was able to easily display this information like this:</p>
-<div class='highlight'><pre><code class='html'><span class='nt'>&lt;ul&gt;</span>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span></span><span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
   { % for monthly_archive in site.monthly_archives reversed % }
-  <span class='nt'>&lt;li&gt;</span>
-    <span class='nt'>&lt;a</span> <span class='na'>href=</span><span class='s'>&quot;//&quot;</span><span class='nt'>&gt;&lt;/a&gt;</span> (0 posts)
-  <span class='nt'>&lt;/li&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> (0 posts)
+  <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
   { % endfor % }
-<span class='nt'>&lt;/ul&gt;</span>
-</code></pre></div>
-<p>Note the extra space between ‘{’ and ‘%’, this is to avoid liquid interpreting the code inside the tags. You can view all the source code <a href="http://gist.github.com/324737">here</a>.</p>
+<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span></code></pre></figure>
+
+<p>Note the extra space between ‘{‘ and ‘%’, this is to avoid liquid interpreting the code inside the tags. You can view all the source code <a href="http://gist.github.com/324737">here</a>.</p>
 
     </div>
     <article class=hentry>
@@ -150,14 +152,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -168,7 +176,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -204,13 +212,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -246,7 +254,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -258,14 +266,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -288,7 +302,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -300,13 +314,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -324,7 +338,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -378,7 +398,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -417,6 +437,10 @@
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)

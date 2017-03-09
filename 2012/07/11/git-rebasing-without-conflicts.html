@@ -47,21 +47,25 @@
       </h2>
     </div>
     <div class="content">
-      
-<p>Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called <a href="http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html">git-rerere</a>.<!-- -**-END-**- --></p>
+      <p>Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called <a href="http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html">git-rerere</a>.<!-- -**-END-**- --></p>
 
 <p>This command allows you to record the way you resolve conflicts and then reuse them when doing automerges in the future. But there’s a drawback to it, first you have to enable an option and second you have to record this solutions as you do them. If you didn’t know about this command before then you didn’t record those solutions and you’re at the same point where you started. Don’t worry there’s a solution it’s called <a href="http://git.kernel.org/?p=git/git.git;a=blob;f=contrib/rerere-train.sh;h=2cfe1b936b0feef1bd40947ce6ab249f62a6ad55;hb=HEAD">rerere-train</a>, it’s a contrib script from git which recreates the rerere database from your existing commits, this is exactly what we need…awesome!!</p>
 
-<p>So how do you use it? It’s very easy. First you have to enable git-rerere like:</p>
-<div class='highlight'><pre><code class='sh'>git config rerere.enabled <span class='nb'>true</span>
-</code></pre></div>
+<p>So how do you use it? It’s very easy.
+First you have to enable git-rerere like:</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>git config rerere.enabled <span class="nb">true</span></code></pre></figure>
+
 <p>Then download the script to somewhere in your $PATH and then do:</p>
-<div class='highlight'><pre><code class='sh'>sh rerere-train.sh YOUR-LONG-RUNNING-BRANCH-NAME
-</code></pre></div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>sh rerere-train.sh YOUR-LONG-RUNNING-BRANCH-NAME</code></pre></figure>
+
 <p>You have to wait some time so it does it’s work and it’ll depend on how long is the branch. After it finishes you can do the rebase. something like:</p>
-<div class='highlight'><pre><code class='sh'>git rebase -i master
-</code></pre></div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>git rebase -i master</code></pre></figure>
+
 <p>And now git will know how to resolve the conflicts for you. Enjoy!</p>
+
 
     </div>
     <article class=hentry>
@@ -112,14 +116,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -130,7 +140,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -166,13 +176,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -208,7 +218,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -220,14 +230,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -250,7 +266,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -262,13 +278,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -286,7 +302,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -340,7 +362,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -379,6 +401,10 @@
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)

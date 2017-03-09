@@ -7,10 +7,16 @@
   
   <url>
     <loc>http://mrdias.com/</loc>
-    <lastmod>2015-12-18T22:32:50+01:00</lastmod>
+    <lastmod>2017-03-09T23:05:14+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
+  
+  <url>
+    <loc>http://mrdias.com/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html</loc>
+    <lastmod>2017-03-09T00:00:00+01:00</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
   
   <url>
     <loc>http://mrdias.com/2015/03/08/using-docker-containers-with-your-existing-rails-app.html</loc>
@@ -127,31 +133,31 @@
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/02/23/activerecord-migrations-from-the-console.html</loc>
+    <loc>http://mrdias.com/2010/02/23/activerecord-migrations-from-the-console.textile</loc>
     <lastmod>2010-02-23T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.html</loc>
+    <loc>http://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile</loc>
     <lastmod>2009-08-12T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2009/02/12/git-goodies.html</loc>
+    <loc>http://mrdias.com/2009/02/12/git-goodies.textile</loc>
     <lastmod>2009-02-12T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2008/12/16/will-paginate-and-ajax.html</loc>
+    <loc>http://mrdias.com/2008/12/16/will-paginate-and-ajax.textile</loc>
     <lastmod>2008-12-16T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2008/12/09/will-paginate-and-merb.html</loc>
+    <loc>http://mrdias.com/2008/12/09/will-paginate-and-merb.textile</loc>
     <lastmod>2008-12-09T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>

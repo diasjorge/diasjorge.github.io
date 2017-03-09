@@ -47,30 +47,31 @@
       </h2>
     </div>
     <div class="content">
-      
-<p>If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations.<!-- -**-END-**- --></p>
-<div class='highlight'><pre><code class='ruby'>  <span class='n'>namespace</span> <span class='ss'>:deploy</span> <span class='k'>do</span>
-    <span class='n'>task</span> <span class='ss'>:check_changes</span> <span class='k'>do</span>
-      <span class='k'>if</span> <span class='n'>current_revision</span> <span class='o'>==</span> <span class='n'>real_revision</span>
-        <span class='no'>Capistrano</span><span class='o'>::</span><span class='no'>CLI</span><span class='o'>.</span><span class='n'>ui</span><span class='o'>.</span><span class='n'>say</span><span class='p'>(</span><span class='s2'>&quot;You don&#39;t have any changes to deploy&quot;</span><span class='p'>)</span>
+      <p>If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations.<!-- -**-END-**- --></p>
 
-        <span class='n'>agree</span> <span class='o'>=</span> <span class='no'>Capistrano</span><span class='o'>::</span><span class='no'>CLI</span><span class='o'>.</span><span class='n'>ui</span><span class='o'>.</span><span class='n'>agree</span><span class='p'>(</span><span class='s2'>&quot;Continue (Yes, [No]) &quot;</span><span class='p'>)</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>q</span><span class='o'>|</span>
-          <span class='n'>q</span><span class='o'>.</span><span class='n'>default</span> <span class='o'>=</span> <span class='s1'>&#39;n&#39;</span>
-        <span class='k'>end</span>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span>  <span class="n">namespace</span> <span class="ss">:deploy</span> <span class="k">do</span>
+    <span class="n">task</span> <span class="ss">:check_changes</span> <span class="k">do</span>
+      <span class="k">if</span> <span class="n">current_revision</span> <span class="o">==</span> <span class="n">real_revision</span>
+        <span class="no">Capistrano</span><span class="o">::</span><span class="no">CLI</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;You don&#39;t have any changes to deploy&quot;</span><span class="p">)</span>
 
-        <span class='nb'>exit</span> <span class='k'>unless</span> <span class='n'>agree</span>
-      <span class='k'>else</span>
-        <span class='c1'># current_revision depends on current_path</span>
-        <span class='n'>reset!</span><span class='p'>(</span><span class='ss'>:current_path</span><span class='p'>)</span>
-        <span class='n'>reset!</span><span class='p'>(</span><span class='ss'>:current_revision</span><span class='p'>)</span>
-        <span class='n'>reset!</span><span class='p'>(</span><span class='ss'>:real_revision</span><span class='p'>)</span>
-      <span class='k'>end</span>
-    <span class='k'>end</span>
-  <span class='k'>end</span>
-</code></pre></div>
+        <span class="n">agree</span> <span class="o">=</span> <span class="no">Capistrano</span><span class="o">::</span><span class="no">CLI</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">agree</span><span class="p">(</span><span class="s2">&quot;Continue (Yes, [No]) &quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">q</span><span class="o">|</span>
+          <span class="n">q</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+        <span class="k">end</span>
+
+        <span class="nb">exit</span> <span class="k">unless</span> <span class="n">agree</span>
+      <span class="k">else</span>
+        <span class="c1"># current_revision depends on current_path</span>
+        <span class="n">reset!</span><span class="p">(</span><span class="ss">:current_path</span><span class="p">)</span>
+        <span class="n">reset!</span><span class="p">(</span><span class="ss">:current_revision</span><span class="p">)</span>
+        <span class="n">reset!</span><span class="p">(</span><span class="ss">:real_revision</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span></code></pre></figure>
+
 <p>What this does is check that we have different revisions deployed between our deployed version and the version in repositories and it will ask for confirmation in case they are the same. Just include the above code in your deploy recipe and then for the environment you want to deploy to just include the following:</p>
-<div class='highlight'><pre><code class='ruby'>  <span class='n'>before</span> <span class='s2'>&quot;deploy:update_code&quot;</span><span class='p'>,</span> <span class='s2'>&quot;deploy:check_changes&quot;</span>
-</code></pre></div>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span>  <span class="n">before</span> <span class="s2">&quot;deploy:update_code&quot;</span><span class="p">,</span> <span class="s2">&quot;deploy:check_changes&quot;</span></code></pre></figure>
+
 <p>If you’re doing any kind of automated deployment, let’s say from you continuous integration server to your staging server don’t include that code since it will sometimes just wait for an answer that is never going to come.</p>
 
 <p>Hope this helps you and happy deployments!</p>
@@ -124,14 +125,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -142,7 +149,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -178,13 +185,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -220,7 +227,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -232,14 +239,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -262,7 +275,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -274,13 +287,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -298,7 +311,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -352,7 +371,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -391,6 +410,10 @@
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)

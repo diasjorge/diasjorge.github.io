@@ -4,7 +4,7 @@
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
   <head>
-    <title>IE issues with new Element and class with Prototype</title>
+    <title>Tags: lambda</title>
     <meta charset="utf-8"/>
     <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
     <meta name="author" content="Jorge Dias"/>
@@ -39,66 +39,15 @@
         <h4>Software Development Thoughts</h4>
       </div>
       <div id="content" class="two-thirds column">
-        <div class="article">
-  <div class="wrapper">
-    <div class="header">
-      <h2>
-        IE issues with new Element and class with Prototype
-      </h2>
-    </div>
-    <div class="content">
-      <p>The problem we have is that this code</p>
-<div class="highlight"><pre><code class="js"><span class="k">new</span> <span class="nx">Element</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="o">:</span><span class="s1">&#39;klassName&#39;</span><span class="p">})</span>
-</code></pre></div><p>will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles. <!-- -**-END-**- --></p>
-<p>One of the workarounds would be to explicitly add the class name, like this:</p>
-<div class="highlight"><pre><code class="js"><span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Element</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
-<span class="nx">e</span><span class="p">.</span><span class="nx">addClassName</span><span class="p">(</span><span class="s1">&#39;klassName&#39;</span><span class="p">);</span>
-</code></pre></div><p>The problem with this approach is that at work, we have a huge javascript codebase, so instead, we are going to monkey patch Prototype. We&#8217;re working against version 1.6.0.3 of prototype, that&#8217;s why we add the alert, so when we update, we&#8217;ll catch this and check if it was fixed on core.</p>
-<div class="highlight"><pre><code class="js"><span class="c1">// This is a dirty hack to protoype, so IE, will take class names on new Element</span>
-<span class="c1">// new Element(&#39;div&#39;, {&#39;class&#39;:&#39;klassName&#39;}) doesn&#39;t work on IE but does on firefox</span>
-<span class="c1">// in IE, we wouldn&#39;t get the className set.</span>
+        <h2 class="title">Tag: lambda</h2>
+<ul>
 
-<span class="k">if</span> <span class="p">(</span><span class="nx">Prototype</span><span class="p">.</span><span class="nx">Version</span> <span class="o">!=</span> <span class="s1">&#39;1.6.0.3&#39;</span><span class="p">)</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;BEWARE OF THE PROTOTYPE VERSION&quot;</span><span class="p">);</span>
+  <li> 
+    <a href="/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html">Packaging AWS Lambda dependencies using docker</a>
+  </li>
 
-<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">Element</span><span class="p">;</span>
-   <span class="k">this</span><span class="p">.</span><span class="nx">Element</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tagName</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
-     <span class="nx">attributes</span> <span class="o">=</span> <span class="nx">attributes</span> <span class="o">||</span> <span class="p">{</span> <span class="p">};</span>
-     <span class="nx">tagName</span> <span class="o">=</span> <span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
-     <span class="kd">var</span> <span class="nx">cache</span> <span class="o">=</span> <span class="nx">Element</span><span class="p">.</span><span class="nx">cache</span><span class="p">;</span>
-     <span class="k">if</span> <span class="p">(</span><span class="nx">Prototype</span><span class="p">.</span><span class="nx">Browser</span><span class="p">.</span><span class="nx">IE</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span> <span class="o">||</span> <span class="nx">attributes</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]))</span> <span class="p">{</span>
-       <span class="nx">tagName</span> <span class="o">=</span> <span class="s1">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="nx">tagName</span> <span class="o">+</span> <span class="s1">&#39; name=&quot;&#39;</span> <span class="o">+</span> <span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="s1">&#39;class=&quot;&#39;</span> <span class="o">+</span> <span class="nx">attributes</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">;</span>
-       <span class="k">delete</span> <span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+</ul>
 
-       <span class="k">return</span> <span class="nx">Element</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">tagName</span><span class="p">),</span> <span class="nx">attributes</span><span class="p">);</span>
-     <span class="p">}</span>
-     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">cache</span><span class="p">[</span><span class="nx">tagName</span><span class="p">])</span> <span class="nx">cache</span><span class="p">[</span><span class="nx">tagName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Element</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">tagName</span><span class="p">));</span>
-     <span class="k">return</span> <span class="nx">Element</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="nx">cache</span><span class="p">[</span><span class="nx">tagName</span><span class="p">].</span><span class="nx">cloneNode</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span> <span class="nx">attributes</span><span class="p">);</span>
-   <span class="p">};</span>
-   <span class="nb">Object</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">Element</span><span class="p">,</span> <span class="nx">element</span> <span class="o">||</span> <span class="p">{</span> <span class="p">});</span>
-   <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nx">Element</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
- <span class="p">}).</span><span class="nx">call</span><span class="p">(</span><span class="nb">window</span><span class="p">);</span>
-</code></pre></div>
-    </div>
-    <article class=hentry>
-      <p class="author vcard">
-        By Jorge Dias
-        on <time pubdate class=published datetime="2009-08-12T00:00:00+02:00">12 August 2009</time>
-      </p>
-    </article>
-  </div>
-</div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-  var disqus_shortname = 'mrdias';
-  (function() {
-  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
       </div>
       <div id="sidebar" class="one-third column">
@@ -128,14 +77,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -146,7 +101,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -182,13 +137,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -224,7 +179,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -236,14 +191,20 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -266,7 +227,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -278,13 +239,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -302,7 +263,13 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -356,7 +323,7 @@
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -395,6 +362,10 @@
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)

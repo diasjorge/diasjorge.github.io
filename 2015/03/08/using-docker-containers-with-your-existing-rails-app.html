@@ -47,163 +47,214 @@
       </h2>
     </div>
     <div class="content">
-      
-<p>This tutorial is an extraction from a talk I recently presented about docker and rails apps at the Barcelona on Rails user group. I’ll explain how to integrate docker into an existing rails app workflow.<!-- -**-END-**- --></p>
+      <p>This tutorial is an extraction from a talk I recently presented about
+docker and rails apps at the Barcelona on Rails user group. I’ll
+explain how to integrate docker into an existing rails app workflow.<!-- -**-END-**- --></p>
 
-<h3 id="dockerizing_our_dependencies">Dockerizing our dependencies</h3>
+<h3 id="dockerizing-our-dependencies">Dockerizing our dependencies</h3>
 
-<p>The first step to integrate docker into our workflow is to start with our application dependencies.</p>
+<p>The first step to integrate docker into our workflow is to start with
+our application dependencies.</p>
 
-<p>As an example I’ll use the open source app <a href="https://github.com/fulcrum-agile/fulcrum">fulcrum</a>. I assume this application is running locally as would be the case with an existing rails app. For this example we’ll use the postgresql database.</p>
+<p>As an example I’ll use the open source app
+<a href="https://github.com/fulcrum-agile/fulcrum">fulcrum</a>. I assume this
+application is running locally as would be the case with an existing
+rails app. For this example we’ll use the postgresql database.</p>
 
-<p>So the first thing is to initialize our database container. For that we execute the following command.</p>
-<div class='highlight'><pre><code class='sh'>docker run -d --name fulcrum-postgres <span class='se'>\</span>
--e <span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum -e <span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
--p 5432:5432 postgres
-</code></pre></div>
-<p>So we’re creating a container and run it as a daemon (-d), we setup some environment variables (-e) for the username and password and make the ports available (-p HOSTPORT:CONTAINERPORT).</p>
+<p>So the first thing is to initialize our database container. For that
+we execute the following command.</p>
 
-<p>Now we need to adjust our config/database.yml, it should look something like this:</p>
-<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>development</span><span class='p-Indicator'>:</span>
-  <span class='l-Scalar-Plain'>adapter</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgresql</span>
-  <span class='l-Scalar-Plain'>encoding</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>unicode</span>
-  <span class='l-Scalar-Plain'>database</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum_development</span>
-  <span class='l-Scalar-Plain'>pool</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>5</span>
-  <span class='l-Scalar-Plain'>host</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
-  <span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
-  <span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker run -d --name fulcrum-postgres <span class="se">\</span>
+-e <span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum -e <span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum <span class="se">\</span>
+-p <span class="m">5432</span>:5432 postgres</code></pre></figure>
 
-<span class='l-Scalar-Plain'>test</span><span class='p-Indicator'>:</span>
-  <span class='l-Scalar-Plain'>adapter</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgresql</span>
-  <span class='l-Scalar-Plain'>encoding</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>unicode</span>
-  <span class='l-Scalar-Plain'>database</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum_test</span>
-  <span class='l-Scalar-Plain'>pool</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>5</span>
-  <span class='l-Scalar-Plain'>host</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
-  <span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
-  <span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
-</code></pre></div>
+<p>So we’re creating a container and run it as a daemon (-d), we
+setup some environment variables (-e) for the username and password and
+make the ports available (-p HOSTPORT:CONTAINERPORT).</p>
+
+<p>Now we need to adjust our config/database.yml, it should look
+something like this:</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="l l-Scalar l-Scalar-Plain">development</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">adapter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+  <span class="l l-Scalar l-Scalar-Plain">encoding</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unicode</span>
+  <span class="l l-Scalar l-Scalar-Plain">database</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fulcrum_development</span>
+  <span class="l l-Scalar l-Scalar-Plain">pool</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+  <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
+  <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
+  <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
+
+<span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">adapter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+  <span class="l l-Scalar l-Scalar-Plain">encoding</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unicode</span>
+  <span class="l l-Scalar l-Scalar-Plain">database</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fulcrum_test</span>
+  <span class="l l-Scalar l-Scalar-Plain">pool</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+  <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
+  <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
+  <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span></code></pre></figure>
+
 <p>And now we run our rails app</p>
-<div class='highlight'><pre><code class='sh'><span class='c'># Initialize the db</span>
-<span class='nv'>POSTGRES_HOST</span><span class='o'>=</span><span class='sb'>`</span>boot2docker ip<span class='sb'>`</span> <span class='se'>\</span>
-<span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
-<span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
-bundle <span class='nb'>exec </span>rake db:setup
 
-<span class='c'># Run the app</span>
-<span class='nv'>POSTGRES_HOST</span><span class='o'>=</span><span class='sb'>`</span>boot2docker ip<span class='sb'>`</span> <span class='se'>\</span>
-<span class='nv'>POSTGRES_USER</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
-<span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
-bundle <span class='nb'>exec </span>rails s
-</code></pre></div>
-<p>Please note that for the value for the <em>POSTGRES_HOST</em> I’m using boot2docker, if you’re running on linux or against another docker host replace this accordingly.</p>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span><span class="c1"># Initialize the db</span>
+<span class="nv">POSTGRES_HOST</span><span class="o">=</span><span class="sb">`</span>boot2docker ip<span class="sb">`</span> <span class="se">\</span>
+<span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum <span class="se">\</span>
+<span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum <span class="se">\</span>
+bundle <span class="nb">exec</span> rake db:setup
 
-<p>Now when we visit localhost:3000 our app will be running against our database in a docker container.</p>
+<span class="c1"># Run the app</span>
+<span class="nv">POSTGRES_HOST</span><span class="o">=</span><span class="sb">`</span>boot2docker ip<span class="sb">`</span> <span class="se">\</span>
+<span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum <span class="se">\</span>
+<span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum <span class="se">\</span>
+bundle <span class="nb">exec</span> rails s</code></pre></figure>
 
-<p>For a more complicated app, we’d do the same for the rest of our dependencies. By starting with the dependencies, we are preparing the road so we can have a more decoupled environment while maintaining our regular workflow.</p>
+<p>Please note that for the value for the <em>POSTGRES_HOST</em> I’m using
+boot2docker, if you’re running on linux or against another docker host
+replace this accordingly.</p>
 
-<h3 id="dockerizing_the_app">Dockerizing the app</h3>
+<p>Now when we visit localhost:3000 our app will be running against our
+database in a docker container.</p>
 
-<p>The next step is to run the application itself inside a container. For this we’ll need to create our Dockerfile.</p>
+<p>For a more complicated app, we’d do the same for the rest of our
+dependencies. By starting with the dependencies, we are preparing the
+road so we can have a more decoupled environment while maintaining our
+regular workflow.</p>
 
-<p>There are many different places to start from. We’ll use the official ruby 2.1.2 container since this is the ruby version our app needs, but defining our own from scratch is quite easy as well.</p>
+<h3 id="dockerizing-the-app">Dockerizing the app</h3>
+
+<p>The next step is to run the application itself inside a container. For
+this we’ll need to create our Dockerfile.</p>
+
+<p>There are many different places to start from. We’ll use the official
+ruby 2.1.2 container since this is the ruby version our app needs, but
+defining our own from scratch is quite easy as well.</p>
 
 <p>Our Dockerfile should look like this</p>
-<div class='highlight'><pre><code class='dockerfile'><span class='k'>FROM</span><span class='s'> ruby:2.1.5</span>
 
-<span class='k'>RUN</span> apt-get update <span class='o'>&amp;&amp;</span> <span class='se'>\</span>
-    <span class='nv'>DEBIAN_FRONTEND</span><span class='o'>=</span>noninteractive apt-get install -y <span class='se'>\</span>
-    nodejs <span class='se'>\</span>
-    <span class='o'>&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+<figure class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span></span><span class="k">FROM</span><span class="s"> ruby:2.1.5</span>
 
-<span class='k'>WORKDIR</span><span class='s'> /app</span>
+<span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> <span class="se">\</span>
+    <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive apt-get install -y <span class="se">\</span>
+    nodejs <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
 
-<span class='k'>COPY</span><span class='s'> Gemfile* /app/</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
 
-<span class='k'>RUN</span> bundle install -j4
+COPY Gemfile* /app/
 
-<span class='k'>ADD</span><span class='s'> . /app</span>
+<span class="k">RUN</span> bundle install -j4
 
-<span class='c'># Let&#39;s create a user to run the app that is not root</span>
-<span class='k'>RUN</span> usr/sbin/useradd --create-home --home-dir /app --shell /bin/bash fulcrum
+<span class="k">ADD</span><span class="s"> . /app</span>
 
-<span class='k'>RUN</span> chown -R fulcrum:fulcrum /app
+<span class="c"># Let&#39;s create a user to run the app that is not root</span>
+<span class="k">RUN</span> usr/sbin/useradd --create-home --home-dir /app --shell /bin/bash fulcrum
 
-<span class='k'>USER</span><span class='s'> fulcrum</span>
+<span class="k">RUN</span> chown -R fulcrum:fulcrum /app
 
-<span class='k'>CMD</span><span class='s'> [&quot;rails&quot;, &quot;server&quot;]</span>
-</code></pre></div>
-<p>We also need to tell docker certain files we don’t want as part of our container, we create a .dockerignore file like this:</p>
-<div class='highlight'><pre><code class='sh'>.git
+USER fulcrum
+
+<span class="k">CMD</span><span class="s"> [&quot;rails&quot;, &quot;server&quot;]</span></code></pre></figure>
+
+<p>We also need to tell docker certain files we don’t want as part of our container,
+we create a .dockerignore file like this:</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>.git
 .bundle
-vendor/bundle
-</code></pre></div>
+vendor/bundle</code></pre></figure>
+
 <p>After creating the files in the root of our app we execute:</p>
-<div class='highlight'><pre><code class='sh'>docker build -t fulcrum-web .
-</code></pre></div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker build -t fulcrum-web .</code></pre></figure>
+
 <p>Once that is finised we can run our app like this:</p>
-<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
--e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
--e <span class='nv'>POSTGRES_USERNAME</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
--e <span class='nv'>POSTGRES_PASSWORD</span><span class='o'>=</span>fulcrum <span class='se'>\</span>
-fulcrum-web
-</code></pre></div>
-<p>So what is this doing exactly? We’re linking our database container to our web container (–link), we’re exposing the port 3000 (-p) and we’re also setting environment variables (-e) with the values we used when creating our db container. After executing this we can go visit our app running on http://DOCKER_HOST:3000</p>
 
-<p>The first thing we can see is that we have to set many duplicate environment variables from the database when running our container, fortunately docker allows us to have access to a linked container environment variables.</p>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker run --rm -p <span class="m">3000</span>:3000 --link fulcrum-postgres:postgres <span class="se">\</span>
+-e <span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres <span class="se">\</span>
+-e <span class="nv">POSTGRES_USERNAME</span><span class="o">=</span>fulcrum <span class="se">\</span>
+-e <span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum <span class="se">\</span>
+fulcrum-web</code></pre></figure>
 
-<p>We can change now our config/database.yml replacing the username and password like this:</p>
-<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>username</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_USER&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_USER&#39;] %&gt;</span>
-<span class='l-Scalar-Plain'>password</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_PASSWORD&#39;] %&gt;</span>
-</code></pre></div>
+<p>So what is this doing exactly? We’re linking our database container to
+our web container (–link), we’re exposing the port 3000 (-p) and
+we’re also setting environment variables (-e) with the values we used
+when creating our db container. After executing this we can go visit
+our app running on http://DOCKER_HOST:3000</p>
+
+<p>The first thing we can see is that we have to set many duplicate
+environment variables from the database when running our container,
+fortunately docker allows us to have access to a linked container
+environment variables.</p>
+
+<p>We can change now our config/database.yml replacing the username and
+password like this:</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_USER&#39;] %&gt;</span>
+<span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_PASSWORD&#39;] %&gt;</span></code></pre></figure>
+
 <p>We rebuild our container again, and now we can start it simply like:</p>
-<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
--e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
-fulcrum-web
-</code></pre></div>
-<p>Now, recreating our container every time we make a file change is going the get very annoying quite soon. For this we can also leverage another docker facility called volumes. This will allow our container to have access to our local files. To do this simply we start our container like this:</p>
-<div class='highlight'><pre><code class='sh'>docker run --rm -p 3000:3000 --link fulcrum-postgres:postgres <span class='se'>\</span>
--e <span class='nv'>POSTGRES_HOST</span><span class='o'>=</span>postgres <span class='se'>\</span>
--v <span class='nv'>$PWD</span>:/app <span class='se'>\</span>
-fulcrum-web
-</code></pre></div>
-<p>Note: Please make sure you delete your .bundle/config local file to avoid issues with bundler inside the container.</p>
 
-<h3 id="automating_our_setup_with_docker_compose">Automating our setup with docker compose</h3>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker run --rm -p <span class="m">3000</span>:3000 --link fulcrum-postgres:postgres <span class="se">\</span>
+-e <span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres <span class="se">\</span>
+fulcrum-web</code></pre></figure>
 
-<p>At this point we have our app running successfully inside a docker container, but having to be typing this commands constantly is not fun.</p>
+<p>Now, recreating our container every time we make a file change is going
+the get very annoying quite soon. For this we can also leverage
+another docker facility called volumes. This will allow our container
+to have access to our local files. To do this simply we start our
+container like this:</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker run --rm -p <span class="m">3000</span>:3000 --link fulcrum-postgres:postgres <span class="se">\</span>
+-e <span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres <span class="se">\</span>
+-v <span class="nv">$PWD</span>:/app <span class="se">\</span>
+fulcrum-web</code></pre></figure>
+
+<p>Note: Please make sure you delete your .bundle/config local file to
+avoid issues with bundler inside the container.</p>
+
+<h3 id="automating-our-setup-with-docker-compose">Automating our setup with docker compose</h3>
+
+<p>At this point we have our app running successfully inside a docker
+container, but having to be typing this commands constantly is not fun.</p>
 
 <p>To finish our setup we’ll use <a href="https://docs.docker.com/compose/">docker compose</a>.</p>
 
 <p>So let’s create our docker-compose.yml.</p>
-<div class='highlight'><pre><code class='yaml'><span class='l-Scalar-Plain'>web</span><span class='p-Indicator'>:</span>
-  <span class='l-Scalar-Plain'>build</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>.</span>
-  <span class='l-Scalar-Plain'>links</span><span class='p-Indicator'>:</span>
-    <span class='p-Indicator'>-</span> <span class='l-Scalar-Plain'>db:postgres</span>
-  <span class='l-Scalar-Plain'>environment</span><span class='p-Indicator'>:</span>
-    <span class='l-Scalar-Plain'>POSTGRES_HOST</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgres</span>
-  <span class='l-Scalar-Plain'>ports</span><span class='p-Indicator'>:</span>
-    <span class='p-Indicator'>-</span> <span class='s'>&quot;3000:3000&quot;</span>
-  <span class='l-Scalar-Plain'>volumes</span><span class='p-Indicator'>:</span>
-    <span class='p-Indicator'>-</span> <span class='l-Scalar-Plain'>.:/app</span>
 
-<span class='l-Scalar-Plain'>db</span><span class='p-Indicator'>:</span>
-  <span class='l-Scalar-Plain'>image</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>postgres</span>
-  <span class='l-Scalar-Plain'>environment</span><span class='p-Indicator'>:</span>
-    <span class='l-Scalar-Plain'>POSTGRES_USER</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum</span>
-    <span class='l-Scalar-Plain'>POSTGRES_PASSWORD</span><span class='p-Indicator'>:</span> <span class='l-Scalar-Plain'>fulcrum</span>
-</code></pre></div>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">build</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">.</span>
+  <span class="l l-Scalar l-Scalar-Plain">links</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">db:postgres</span>
+  <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">POSTGRES_HOST</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
+  <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;3000:3000&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">.:/app</span>
+
+<span class="l l-Scalar l-Scalar-Plain">db</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
+  <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">POSTGRES_USER</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fulcrum</span>
+    <span class="l l-Scalar l-Scalar-Plain">POSTGRES_PASSWORD</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fulcrum</span></code></pre></figure>
+
 <p>Now to run our app we simply do:</p>
-<div class='highlight'><pre><code class='sh'>docker-compose up
-</code></pre></div>
-<p>The first time we access our app it will complain our db is not created we can simply fix this by running:</p>
-<div class='highlight'><pre><code class='sh'>docker-compose run web rake db:setup
-</code></pre></div>
-<p>And last but not least if you want to run your tests then you can simply do:</p>
-<div class='highlight'><pre><code class='sh'>docker-compose run web rake db:test:prepare spec
-</code></pre></div>
-<h3 id="the_end">The end</h3>
 
-<p>So that’s it, I hope this tutorial helps you get started with docker with your existing rails applications. If you want more info about docker compose, check out my article about fig (docker compose’s predecesor) <a href="/2014/12/19/faster-docker-containers-development-using-fig.html">here</a></p>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose up</code></pre></figure>
+
+<p>The first time we access our app it will complain our db is not
+created we can simply fix this by running:</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose run web rake db:setup</code></pre></figure>
+
+<p>And last but not least if you want to run your tests then you can simply do:</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose run web rake db:test:prepare spec</code></pre></figure>
+
+<h3 id="the-end">The end</h3>
+
+<p>So that’s it, I hope this tutorial helps you get started with docker
+with your existing rails applications. If you want more info about
+docker compose, check out my article about fig (docker compose’s
+predecesor) <a href="/2014/12/19/faster-docker-containers-development-using-fig.html">here</a></p>
 
     </div>
     <article class=hentry>
@@ -254,14 +305,20 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/automation">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/automation">
           automation
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/awareness">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/awareness">
           awareness
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/aws">
+          aws
         </a>
       </li>
       
@@ -272,7 +329,7 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/capistrano">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/capistrano">
           capistrano
         </a>
       </li>
@@ -308,13 +365,13 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/docker">
+        <a style="font-size: 1.54em" href="http://mrdias.com/tags/docker">
           docker
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/emacs">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/emacs">
           emacs
         </a>
       </li>
@@ -350,7 +407,7 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/git">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/git">
           git
         </a>
       </li>
@@ -362,14 +419,20 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/javascript">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/javascript">
           javascript
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/jekyll">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/jekyll">
           jekyll
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/lambda">
+          lambda
         </a>
       </li>
       
@@ -392,7 +455,7 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/migrations">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/migrations">
           migrations
         </a>
       </li>
@@ -404,13 +467,13 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/osx">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/osx">
           osx
         </a>
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/passenger">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/passenger">
           passenger
         </a>
       </li>
@@ -428,7 +491,13 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/rails">
+        <a style="font-size: 1.18em" href="http://mrdias.com/tags/python">
+          python
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/rails">
           rails
         </a>
       </li>
@@ -482,7 +551,7 @@ fulcrum-web
       </li>
       
       <li>
-        <a style="font-size: 1.3599999999999999em" href="http://mrdias.com/tags/will_paginate">
+        <a style="font-size: 1.36em" href="http://mrdias.com/tags/will_paginate">
           will_paginate
         </a>
       </li>
@@ -521,6 +590,10 @@ fulcrum-web
     Monthly Archives
   </h2>
   <ul>
+    
+    <li>
+      <a href="/2017/03">March 2017</a> (1 posts)
+    </li>
     
     <li>
       <a href="/2015/03">March 2015</a> (1 posts)
