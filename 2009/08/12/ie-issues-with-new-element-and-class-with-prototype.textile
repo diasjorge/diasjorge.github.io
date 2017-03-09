@@ -541,7 +541,7 @@ The problem with this approach is that at work, we have a huge javascript codeba
 
       </div>
       <div id="footer" class="sixteen columns">
-        &copy; 2012 Jorge Dias
+        &copy; 2008-2017 Jorge Dias
       </div>
       <script type="text/javascript">
   var _gaq = _gaq || [];
