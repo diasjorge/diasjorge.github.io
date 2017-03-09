@@ -6,7 +6,7 @@ task :default => :server
 desc 'Build site with Jekyll'
 task :build do
   raise "Install pygments" unless system("which pygmentize")
-  sh 'sass --update _sass:stylesheets --style compressed --force'
+  sh 'sass --update _sass:stylesheets --style compressed --force --sourcemap=none'
   jekyll('build')
 end
 
