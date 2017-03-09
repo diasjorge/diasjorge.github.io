@@ -77,7 +77,7 @@ module Jekyll
   AOP.before(Site, :render) do |site_instance, result, args|
     site_instance.collated = {}
 
-    site_instance.posts.reverse.each do |post|
+    site_instance.posts.docs.reverse.each do |post|
       y, m, d = post.date.year, post.date.month, post.date.day
       unless site_instance.collated.key? y
         site_instance.collated[ y ] = {}
