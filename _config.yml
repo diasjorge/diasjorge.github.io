@@ -1,5 +1,5 @@
-url: "http://mrdias.com"
-feed_url: "http://feeds2.feedburner.com/mrdias"
+url: "https://mrdias.com"
+feed_url: "https://feeds2.feedburner.com/mrdias"
 highlighter: pygments
 disqus_shortname: "mrdias"
 exclude:
