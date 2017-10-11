@@ -6,158 +6,158 @@
 			http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   
   <url>
-    <loc>http://mrdias.com/</loc>
-    <lastmod>2017-03-09T23:16:22+01:00</lastmod>
+    <loc>https://mrdias.com/</loc>
+    <lastmod>2017-10-11T11:54:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   
   <url>
-    <loc>http://mrdias.com/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html</loc>
+    <loc>https://mrdias.com/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html</loc>
     <lastmod>2017-03-09T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2015/03/08/using-docker-containers-with-your-existing-rails-app.html</loc>
+    <loc>https://mrdias.com/2015/03/08/using-docker-containers-with-your-existing-rails-app.html</loc>
     <lastmod>2015-03-08T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2014/12/19/faster-docker-containers-development-using-fig.html</loc>
+    <loc>https://mrdias.com/2014/12/19/faster-docker-containers-development-using-fig.html</loc>
     <lastmod>2014-12-19T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2014/12/09/changing-to-devops.html</loc>
+    <loc>https://mrdias.com/2014/12/09/changing-to-devops.html</loc>
     <lastmod>2014-12-09T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2014/07/03/growing-a-garden.html</loc>
+    <loc>https://mrdias.com/2014/07/03/growing-a-garden.html</loc>
     <lastmod>2014-07-03T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2013/10/12/barcelona-gdg-devfest-2013.html</loc>
+    <loc>https://mrdias.com/2013/10/12/barcelona-gdg-devfest-2013.html</loc>
     <lastmod>2013-10-12T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2012/09/10/closed-doors-open-source.html</loc>
+    <loc>https://mrdias.com/2012/09/10/closed-doors-open-source.html</loc>
     <lastmod>2012-09-10T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2012/07/11/git-rebasing-without-conflicts.html</loc>
+    <loc>https://mrdias.com/2012/07/11/git-rebasing-without-conflicts.html</loc>
     <lastmod>2012-07-11T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html</loc>
+    <loc>https://mrdias.com/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html</loc>
     <lastmod>2012-05-11T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2012/02/29/slow-down-you-are-programming-too-fast.html</loc>
+    <loc>https://mrdias.com/2012/02/29/slow-down-you-are-programming-too-fast.html</loc>
     <lastmod>2012-02-29T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2011/12/21/being-pragmatic.html</loc>
+    <loc>https://mrdias.com/2011/12/21/being-pragmatic.html</loc>
     <lastmod>2011-12-21T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2011/08/29/back-from-the-trenches.html</loc>
+    <loc>https://mrdias.com/2011/08/29/back-from-the-trenches.html</loc>
     <lastmod>2011-08-29T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2011/01/13/avoid-empty-deploys-with-capistrano.html</loc>
+    <loc>https://mrdias.com/2011/01/13/avoid-empty-deploys-with-capistrano.html</loc>
     <lastmod>2011-01-13T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/11/17/passenger-rvm-gemsets-and-bundler.html</loc>
+    <loc>https://mrdias.com/2010/11/17/passenger-rvm-gemsets-and-bundler.html</loc>
     <lastmod>2010-11-17T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/11/04/conferencia-rails-workshop.html</loc>
+    <loc>https://mrdias.com/2010/11/04/conferencia-rails-workshop.html</loc>
     <lastmod>2010-11-04T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html</loc>
+    <loc>https://mrdias.com/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html</loc>
     <lastmod>2010-05-25T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/04/11/emacs-support-for-jekyll.html</loc>
+    <loc>https://mrdias.com/2010/04/11/emacs-support-for-jekyll.html</loc>
     <lastmod>2010-04-11T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html</loc>
+    <loc>https://mrdias.com/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html</loc>
     <lastmod>2010-03-09T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/03/08/monthly-archives-for-jekyll.html</loc>
+    <loc>https://mrdias.com/2010/03/08/monthly-archives-for-jekyll.html</loc>
     <lastmod>2010-03-08T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/03/02/view-your-emails-with-cucumber.html</loc>
+    <loc>https://mrdias.com/2010/03/02/view-your-emails-with-cucumber.html</loc>
     <lastmod>2010-03-02T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2010/02/23/activerecord-migrations-from-the-console.textile</loc>
+    <loc>https://mrdias.com/2010/02/23/activerecord-migrations-from-the-console.textile</loc>
     <lastmod>2010-02-23T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile</loc>
+    <loc>https://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile</loc>
     <lastmod>2009-08-12T00:00:00+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2009/02/12/git-goodies.textile</loc>
+    <loc>https://mrdias.com/2009/02/12/git-goodies.textile</loc>
     <lastmod>2009-02-12T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2008/12/16/will-paginate-and-ajax.textile</loc>
+    <loc>https://mrdias.com/2008/12/16/will-paginate-and-ajax.textile</loc>
     <lastmod>2008-12-16T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>http://mrdias.com/2008/12/09/will-paginate-and-merb.textile</loc>
+    <loc>https://mrdias.com/2008/12/09/will-paginate-and-merb.textile</loc>
     <lastmod>2008-12-09T00:00:00+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>

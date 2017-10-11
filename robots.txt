@@ -1,1 +1,1 @@
-Sitemap: http://mrdias.com/sitemap.xml
+Sitemap: https://mrdias.com/sitemap.xml
