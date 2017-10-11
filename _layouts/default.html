@@ -4,6 +4,7 @@
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
   <head>
+    {% include _analytics.html %}
     <title>{{ page.title }}</title>
     <meta charset="utf-8"/>
     <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
@@ -45,7 +46,6 @@
       <div id="footer" class="sixteen columns">
         &copy; 2008-2017 Jorge Dias
       </div>
-      {% include _analytics.html %}
       {% include _disqus.html %}
       {% include _cookies.html %}
     </div>
