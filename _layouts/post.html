@@ -2,22 +2,21 @@
 layout: default
 ---
 <div class="article">
-  <div class="wrapper">
-    <div class="header">
-      <h2>
-        {{ page.title }}
-      </h2>
-    </div>
-    <div class="content">
-      {{ content }}
-    </div>
-    <article class=hentry>
-      <p class="author vcard">
-        By Jorge Dias
-        on <time pubdate class=published datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_long_string }}</time>
-      </p>
-    </article>
+  <div class="header">
+    <div class="entrydate">{{ page.date | date_to_string }}</div>
+    <h2>
+      <a href="{{ page.url }}">{{ page.title }}</a>
+    </h2>
   </div>
+  <div class="content">
+    {{ content }}
+  </div>
+  <article class=hentry>
+    <p class="author vcard">
+      By Jorge Dias
+      on <time pubdate class=published datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_long_string }}</time>
+    </p>
+  </article>
 </div>
 <div id="disqus_thread"></div>
 <script type="text/javascript">

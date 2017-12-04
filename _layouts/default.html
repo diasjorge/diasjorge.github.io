@@ -1,53 +1,30 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-  <head>
-    {% include _analytics.html %}
-    <title>{{ page.title }}</title>
-    <meta charset="utf-8"/>
-    <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
-    <meta name="author" content="Jorge Dias"/>
+<head>
+  {% include _analytics.html %}
+  <title>{{ page.title }}</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
+  <meta name="author" content="Jorge Dias"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-    <link rel="stylesheet" href="/stylesheets/main.css"/>
-
-    <!--[if lt IE 9]>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
-        <![endif]-->
-
-    <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="{{ site.feed_url }}" />
-  </head>
-  <body>
-    <div class="container">
-      <div id="header" class="sixteen columns">
-        <div id="toplinks">
-          <a href="https://github.com/diasjorge">
-            <img width="24" height="24" src="/images/github_24.png"/>
-          </a>
-          <a href="https://twitter.com/dias_jorge">
-            <img width="24" height="24" src="/images/twitter_24.png"/>
-          </a>
-          <a href="https://linkedin.com/in/jorgediasmartinez/en">
-            <img width="24" height="24" src="/images/linkedin_24.png"/>
-          </a>
-        </div>
-        <h1><a href="/">Mr. Dias</a></h1>
-        <h4>Software Development Thoughts</h4>
-      </div>
-      <div id="content" class="two-thirds column">
-        {{ content }}
-      </div>
-      <div id="sidebar" class="one-third column">
-        {% include _sidebar.html %}
-      </div>
-      <div id="footer" class="sixteen columns">
-        &copy; 2008-2017 Jorge Dias
-      </div>
-      {% include _disqus.html %}
-      {% include _cookies.html %}
+  <link rel="stylesheet" href="/stylesheets/main.css"/>
+  <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="{{ site.feed_url }}" />
+</head>
+<body>
+  <header>
+    {% include _header.html %}
+  </header>
+  <div class="content-wrapper">
+    <div id="content">
+      {{ content }}
     </div>
-  </body>
-</html>
+    <div id="sidebar">
+      {% include _sidebar.html %}
+    </div>
+  </div>
+  <footer>
+    &copy; 2008-2017 Jorge Dias
+  </footer>
+  {% include _disqus.html %}
+  {% include _cookies.html %}
+</body>

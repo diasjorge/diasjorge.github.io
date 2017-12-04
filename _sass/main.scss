@@ -1,102 +1,80 @@
 @import "skeleton/base";
-@import "skeleton/layout";
-@import "skeleton/skeleton";
+@import "solarized-css/solarized-light";
 @import "highlight";
 
-body {
-  background: url(/images/main_bg.gif);
-  font: 15px "Liberation Sans", Arial, Verdana, Helvetica, sans-serif;
-  color: #848484;
-}
-
 a {
-  color: #494949;
+  color: #b58900;
   text-decoration: none;
   &:hover, &:visited {
     text-decoration: none;
+    color: #b58900;
   }
 }
 
-.article {
-  border-radius: 7px;
-  background: white;
-  padding: 6px;
-
-  p {
-    line-height: 21px;
-    margin-bottom: 5px;
-  }
-
-  .wrapper {
-    border: 1px dashed #D0D0D0;
-    padding: 10px;
-  }
-
-  .more {
-    color: #CD1F1F;
-    font-size: 11px;
-    font-weight: bold;
-  }
-
-  .comments {
-    text-align: right;
-  }
-
-  .highlight {
-    overflow: auto;
-    margin: 10px 0;
-    padding: 5px;
-    background-color: #F0EFEA;
-    border-radius: 3px;
-  }
-
-  .author {
-    border-top: 1px dashed #D0D0D0;
-    padding-top: 5px;
-    margin-top: 15px;
-    color: #8E8D8D;
-    font-size: 13px;
-  }
-}
-
-#header {
+header {
+  position: relative;
   #toplinks {
-    text-align: right;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
-
-  h1 {
-    margin-bottom: 5px;
-  }
-}
-
-#sidebar {
-  li {
-    margin-bottom: 5px;
-  }
-
-  @media (max-width: 750px) {
-    li {
-      margin: 16px 0;
+  #title {
+    display: block;
+    h1 {
+      margin-bottom: 0.1em;
+    }
+    h1, h2 {
+      font-size: 2.8em;
     }
   }
+}
 
-  .feed-link {
-    padding: 0 0 0 19px;
-    background: url("/images/feed-icon-14x14.png") no-repeat 0 50%;
+figure {
+  margin-bottom: 0.75em;
+}
+
+@media (min-width: 600px) and (max-width: 767px) {
+  #sidebar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
+    grid-auto-rows: minmax(100px, auto)
   }
 
-  .cloud-wrap {
-    @media (min-width: 750px) {
-      li {
+  .module {
+    &.rss, &.tags {
+      grid-row: 1;
+      grid-column: 1;
+    }
+    &.tags {
+      padding-top: 6em;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    header {
+      h1 {
+        &:after {
+          content: ' | ';
+          color: #b58900;
+        }
+      }
+      h1, h2 {
         display: inline;
       }
     }
-  }
-}
 
-#footer {
-  color: #404040;
-  font-size: 12px;
-  margin: 0 auto;
-  padding: 15px 0;
+    .content-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 30px;
+      grid-auto-rows: minmax(100px, auto)
+    }
+
+    #content {
+      grid-column: 1/3;
+    }
+  }
 }

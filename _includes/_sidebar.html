@@ -1,33 +1,4 @@
-<div class="module">
-  <h2>
-    Tags
-  </h2>
-  <div class="cloud-wrap">
-    <ul>
-      {% for tag in site.iterable.tags %}
-      <li>
-        <a style="font-size: {{ tag.posts | size | times:0.18 | plus: 1 }}em" href="{{ site.url }}/tags/{{tag.name}}">
-          {{ tag.name }}
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-<div class="module">
-  <h2>
-    Friend's Links
-  </h2>
-  <ul>
-    <li>
-      <a href="http://least-significant-bit.com">Least Significant Bit</a>
-    </li>
-    <li>
-      <a href="https://travelswithmyfork.blogspot.com">Travels with my fork</a>
-    </li>
-  </ul>
-</div>
-<div class="module">
+<div class="module rss">
   <h2>
     Subscribe
   </h2>
@@ -37,21 +8,9 @@
     </li>
   </ul>
 </div>
-<div class="module">
-  <h2>
-    Monthly Archives
-  </h2>
-  <ul>
-    {% for monthly_archive in site.monthly_archives reversed %}
-    <li>
-      <a href="{{ monthly_archive.url }}">{{ monthly_archive.name }}</a> ({{ monthly_archive.posts | size }} posts)
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-<div class="module">
+<div class="module github">
   <h2>Github</h2>
-  <h4>Last Active Repos</h4>
+  <h3>Last Active Repos</h3>
   <ul id="gh_repos">
   </ul>
   <script>
@@ -79,9 +38,25 @@
   </script>
   <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
 </div>
-<div class="module">
+<div class="module twitter">
   <h2>Twitter</h2>
-  <h4>Recent Activity</h4>
-  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5"></a>
+  <h3>Recent Activity</h3>
+  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5" data-width="auto"></a>
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+<div class="module tags">
+  <h2>
+    Tags
+  </h2>
+  <div class="cloud-wrap">
+    <ul>
+      {% for tag in site.iterable.tags %}
+      <li>
+        <a style="font-size: {{ tag.posts | size | times:0.18 | plus: 1 }}em" href="{{ site.url }}/tags/{{tag.name}}">
+          {{ tag.name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
