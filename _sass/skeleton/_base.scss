@@ -71,9 +71,6 @@ table {
 ================================================== */
 
 body {
-  background: #fff;
-  font: 14px / 21px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #444;
   -webkit-font-smoothing: antialiased;
   /* Fix for webkit rendering */
   -webkit-text-size-adjust: 100%;
@@ -84,7 +81,6 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   color: #181818;
-  font-family: "Georgia", "Times New Roman", serif;
   font-weight: normal;
 }
 
@@ -324,7 +320,6 @@ img.scale-with-grid {
   margin-bottom: 20px;
   line-height: normal;
   padding: 8px 10px;
-  font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 input {
@@ -359,7 +354,6 @@ input {
     margin-bottom: 20px;
     line-height: normal;
     padding: 8px 10px;
-    font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 }
 
@@ -483,7 +477,6 @@ input {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    font: 13px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #777;
     margin: 0;
     width: 210px;
@@ -501,7 +494,6 @@ textarea {
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
-  font: 13px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #777;
   margin: 0;
   width: 210px;
@@ -518,7 +510,6 @@ select {
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
-  font: 13px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #777;
   margin: 0;
   width: 210px;
