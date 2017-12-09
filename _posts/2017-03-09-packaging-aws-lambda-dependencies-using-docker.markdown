@@ -14,7 +14,7 @@ copy those to your machine back.
 
 Fortunately AWS now provides a docker image for amazon linux which
 we can leverage to build our depencies. We can avoid launching an
-instance and get faster results.
+instance and get faster results.<!-- -**-END-**- -->
 
 Below I provide an example to build the dependencies for a python
 project but you can probably modify it for other cases.
