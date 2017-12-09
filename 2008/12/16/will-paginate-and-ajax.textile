@@ -234,8 +234,20 @@ That's it enjoy. You can keep passing the same options you would normally do to 
       </li>
       
       <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/css">
+          css
+        </a>
+      </li>
+      
+      <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/cucumber">
           cucumber
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/design">
+          design
         </a>
       </li>
       
@@ -422,6 +434,12 @@ That's it enjoy. You can keep passing the same options you would normally do to 
       <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/slides">
           slides
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/solarized">
+          solarized
         </a>
       </li>
       

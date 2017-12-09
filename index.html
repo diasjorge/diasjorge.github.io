@@ -45,6 +45,84 @@
   <div class="article">
     <div class="header">
       <h2>
+        <a href="/2017/12/09/blog-redesign.html">Blog redesign</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>It’s been a while since I worked on the blog’s design. The design
+dated back to 2011 which is like an eon in Internet time and I didn’t
+particularly liked how it looked anymore so I decided to change it.</p>
+
+<p>I normally don’t do any design work and CSS is not something I’ve
+enjoyed particularly but I’ve always used this space to work on that
+area.<!-- -**-END-**- --></p>
+
+<p>I must say that css has greatly improved over the years. I didn’t have
+to do anything to make it look the same on different browsers. The
+tooling in google Chrome is just amazing nowadays. You can see exactly
+how different elements look, their box size, paddings, margins,
+etc. It’s a different experience from what I remembered and I enjoyed
+the whole project quite a bit.</p>
+
+<p>I’m a big fan of <a href="http://ethanschoonover.com/solarized">solarized</a>. I
+use it on my editor and on the terminal so I figured having my blog
+with solarized would be a great idea :)</p>
+
+<p>I used <a href="http://thomasf.github.io/solarized-css/">solarized-css</a>
+for the color scheme with the reset from
+<a href="http://getskeleton.com">skeleton</a> I had from my previous design.</p>
+
+<p>One of the major changes is that the design was done for mobile first
+and then changed it to adapt for bigger screens. I borrowed some ideas
+about it from some blog posts like
+<a href="http://dmolsen.com/2013/03/05/media-query-less-design-content-based-breakpoints-tweakpoints/">this</a>
+about doing media queries based on your content and not defined screen
+sizes. I didn’t use any responsive layout framework like skeleton and
+just used css-grid now that most browsers support it to define the
+content structure.</p>
+
+<p>I’m happy with the end result, it’s more up to date with my
+preferences, I like that it’s more colorful and less sober than it
+was. I learned some new things and specially I had fun doing something
+I’m not used to which is a great way to push myself and get out of the
+comfort zone.</p>
+
+<p>I hope you enjoy it too.</p>
+
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2017-12-09T00:00:00+01:00">09 December 2017</time>
+      </p>
+      <ul class="tags">
+        
+        <li>
+          <a href="https://mrdias.com/tags/css">
+            css
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/design">
+            design
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/solarized">
+            solarized
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
         <a href="/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html">Packaging AWS Lambda dependencies using docker</a>
       </h2>
     </div>
@@ -60,37 +138,7 @@ copy those to your machine back.</p>
 
 <p>Fortunately AWS now provides a docker image for amazon linux which
 we can leverage to build our depencies. We can avoid launching an
-instance and get faster results.</p>
-
-<p>Below I provide an example to build the dependencies for a python
-project but you can probably modify it for other cases.</p>
-
-<p>Just put the following content in a Makefile.</p>
-
-<figure class="highlight"><pre><code class="language-basemake" data-lang="basemake"><span></span><span class="nf">compile</span><span class="o">:</span>
-	yum install -y gcc libffi-devel openssl-devel python27-virtualenv
-	virtualenv /tmp/venv
-	/tmp/venv/bin/pip install --upgrade pip setuptools
-	/tmp/venv/bin/pip install -e .
-	cp -r /tmp/venv/lib/python2.7/site-packages/. ./aws_lambda_libs
-	cp -r /tmp/venv/lib64/python2.7/site-packages/. ./aws_lambda_libs
-
-<span class="nf">lambda-deps</span><span class="o">:</span>
-	@echo <span class="s2">&quot;--&gt; Compiling lambda dependencies&quot;</span>
-	docker run --rm -it -v <span class="si">${</span><span class="nv">CURDIR</span><span class="si">}</span>:/src -w /src amazonlinux make compile
-
-<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">lambda</span>-<span class="n">deps</span> <span class="n">compile</span></code></pre></figure>
-
-<p>Then you just need to execute:</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>make lambda-deps</code></pre></figure>
-
-<p>When this process finishes you’ll have your dependencies compiled in aws_lambda_libs.</p>
-
-<p>Just include those contents at the root of your package.zip and deploy.</p>
-
-<p>Enjoy!</p>
-
+instance and get faster results. [...] <a class="more" href="/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html">read more</a>
       
     </div>
     <div class="metadata">
@@ -1171,8 +1219,20 @@ So here are my instructions: [...] <a class="more" href="/2008/12/09/will-pagina
       </li>
       
       <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/css">
+          css
+        </a>
+      </li>
+      
+      <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/cucumber">
           cucumber
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/design">
+          design
         </a>
       </li>
       
@@ -1359,6 +1419,12 @@ So here are my instructions: [...] <a class="more" href="/2008/12/09/will-pagina
       <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/slides">
           slides
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/solarized">
+          solarized
         </a>
       </li>
       

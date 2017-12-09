@@ -203,8 +203,20 @@ Hopefully this will help you when you're developing your migrations.
       </li>
       
       <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/css">
+          css
+        </a>
+      </li>
+      
+      <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/cucumber">
           cucumber
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/design">
+          design
         </a>
       </li>
       
@@ -391,6 +403,12 @@ Hopefully this will help you when you're developing your migrations.
       <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/slides">
           slides
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/solarized">
+          solarized
         </a>
       </li>
       

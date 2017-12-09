@@ -241,8 +241,20 @@ The problem with this approach is that at work, we have a huge javascript codeba
       </li>
       
       <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/css">
+          css
+        </a>
+      </li>
+      
+      <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/cucumber">
           cucumber
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/design">
+          design
         </a>
       </li>
       
@@ -429,6 +441,12 @@ The problem with this approach is that at work, we have a huge javascript codeba
       <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/slides">
           slides
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/solarized">
+          solarized
         </a>
       </li>
       
