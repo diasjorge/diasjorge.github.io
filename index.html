@@ -2,11 +2,10 @@
 layout: default
 title: Mr. Dias
 ---
-<ul class="posts">
+<div class="posts">
   {% for post in site.posts %}
-  <li class="article">
+  <div class="article">
     <div class="header">
-      <div class="entrydate">{{ post.date | date_to_string }}</div>
       <h2>
         <a href="{{ post.url }}">{{ post.title }}</a>
       </h2>
@@ -18,6 +17,20 @@ title: Mr. Dias
       {{ post.preview }} [...] <a class="more" href="{{ post.url }}">read more</a>
       {% endif %}
     </div>
-  </li>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_long_string }}</time>
+      </p>
+      <ul class="tags">
+        {% for tag in post.tags %}
+        <li>
+          <a href="{{ site.url }}/tags/{{tag}}">
+            {{ tag }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
   {% endfor %}
-</ul>
+</div>

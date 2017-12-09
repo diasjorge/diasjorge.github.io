@@ -3,7 +3,6 @@ layout: default
 ---
 <div class="article">
   <div class="header">
-    <div class="entrydate">{{ page.date | date_to_string }}</div>
     <h2>
       <a href="{{ page.url }}">{{ page.title }}</a>
     </h2>
@@ -11,12 +10,20 @@ layout: default
   <div class="content">
     {{ content }}
   </div>
-  <article class=hentry>
+  <div class="metadata">
     <p class="author vcard">
-      By Jorge Dias
-      on <time pubdate class=published datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_long_string }}</time>
+      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_long_string }}</time>
     </p>
-  </article>
+    <ul class="tags">
+      {% for tag in page.tags %}
+      <li>
+        <a href="{{ site.url }}/tags/{{tag}}">
+          {{ tag }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
 <div id="disqus_thread"></div>
 <script type="text/javascript">

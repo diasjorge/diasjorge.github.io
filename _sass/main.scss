@@ -52,13 +52,35 @@ figure {
 }
 
 .entrydate {
-  font-size: 0.9em;
+  color: #93a1a1;
+  font-size: 0.8em;
 }
 
 .article {
+  line-height: 1.3em;
   margin-top: 0.5em;
   &:nth-child(1) {
     margin-top: 0em;
+  }
+  p {
+    margin-bottom: 1em;
+  }
+
+  .metadata {
+    font-size: 0.8em;
+    p {
+      margin-bottom: 0;
+    }
+    .name {
+      &:after {
+        content: "|";
+        padding: 0.25em;
+        color: #b58900;
+      }
+    }
+    .tags li {
+      display: inline;
+    }
   }
 }
 
