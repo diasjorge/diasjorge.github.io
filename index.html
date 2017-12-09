@@ -1,10 +1,6 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-  <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-15098892-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -14,52 +10,47 @@
   gtag('config', 'UA-15098892-1');
 </script>
 
-    <title>Mr. Dias</title>
-    <meta charset="utf-8"/>
-    <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
-    <meta name="author" content="Jorge Dias"/>
+  <title>Mr. Dias</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
+  <meta name="author" content="Jorge Dias"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <link rel="stylesheet" href="/stylesheets/main.css"/>
+  <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="https://feeds2.feedburner.com/mrdias" />
+</head>
+<body>
+  <header>
+    <a href="/" id="title">
+  <h1>Jorge Dias</h1>
+  <h2>So many layers of web</h2>
+</a>
+<div id="toplinks">
+  <a href="https://github.com/diasjorge">
+    <img width="24" height="24" src="/images/github.svg" alt="github"/>
+  </a>
+  <a href="https://twitter.com/dias_jorge">
+    <img width="24" height="24" src="/images/twitter.svg" alt="twitter"/>
+  </a>
+  <a href="https://linkedin.com/in/jorgediasmartinez/en">
+    <img width="24" height="24" src="/images/linkedin.svg" alt="linkedin"/>
+  </a>
+</div>
 
-    <link rel="stylesheet" href="/stylesheets/main.css"/>
-
-    <!--[if lt IE 9]>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
-        <![endif]-->
-
-    <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="https://feeds2.feedburner.com/mrdias" />
-  </head>
-  <body>
-    <div class="container">
-      <div id="header" class="sixteen columns">
-        <div id="toplinks">
-          <a href="https://github.com/diasjorge">
-            <img width="24" height="24" src="/images/github_24.png"/>
-          </a>
-          <a href="https://twitter.com/dias_jorge">
-            <img width="24" height="24" src="/images/twitter_24.png"/>
-          </a>
-          <a href="https://linkedin.com/in/jorgediasmartinez/en">
-            <img width="24" height="24" src="/images/linkedin_24.png"/>
-          </a>
-        </div>
-        <h1><a href="/">Mr. Dias</a></h1>
-        <h4>Software Development Thoughts</h4>
-      </div>
-      <div id="content" class="two-thirds column">
-        <ul class="posts">
+  </header>
+  <div class="content-wrapper">
+    <div id="content">
+      <div class="posts">
   
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">09 Mar 2017</div>
-        <h2>
-          <a href="/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html">Packaging AWS Lambda dependencies using docker</a>
-        </h2>
-      </div>
-      <div class="content">
-        
-        <p>Recently I’ve been using AWS Lambda at work for some projects and one
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html">Packaging AWS Lambda dependencies using docker</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>Recently I’ve been using AWS Lambda at work for some projects and one
 of the limitations that you have is trying to use packages with
 compiled dependencies.</p>
 
@@ -100,46 +91,86 @@ project but you can probably modify it for other cases.</p>
 
 <p>Enjoy!</p>
 
-        
-        <p class="comments">
-          <a class="article-comments" href="/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">08 Mar 2015</div>
-        <h2>
-          <a href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html">Using docker containers with your existing rails app</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2017-03-09T00:00:00+01:00">09 March 2017</time>
+      </p>
+      <ul class="tags">
         
-        <p>This tutorial is an extraction from a talk I recently presented about
+        <li>
+          <a href="https://mrdias.com/tags/aws">
+            aws
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/lambda">
+            lambda
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/docker">
+            docker
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/python">
+            python
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html">Using docker containers with your existing rails app</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>This tutorial is an extraction from a talk I recently presented about
 docker and rails apps at the Barcelona on Rails user group. I’ll
 explain how to integrate docker into an existing rails app workflow. [...] <a class="more" href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">19 Dec 2014</div>
-        <h2>
-          <a href="/2014/12/19/faster-docker-containers-development-using-fig.html">Faster docker containers development using fig</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2015-03-08T00:00:00+01:00">08 March 2015</time>
+      </p>
+      <ul class="tags">
         
-        <p>Yesterday I had the opportunity to present a lightning talk on the
+        <li>
+          <a href="https://mrdias.com/tags/docker">
+            docker
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/rails">
+            rails
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2014/12/19/faster-docker-containers-development-using-fig.html">Faster docker containers development using fig</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>Yesterday I had the opportunity to present a lightning talk on the
 <a href="http://www.meetup.com/docker-barcelona-spain/">Barcelona Docker Group</a>
 about working with <a href="http://www.fig.sh/">fig</a>.</p>
 
@@ -150,25 +181,45 @@ of using fig.</p>
 
 <p>The tool is called
 <a href="https://github.com/diasjorge/guard-fig">guard-fig</a>. [...] <a class="more" href="/2014/12/19/faster-docker-containers-development-using-fig.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2014/12/19/faster-docker-containers-development-using-fig.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">09 Dec 2014</div>
-        <h2>
-          <a href="/2014/12/09/changing-to-devops.html">Changing to devops</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2014-12-19T00:00:00+01:00">19 December 2014</time>
+      </p>
+      <ul class="tags">
         
-        <p>It’s been over 3 months since my change to the site operations team at
+        <li>
+          <a href="https://mrdias.com/tags/docker">
+            docker
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/fig">
+            fig
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/automation">
+            automation
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2014/12/09/changing-to-devops.html">Changing to devops</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>It’s been over 3 months since my change to the site operations team at
 Xing and time has really been flying by.</p>
 
 <p>Everything is new and I really don’t know what to do many times and
@@ -179,70 +230,148 @@ about computers, that moment when you understand the machine, what it
 does and why it does it. It’s the hack, making the computer do what
 you want. Getting out of my comfort zone is helping me appreciate the
 basics more. [...] <a class="more" href="/2014/12/09/changing-to-devops.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2014/12/09/changing-to-devops.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">03 Jul 2014</div>
-        <h2>
-          <a href="/2014/07/03/growing-a-garden.html">Growing a garden</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2014-12-09T00:00:00+01:00">09 December 2014</time>
+      </p>
+      <ul class="tags">
         
-        <p>A couple months ago I started growing a vegetable garden at home with my girlfriend. It’s been a great experience. She’s always been into plants, we have lots of them around the house but never had we tried to grow food. I think the fact that I can get something out of the experience that is more than just aesthetic but also functional (I can eat the vegetables) has made it more appealing for me.</p>
+        <li>
+          <a href="https://mrdias.com/tags/devops">
+            devops
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/programming">
+            programming
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/systems">
+            systems
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/reflections">
+            reflections
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2014/07/03/growing-a-garden.html">Growing a garden</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>A couple months ago I started growing a vegetable garden at home with my girlfriend. It’s been a great experience. She’s always been into plants, we have lots of them around the house but never had we tried to grow food. I think the fact that I can get something out of the experience that is more than just aesthetic but also functional (I can eat the vegetables) has made it more appealing for me.</p>
 
 <p>There have been some experiences so far that I somehow can relate with developing a software project.
  [...] <a class="more" href="/2014/07/03/growing-a-garden.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2014/07/03/growing-a-garden.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">12 Oct 2013</div>
-        <h2>
-          <a href="/2013/10/12/barcelona-gdg-devfest-2013.html">Barcelona GDG Devfest 2013</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2014-07-03T00:00:00+02:00">03 July 2014</time>
+      </p>
+      <ul class="tags">
         
-        <p>I was invited with my friend <a href="http://meninno.com">Jean Carlos Meninno</a> to give a presentation on the <a href="http://bcn.gdgdevfest.com/">GDG DevFest Barcelona 2013</a>. It was a great opportunity to talk about the work we’re doing recently for XING and the things we’ve been learning about developing large scale backbone applications.</p>
+        <li>
+          <a href="https://mrdias.com/tags/gardening">
+            gardening
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/reflections">
+            reflections
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/awareness">
+            awareness
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2013/10/12/barcelona-gdg-devfest-2013.html">Barcelona GDG Devfest 2013</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>I was invited with my friend <a href="http://meninno.com">Jean Carlos Meninno</a> to give a presentation on the <a href="http://bcn.gdgdevfest.com/">GDG DevFest Barcelona 2013</a>. It was a great opportunity to talk about the work we’re doing recently for XING and the things we’ve been learning about developing large scale backbone applications.</p>
 
 <p>Here you can find the slides: <a href="http://diasjorge.github.io/google-dev-fest-slides/">http://diasjorge.github.io/google-dev-fest-slides/</a></p>
 
 <p>Hope you like them. [...] <a class="more" href="/2013/10/12/barcelona-gdg-devfest-2013.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2013/10/12/barcelona-gdg-devfest-2013.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">10 Sep 2012</div>
-        <h2>
-          <a href="/2012/09/10/closed-doors-open-source.html">Closed doors open source</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2013-10-12T00:00:00+02:00">12 October 2013</time>
+      </p>
+      <ul class="tags">
         
-        <p>During my time working at <a href="http://xing.com">XING</a> I believe my single
+        <li>
+          <a href="https://mrdias.com/tags/slides">
+            slides
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/marionette">
+            marionette
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/backbone">
+            backbone
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/gdg">
+            gdg
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/javascript">
+            javascript
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2012/09/10/closed-doors-open-source.html">Closed doors open source</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>During my time working at <a href="http://xing.com">XING</a> I believe my single
 biggest contribution for the company is a side project I’ve developed
 called Xing scripts. This project started with a personal need for
 working with our development environment in a more automated way. I’m
@@ -250,161 +379,273 @@ a big proponent of automating everything you can and so when I started
 working I realized that there were these tasks that I would do over
 and over again. Since I couldn’t bare doing all this manual work I
 started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-doors-open-source.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2012/09/10/closed-doors-open-source.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">11 Jul 2012</div>
-        <h2>
-          <a href="/2012/07/11/git-rebasing-without-conflicts.html">Git rebasing without conflicts</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2012-09-10T00:00:00+02:00">10 September 2012</time>
+      </p>
+      <ul class="tags">
         
-        <p>Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called <a href="http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html">git-rerere</a>. [...] <a class="more" href="/2012/07/11/git-rebasing-without-conflicts.html">read more</a>
+        <li>
+          <a href="https://mrdias.com/tags/reflections">
+            reflections
+          </a>
+        </li>
         
-        <p class="comments">
-          <a class="article-comments" href="/2012/07/11/git-rebasing-without-conflicts.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+        <li>
+          <a href="https://mrdias.com/tags/open_source">
+            open_source
+          </a>
+        </li>
+        
+      </ul>
     </div>
-  </li>
+  </div>
   
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">11 May 2012</div>
-        <h2>
-          <a href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html">Using chef to setup your OSX environment</a>
-        </h2>
-      </div>
-      <div class="content">
-        
-        <p>Recently I had to reinstall my computer at work since I had to update to Lion and I could only do a fresh install, so I decided to try to automate the installation process since some of my colleagues are going through the same and it seems like every time we have to waste many hours or days to solve the same issues over and over. [...] <a class="more" href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2012/07/11/git-rebasing-without-conflicts.html">Git rebasing without conflicts</a>
+      </h2>
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">29 Feb 2012</div>
-        <h2>
-          <a href="/2012/02/29/slow-down-you-are-programming-too-fast.html">Slow down, you are programming too fast</a>
-        </h2>
-      </div>
-      <div class="content">
-        
-        <p>As a programmer, the impetus to go as fast as you can is to be taken with caution as it helps you move forward but it can also hold you back. [...] <a class="more" href="/2012/02/29/slow-down-you-are-programming-too-fast.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2012/02/29/slow-down-you-are-programming-too-fast.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+    <div class="content">
+      
+      <p>Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called <a href="http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html">git-rerere</a>. [...] <a class="more" href="/2012/07/11/git-rebasing-without-conflicts.html">read more</a>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">21 Dec 2011</div>
-        <h2>
-          <a href="/2011/12/21/being-pragmatic.html">Being pragmatic</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2012-07-11T00:00:00+02:00">11 July 2012</time>
+      </p>
+      <ul class="tags">
         
-        <p>It is perhaps my experience but I’ve hardly had the opportunity to work on green field projects, but rather worked on legacy ones where most of the original developers were no longer part of the team or even none of them. Projects with little to no documentation and in some cases no tests at all. You probable know this feeling, it sucks, you want to do things but everything you touch breaks something else, where you obviously see that there was lack of care.  [...] <a class="more" href="/2011/12/21/being-pragmatic.html">read more</a>
+        <li>
+          <a href="https://mrdias.com/tags/git">
+            git
+          </a>
+        </li>
         
-        <p class="comments">
-          <a class="article-comments" href="/2011/12/21/being-pragmatic.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      </ul>
     </div>
-  </li>
+  </div>
   
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">29 Aug 2011</div>
-        <h2>
-          <a href="/2011/08/29/back-from-the-trenches.html">Back from the trenches</a>
-        </h2>
-      </div>
-      <div class="content">
-        
-        <p>It’s been some agitated months lately for me, I quitted working at JustLanded after almost two years there and then went working for some consulting, the experience was not so great, actually it was really bad, the kind of experience that has made me learn to choose very carefully my future career moves and never again believe in marketing people. Fortunately I got an offer to work at <a href="https://xing.com">XING</a> offices in Barcelona, so I packed my stuff and moved there. Now this is a really good place to work, everything was as we talked, they’ve been very helpful with my relocation and the environment is great, lots of smart people that want to do a good job, so nowadays I’m very happy and enjoying my new city. [...] <a class="more" href="/2011/08/29/back-from-the-trenches.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2011/08/29/back-from-the-trenches.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html">Using chef to setup your OSX environment</a>
+      </h2>
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">13 Jan 2011</div>
-        <h2>
-          <a href="/2011/01/13/avoid-empty-deploys-with-capistrano.html">Avoid Empty Deploys with Capistrano</a>
-        </h2>
-      </div>
-      <div class="content">
-        
-        <p>If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations. [...] <a class="more" href="/2011/01/13/avoid-empty-deploys-with-capistrano.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2011/01/13/avoid-empty-deploys-with-capistrano.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+    <div class="content">
+      
+      <p>Recently I had to reinstall my computer at work since I had to update to Lion and I could only do a fresh install, so I decided to try to automate the installation process since some of my colleagues are going through the same and it seems like every time we have to waste many hours or days to solve the same issues over and over. [...] <a class="more" href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html">read more</a>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">17 Nov 2010</div>
-        <h2>
-          <a href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html">Passenger, RVM gemsets and Bundler</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2012-05-11T00:00:00+02:00">11 May 2012</time>
+      </p>
+      <ul class="tags">
         
-        <p>When using passenger with rvm I’ve had some issues with project specific gemsets, where bundler was unable to find the gems.
+        <li>
+          <a href="https://mrdias.com/tags/chef">
+            chef
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/osx">
+            osx
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/development">
+            development
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2012/02/29/slow-down-you-are-programming-too-fast.html">Slow down, you are programming too fast</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>As a programmer, the impetus to go as fast as you can is to be taken with caution as it helps you move forward but it can also hold you back. [...] <a class="more" href="/2012/02/29/slow-down-you-are-programming-too-fast.html">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2012-02-29T00:00:00+01:00">29 February 2012</time>
+      </p>
+      <ul class="tags">
+        
+        <li>
+          <a href="https://mrdias.com/tags/reflections">
+            reflections
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/awareness">
+            awareness
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2011/12/21/being-pragmatic.html">Being pragmatic</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>It is perhaps my experience but I’ve hardly had the opportunity to work on green field projects, but rather worked on legacy ones where most of the original developers were no longer part of the team or even none of them. Projects with little to no documentation and in some cases no tests at all. You probable know this feeling, it sucks, you want to do things but everything you touch breaks something else, where you obviously see that there was lack of care.  [...] <a class="more" href="/2011/12/21/being-pragmatic.html">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2011-12-21T00:00:00+01:00">21 December 2011</time>
+      </p>
+      <ul class="tags">
+        
+        <li>
+          <a href="https://mrdias.com/tags/reflections">
+            reflections
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/refactoring">
+            refactoring
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2011/08/29/back-from-the-trenches.html">Back from the trenches</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>It’s been some agitated months lately for me, I quitted working at JustLanded after almost two years there and then went working for some consulting, the experience was not so great, actually it was really bad, the kind of experience that has made me learn to choose very carefully my future career moves and never again believe in marketing people. Fortunately I got an offer to work at <a href="https://xing.com">XING</a> offices in Barcelona, so I packed my stuff and moved there. Now this is a really good place to work, everything was as we talked, they’ve been very helpful with my relocation and the environment is great, lots of smart people that want to do a good job, so nowadays I’m very happy and enjoying my new city. [...] <a class="more" href="/2011/08/29/back-from-the-trenches.html">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2011-08-29T00:00:00+02:00">29 August 2011</time>
+      </p>
+      <ul class="tags">
+        
+        <li>
+          <a href="https://mrdias.com/tags/osx">
+            osx
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/emacs">
+            emacs
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/life">
+            life
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2011/01/13/avoid-empty-deploys-with-capistrano.html">Avoid Empty Deploys with Capistrano</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations. [...] <a class="more" href="/2011/01/13/avoid-empty-deploys-with-capistrano.html">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2011-01-13T00:00:00+01:00">13 January 2011</time>
+      </p>
+      <ul class="tags">
+        
+        <li>
+          <a href="https://mrdias.com/tags/capistrano">
+            capistrano
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html">Passenger, RVM gemsets and Bundler</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>When using passenger with rvm I’ve had some issues with project specific gemsets, where bundler was unable to find the gems.
 After searching a lot I found out about using the “config/setup_load_paths.rb” file to tell passenger where to locate your gems, but then I had a new issue with rvm trying to use the system ruby instead of the ruby version of my .rvmrc file.</p>
 
 <p>After going to the irc channel, I got some help that help me fixed my problem. The culprit was my rvmrc file. [...] <a class="more" href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">04 Nov 2010</div>
-        <h2>
-          <a href="/2010/11/04/conferencia-rails-workshop.html">Conferencia Rails Workshop</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-11-17T00:00:00+01:00">17 November 2010</time>
+      </p>
+      <ul class="tags">
         
-        <p>As promised here are the slides for the “Conferencia Rails” workshop on process automation. Thanks to all the people that were there. I’m also releasing the redmine CLI I’ve created along with the CLI twitter client.</p>
+        <li>
+          <a href="https://mrdias.com/tags/rvm">
+            rvm
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/passenger">
+            passenger
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2010/11/04/conferencia-rails-workshop.html">Conferencia Rails Workshop</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>As promised here are the slides for the “Conferencia Rails” workshop on process automation. Thanks to all the people that were there. I’m also releasing the redmine CLI I’ve created along with the CLI twitter client.</p>
 
 <p>The presentation was created using the <a href="http://slideshow.rubyforge.org/">slideshow</a> gem which generates an html document for you.</p>
 
@@ -416,65 +657,119 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
 
 <p>Hope you enjoy it.</p>
  [...] <a class="more" href="/2010/11/04/conferencia-rails-workshop.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2010/11/04/conferencia-rails-workshop.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">25 May 2010</div>
-        <h2>
-          <a href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html">Ruby Enterprise, Passenger and Encoding hell</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-11-04T00:00:00+01:00">04 November 2010</time>
+      </p>
+      <ul class="tags">
         
-        <p>Today I spent several hours with my friend <a href="http://es.linkedin.com/in/glebm">Gleb</a> trying to find a weird bug we we’re having importing some rss feeds.</p>
+        <li>
+          <a href="https://mrdias.com/tags/thor">
+            thor
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/conferencia_rails">
+            conferencia_rails
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/automation">
+            automation
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html">Ruby Enterprise, Passenger and Encoding hell</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>Today I spent several hours with my friend <a href="http://es.linkedin.com/in/glebm">Gleb</a> trying to find a weird bug we we’re having importing some rss feeds.</p>
 
 <p>We have a rake task that will grab an xml feed and import it to our system. When we call this rake task from the command line it would run fine, but if we run it from inside our application, we would get some wrong characters (you know, the usual ???) in the imported items. [...] <a class="more" href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">11 Apr 2010</div>
-        <h2>
-          <a href="/2010/04/11/emacs-support-for-jekyll.html">Emacs support for Jekyll</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-05-25T00:00:00+02:00">25 May 2010</time>
+      </p>
+      <ul class="tags">
         
-        <p>If you’re using emacs to write your jekyll blog posts, there is a mode to help you with some common tasks. It is originally from <a href="http://metajack.im/2009/01/02/manage-jekyll-from-emacs/">metajack</a>. Recently I thought it could be a nice addition to have syntax highlight support for jekyll posts, so I got my hands dirty and after some hours of lisp hacking (this was my first attempt at lisp programming) it was a reallity. It is based on <a href="http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html">nxhtml</a> so you need it to work. [...] <a class="more" href="/2010/04/11/emacs-support-for-jekyll.html">read more</a>
+        <li>
+          <a href="https://mrdias.com/tags/passenger">
+            passenger
+          </a>
+        </li>
         
-        <p class="comments">
-          <a class="article-comments" href="/2010/04/11/emacs-support-for-jekyll.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+        <li>
+          <a href="https://mrdias.com/tags/ruby">
+            ruby
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/encodings">
+            encodings
+          </a>
+        </li>
+        
+      </ul>
     </div>
-  </li>
+  </div>
   
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">09 Mar 2010</div>
-        <h2>
-          <a href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html">Setting environment to run migrations with capistrano ext</a>
-        </h2>
-      </div>
-      <div class="content">
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2010/04/11/emacs-support-for-jekyll.html">Emacs support for Jekyll</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>If you’re using emacs to write your jekyll blog posts, there is a mode to help you with some common tasks. It is originally from <a href="http://metajack.im/2009/01/02/manage-jekyll-from-emacs/">metajack</a>. Recently I thought it could be a nice addition to have syntax highlight support for jekyll posts, so I got my hands dirty and after some hours of lisp hacking (this was my first attempt at lisp programming) it was a reallity. It is based on <a href="http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html">nxhtml</a> so you need it to work. [...] <a class="more" href="/2010/04/11/emacs-support-for-jekyll.html">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-04-11T00:00:00+02:00">11 April 2010</time>
+      </p>
+      <ul class="tags">
         
-        <p>If you’re using capistrano-ext to deploy to a different server, using a custom environment, you’ve probably noticed that it always tries to run the migrations for the production environment, like this:</p>
+        <li>
+          <a href="https://mrdias.com/tags/jekyll">
+            jekyll
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/emacs">
+            emacs
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html">Setting environment to run migrations with capistrano ext</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>If you’re using capistrano-ext to deploy to a different server, using a custom environment, you’ve probably noticed that it always tries to run the migrations for the production environment, like this:</p>
 
 <figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span><span class="nb">cd</span> path_to_app/deploy/releases/20100309152738<span class="p">;</span> rake <span class="nv">RAILS_ENV</span><span class="o">=</span>production  db:migrate</code></pre></figure>
 
@@ -484,159 +779,331 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
 
 <p>Then when migrations get executed they’ll have RAILS_ENV=staging.</p>
  [...] <a class="more" href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">08 Mar 2010</div>
-        <h2>
-          <a href="/2010/03/08/monthly-archives-for-jekyll.html">Monthly archives for Jekyll</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-03-09T00:00:00+01:00">09 March 2010</time>
+      </p>
+      <ul class="tags">
         
-        <p>Recently I moved my blog to <a href="http://jekyllrb.com/">Jekyll</a>, while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found <a href="http://rfelix.com">Raoul Felix</a> approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called <a href="http://github.com/rfelix/jekyll_ext">jekyll_ext</a>. Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.</p>
+        <li>
+          <a href="https://mrdias.com/tags/capistrano">
+            capistrano
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/migrations">
+            migrations
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2010/03/08/monthly-archives-for-jekyll.html">Monthly archives for Jekyll</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>Recently I moved my blog to <a href="http://jekyllrb.com/">Jekyll</a>, while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found <a href="http://rfelix.com">Raoul Felix</a> approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called <a href="http://github.com/rfelix/jekyll_ext">jekyll_ext</a>. Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.</p>
 
 <p>Although I had archives generated for me, I was still missing a way to display this information on my site, so I decided to create my own extension. [...] <a class="more" href="/2010/03/08/monthly-archives-for-jekyll.html">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2010/03/08/monthly-archives-for-jekyll.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">02 Mar 2010</div>
-        <h2>
-          <a href="/2010/03/02/view-your-emails-with-cucumber.html">View your emails with cucumber</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-03-08T00:00:00+01:00">08 March 2010</time>
+      </p>
+      <ul class="tags">
         
-        <p>I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages. [...] <a class="more" href="/2010/03/02/view-your-emails-with-cucumber.html">read more</a>
+        <li>
+          <a href="https://mrdias.com/tags/jekyll">
+            jekyll
+          </a>
+        </li>
         
-        <p class="comments">
-          <a class="article-comments" href="/2010/03/02/view-your-emails-with-cucumber.html#disqus_thread">Comments</a>
-        </p>
-      </div>
+        <li>
+          <a href="https://mrdias.com/tags/archives">
+            archives
+          </a>
+        </li>
+        
+      </ul>
     </div>
-  </li>
+  </div>
   
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">23 Feb 2010</div>
-        <h2>
-          <a href="/2010/02/23/activerecord-migrations-from-the-console.textile">ActiveRecord migrations from the console</a>
-        </h2>
-      </div>
-      <div class="content">
-        
-        If you ever run into the situation where one migration doesn't complete sucessfully, and you're stuck with a column in a table or a new table, so you can't drop the migration or execute the migration again, you can always call the migration methods from the console like this: [...] <a class="more" href="/2010/02/23/activerecord-migrations-from-the-console.textile">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2010/02/23/activerecord-migrations-from-the-console.textile#disqus_thread">Comments</a>
-        </p>
-      </div>
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2010/03/02/view-your-emails-with-cucumber.html">View your emails with cucumber</a>
+      </h2>
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">12 Aug 2009</div>
-        <h2>
-          <a href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile">IE issues with new Element and class with Prototype</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="content">
+      
+      <p>I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages. [...] <a class="more" href="/2010/03/02/view-your-emails-with-cucumber.html">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-03-02T00:00:00+01:00">02 March 2010</time>
+      </p>
+      <ul class="tags">
         
-        The problem we have is that this code
+        <li>
+          <a href="https://mrdias.com/tags/cucumber">
+            cucumber
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/emails">
+            emails
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2010/02/23/activerecord-migrations-from-the-console.textile">ActiveRecord migrations from the console</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      If you ever run into the situation where one migration doesn't complete sucessfully, and you're stuck with a column in a table or a new table, so you can't drop the migration or execute the migration again, you can always call the migration methods from the console like this: [...] <a class="more" href="/2010/02/23/activerecord-migrations-from-the-console.textile">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-02-23T00:00:00+01:00">23 February 2010</time>
+      </p>
+      <ul class="tags">
+        
+        <li>
+          <a href="https://mrdias.com/tags/activerecord">
+            activerecord
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/migrations">
+            migrations
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile">IE issues with new Element and class with Prototype</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      The problem we have is that this code
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="k">new</span> <span class="nx">Element</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="o">:</span><span class="s1">&#39;klassName&#39;</span><span class="p">})</span></code></pre></figure>
 
 will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles.  [...] <a class="more" href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">12 Feb 2009</div>
-        <h2>
-          <a href="/2009/02/12/git-goodies.textile">Git Goodies</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2009-08-12T00:00:00+02:00">12 August 2009</time>
+      </p>
+      <ul class="tags">
         
-        A couple days ago I had to gather some information from a git repository, so I'm sharing this small scripts with you.  [...] <a class="more" href="/2009/02/12/git-goodies.textile">read more</a>
+        <li>
+          <a href="https://mrdias.com/tags/IE">
+            IE
+          </a>
+        </li>
         
-        <p class="comments">
-          <a class="article-comments" href="/2009/02/12/git-goodies.textile#disqus_thread">Comments</a>
-        </p>
-      </div>
+        <li>
+          <a href="https://mrdias.com/tags/javascript">
+            javascript
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/prototype">
+            prototype
+          </a>
+        </li>
+        
+      </ul>
     </div>
-  </li>
+  </div>
   
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">16 Dec 2008</div>
-        <h2>
-          <a href="/2008/12/16/will-paginate-and-ajax.textile">Will Paginate And Ajax</a>
-        </h2>
-      </div>
-      <div class="content">
-        
-        I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn't customize the pagination url's or I had to specify the paginator to use (will paginate's default or mine for ajax), so I came up with this solution which fulfils all my needs. [...] <a class="more" href="/2008/12/16/will-paginate-and-ajax.textile">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2008/12/16/will-paginate-and-ajax.textile#disqus_thread">Comments</a>
-        </p>
-      </div>
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2009/02/12/git-goodies.textile">Git Goodies</a>
+      </h2>
     </div>
-  </li>
-  
-  <li class="article">
-    <div class="wrapper">
-      <div class="header">
-        <div class="entrydate">09 Dec 2008</div>
-        <h2>
-          <a href="/2008/12/09/will-paginate-and-merb.textile">Will Paginate And Merb</a>
-        </h2>
-      </div>
-      <div class="content">
+    <div class="content">
+      
+      A couple days ago I had to gather some information from a git repository, so I'm sharing this small scripts with you.  [...] <a class="more" href="/2009/02/12/git-goodies.textile">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2009-02-12T00:00:00+01:00">12 February 2009</time>
+      </p>
+      <ul class="tags">
         
-        I read something about how to do it in this "post":http://merbist.com/2008/10/27/will_paginate-and-merb/ by The merbist, albeit the information was not complete.
+        <li>
+          <a href="https://mrdias.com/tags/git">
+            git
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/shell">
+            shell
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2008/12/16/will-paginate-and-ajax.textile">Will Paginate And Ajax</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn't customize the pagination url's or I had to specify the paginator to use (will paginate's default or mine for ajax), so I came up with this solution which fulfils all my needs. [...] <a class="more" href="/2008/12/16/will-paginate-and-ajax.textile">read more</a>
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2008-12-16T00:00:00+01:00">16 December 2008</time>
+      </p>
+      <ul class="tags">
+        
+        <li>
+          <a href="https://mrdias.com/tags/ajax">
+            ajax
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/rails">
+            rails
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/will_paginate">
+            will_paginate
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
+        <a href="/2008/12/09/will-paginate-and-merb.textile">Will Paginate And Merb</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      I read something about how to do it in this "post":http://merbist.com/2008/10/27/will_paginate-and-merb/ by The merbist, albeit the information was not complete.
 So here are my instructions: [...] <a class="more" href="/2008/12/09/will-paginate-and-merb.textile">read more</a>
-        
-        <p class="comments">
-          <a class="article-comments" href="/2008/12/09/will-paginate-and-merb.textile#disqus_thread">Comments</a>
-        </p>
-      </div>
+      
     </div>
-  </li>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2008-12-09T00:00:00+01:00">09 December 2008</time>
+      </p>
+      <ul class="tags">
+        
+        <li>
+          <a href="https://mrdias.com/tags/merb">
+            merb
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://mrdias.com/tags/will_paginate">
+            will_paginate
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
   
-</ul>
+</div>
 
-      </div>
-      <div id="sidebar" class="one-third column">
-        <div class="module">
+    </div>
+    <div id="sidebar">
+      <div class="module rss">
+  <h2>
+    Subscribe
+  </h2>
+  <ul>
+    <li>
+      <a href="https://feeds2.feedburner.com/mrdias" class="feed-link">RSS</a>
+    </li>
+  </ul>
+</div>
+<div class="module github">
+  <h2>Github</h2>
+  <h3>Last Active Repos</h3>
+  <ul id="gh_repos">
+  </ul>
+  <script>
+   var github = {
+     success: function(response) {
+       var repos = [];
+       var length = response.data.length >= 10 ? 10: response.data.length
+       for (var i = 0; i < length; i++) {
+         repos.push(response.data[i]);
+       }
+       github.render(repos);
+     },
+     render: function(repos) {
+       var i = 0,
+       fragment = '',
+       target = 'gh_repos';
+       t = document.getElementById(target);
+
+       for (i = 0; i < repos.length; i++) {
+         fragment += '<li><a href="' + repos[i].html_url + '">' + repos[i].name + '</a><p>' + (repos[i].description || '') + '</p></li>';
+       }
+       t.innerHTML = fragment;
+     }
+   }
+  </script>
+  <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
+</div>
+<div class="module twitter">
+  <h2>Twitter</h2>
+  <h3>Recent Activity</h3>
+  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5" data-width="auto"></a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+<div class="module tags">
   <h2>
     Tags
   </h2>
@@ -916,174 +1383,13 @@ So here are my instructions: [...] <a class="more" href="/2008/12/09/will-pagina
     </ul>
   </div>
 </div>
-<div class="module">
-  <h2>
-    Friend's Links
-  </h2>
-  <ul>
-    <li>
-      <a href="http://least-significant-bit.com">Least Significant Bit</a>
-    </li>
-    <li>
-      <a href="https://travelswithmyfork.blogspot.com">Travels with my fork</a>
-    </li>
-  </ul>
-</div>
-<div class="module">
-  <h2>
-    Subscribe
-  </h2>
-  <ul>
-    <li>
-      <a href="https://feeds2.feedburner.com/mrdias" class="feed-link">RSS</a>
-    </li>
-  </ul>
-</div>
-<div class="module">
-  <h2>
-    Monthly Archives
-  </h2>
-  <ul>
-    
-    <li>
-      <a href="/2017/03">March 2017</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2015/03">March 2015</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2014/12">December 2014</a> (2 posts)
-    </li>
-    
-    <li>
-      <a href="/2014/07">July 2014</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2013/10">October 2013</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2012/09">September 2012</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2012/07">July 2012</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2012/05">May 2012</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2012/02">February 2012</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2011/12">December 2011</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2011/08">August 2011</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2011/01">January 2011</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/11">November 2010</a> (2 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/05">May 2010</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/04">April 2010</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/03">March 2010</a> (3 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/02">February 2010</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2009/08">August 2009</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2009/02">February 2009</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2008/12">December 2008</a> (2 posts)
-    </li>
-    
-  </ul>
-</div>
-<div class="module">
-  <h2>Github</h2>
-  <h4>Last Active Repos</h4>
-  <ul id="gh_repos">
-  </ul>
-  <script>
-   var github = {
-     success: function(response) {
-       var repos = [];
-       var length = response.data.length >= 10 ? 10: response.data.length
-       for (var i = 0; i < length; i++) {
-         repos.push(response.data[i]);
-       }
-       github.render(repos);
-     },
-     render: function(repos) {
-       var i = 0,
-       fragment = '',
-       target = 'gh_repos';
-       t = document.getElementById(target);
 
-       for (i = 0; i < repos.length; i++) {
-         fragment += '<li><a href="' + repos[i].html_url + '">' + repos[i].name + '</a><p>' + (repos[i].description || '') + '</p></li>';
-       }
-       t.innerHTML = fragment;
-     }
-   }
-  </script>
-  <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
-</div>
-<div class="module">
-  <h2>Twitter</h2>
-  <h4>Recent Activity</h4>
-  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5"></a>
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</div>
-
-      </div>
-      <div id="footer" class="sixteen columns">
-        &copy; 2008-2017 Jorge Dias
-      </div>
-      <script type="text/javascript">
-  //<![CDATA[
-    (function() {
-        var links = document.getElementsByTagName('a');
-        var query = '?';
-        for(var i = 0; i < links.length; i++) {
-          if(links[i].href.indexOf('#disqus_thread') >= 0) {
-            query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
-          }
-        }
-        document.write('<script type="text/javascript" src="https://disqus.com/forums/mrdias/get_num_replies.js' + query + '"></' + 'script>');
-    })();
-    //]]>
-</script>
-
-      <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    </div>
+  </div>
+  <footer>
+    &copy; 2008-2017 Jorge Dias
+  </footer>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
 <script>
 window.addEventListener("load", function(){
@@ -1101,6 +1407,4 @@ window.cookieconsent.initialise({
 })});
 </script>
 
-    </div>
-  </body>
-</html>
+</body>

@@ -1,10 +1,6 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-  <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-15098892-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -14,49 +10,92 @@
   gtag('config', 'UA-15098892-1');
 </script>
 
-    <title></title>
-    <meta charset="utf-8"/>
-    <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
-    <meta name="author" content="Jorge Dias"/>
+  <title></title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Mr. Dias. Software Development Thoughts"/>
+  <meta name="author" content="Jorge Dias"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <link rel="stylesheet" href="/stylesheets/main.css"/>
+  <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="https://feeds2.feedburner.com/mrdias" />
+</head>
+<body>
+  <header>
+    <a href="/" id="title">
+  <h1>Jorge Dias</h1>
+  <h2>So many layers of web</h2>
+</a>
+<div id="toplinks">
+  <a href="https://github.com/diasjorge">
+    <img width="24" height="24" src="/images/github.svg" alt="github"/>
+  </a>
+  <a href="https://twitter.com/dias_jorge">
+    <img width="24" height="24" src="/images/twitter.svg" alt="twitter"/>
+  </a>
+  <a href="https://linkedin.com/in/jorgediasmartinez/en">
+    <img width="24" height="24" src="/images/linkedin.svg" alt="linkedin"/>
+  </a>
+</div>
 
-    <link rel="stylesheet" href="/stylesheets/main.css"/>
-
-    <!--[if lt IE 9]>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
-        <![endif]-->
-
-    <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="https://feeds2.feedburner.com/mrdias" />
-  </head>
-  <body>
-    <div class="container">
-      <div id="header" class="sixteen columns">
-        <div id="toplinks">
-          <a href="https://github.com/diasjorge">
-            <img width="24" height="24" src="/images/github_24.png"/>
-          </a>
-          <a href="https://twitter.com/dias_jorge">
-            <img width="24" height="24" src="/images/twitter_24.png"/>
-          </a>
-          <a href="https://linkedin.com/in/jorgediasmartinez/en">
-            <img width="24" height="24" src="/images/linkedin_24.png"/>
-          </a>
-        </div>
-        <h1><a href="/">Mr. Dias</a></h1>
-        <h4>Software Development Thoughts</h4>
-      </div>
-      <div id="content" class="two-thirds column">
-        <h2 class="title">7 11, 2012</h2>
+  </header>
+  <div class="content-wrapper">
+    <div id="content">
+      <h2 class="title">7 11, 2012</h2>
 <ul>
   
     <li><a href='/2012/07/11/git-rebasing-without-conflicts.html'>Git rebasing without conflicts</a></li>
   
 </ul>
 
-      </div>
-      <div id="sidebar" class="one-third column">
-        <div class="module">
+    </div>
+    <div id="sidebar">
+      <div class="module rss">
+  <h2>
+    Subscribe
+  </h2>
+  <ul>
+    <li>
+      <a href="https://feeds2.feedburner.com/mrdias" class="feed-link">RSS</a>
+    </li>
+  </ul>
+</div>
+<div class="module github">
+  <h2>Github</h2>
+  <h3>Last Active Repos</h3>
+  <ul id="gh_repos">
+  </ul>
+  <script>
+   var github = {
+     success: function(response) {
+       var repos = [];
+       var length = response.data.length >= 10 ? 10: response.data.length
+       for (var i = 0; i < length; i++) {
+         repos.push(response.data[i]);
+       }
+       github.render(repos);
+     },
+     render: function(repos) {
+       var i = 0,
+       fragment = '',
+       target = 'gh_repos';
+       t = document.getElementById(target);
+
+       for (i = 0; i < repos.length; i++) {
+         fragment += '<li><a href="' + repos[i].html_url + '">' + repos[i].name + '</a><p>' + (repos[i].description || '') + '</p></li>';
+       }
+       t.innerHTML = fragment;
+     }
+   }
+  </script>
+  <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
+</div>
+<div class="module twitter">
+  <h2>Twitter</h2>
+  <h3>Recent Activity</h3>
+  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5" data-width="auto"></a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+<div class="module tags">
   <h2>
     Tags
   </h2>
@@ -336,174 +375,13 @@
     </ul>
   </div>
 </div>
-<div class="module">
-  <h2>
-    Friend's Links
-  </h2>
-  <ul>
-    <li>
-      <a href="http://least-significant-bit.com">Least Significant Bit</a>
-    </li>
-    <li>
-      <a href="https://travelswithmyfork.blogspot.com">Travels with my fork</a>
-    </li>
-  </ul>
-</div>
-<div class="module">
-  <h2>
-    Subscribe
-  </h2>
-  <ul>
-    <li>
-      <a href="https://feeds2.feedburner.com/mrdias" class="feed-link">RSS</a>
-    </li>
-  </ul>
-</div>
-<div class="module">
-  <h2>
-    Monthly Archives
-  </h2>
-  <ul>
-    
-    <li>
-      <a href="/2017/03">March 2017</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2015/03">March 2015</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2014/12">December 2014</a> (2 posts)
-    </li>
-    
-    <li>
-      <a href="/2014/07">July 2014</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2013/10">October 2013</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2012/09">September 2012</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2012/07">July 2012</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2012/05">May 2012</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2012/02">February 2012</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2011/12">December 2011</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2011/08">August 2011</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2011/01">January 2011</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/11">November 2010</a> (2 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/05">May 2010</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/04">April 2010</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/03">March 2010</a> (3 posts)
-    </li>
-    
-    <li>
-      <a href="/2010/02">February 2010</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2009/08">August 2009</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2009/02">February 2009</a> (1 posts)
-    </li>
-    
-    <li>
-      <a href="/2008/12">December 2008</a> (2 posts)
-    </li>
-    
-  </ul>
-</div>
-<div class="module">
-  <h2>Github</h2>
-  <h4>Last Active Repos</h4>
-  <ul id="gh_repos">
-  </ul>
-  <script>
-   var github = {
-     success: function(response) {
-       var repos = [];
-       var length = response.data.length >= 10 ? 10: response.data.length
-       for (var i = 0; i < length; i++) {
-         repos.push(response.data[i]);
-       }
-       github.render(repos);
-     },
-     render: function(repos) {
-       var i = 0,
-       fragment = '',
-       target = 'gh_repos';
-       t = document.getElementById(target);
 
-       for (i = 0; i < repos.length; i++) {
-         fragment += '<li><a href="' + repos[i].html_url + '">' + repos[i].name + '</a><p>' + (repos[i].description || '') + '</p></li>';
-       }
-       t.innerHTML = fragment;
-     }
-   }
-  </script>
-  <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
-</div>
-<div class="module">
-  <h2>Twitter</h2>
-  <h4>Recent Activity</h4>
-  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5"></a>
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</div>
-
-      </div>
-      <div id="footer" class="sixteen columns">
-        &copy; 2008-2017 Jorge Dias
-      </div>
-      <script type="text/javascript">
-  //<![CDATA[
-    (function() {
-        var links = document.getElementsByTagName('a');
-        var query = '?';
-        for(var i = 0; i < links.length; i++) {
-          if(links[i].href.indexOf('#disqus_thread') >= 0) {
-            query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
-          }
-        }
-        document.write('<script type="text/javascript" src="https://disqus.com/forums/mrdias/get_num_replies.js' + query + '"></' + 'script>');
-    })();
-    //]]>
-</script>
-
-      <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    </div>
+  </div>
+  <footer>
+    &copy; 2008-2017 Jorge Dias
+  </footer>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
 <script>
 window.addEventListener("load", function(){
@@ -521,6 +399,4 @@ window.cookieconsent.initialise({
 })});
 </script>
 
-    </div>
-  </body>
-</html>
+</body>
