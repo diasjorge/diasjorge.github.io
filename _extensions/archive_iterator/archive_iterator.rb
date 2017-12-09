@@ -1,3 +1,5 @@
+require 'date'
+
 module Jekyll
   AOP.around(Site, :site_payload) do |site_instance, args, proceed, abort|
     monthly_archives = []
@@ -7,7 +9,8 @@ module Jekyll
         monthly_archives << {
           'name'  => "#{Date::MONTHNAMES[month]} #{year}",
           'url'   => "/#{year}/#{"%02d" % month}",
-          'posts' => days.values.flatten
+          'posts' => days.values.flatten,
+          'date'  => Date.new(year, month, 1).next_month - 1
         }
       end
     end
