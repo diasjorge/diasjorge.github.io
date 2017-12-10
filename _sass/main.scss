@@ -25,6 +25,14 @@ header {
     top: 0;
     right: 0;
   }
+  #mode {
+    font-size: 0.7em;
+    margin-top: 0.1em;
+    a {
+      position: absolute;
+      right: 0;
+    }
+  }
   #title {
     display: block;
     h1 {
