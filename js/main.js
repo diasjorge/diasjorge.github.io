@@ -16,11 +16,19 @@
     e.style.display = "";
   };
 
-  dark.addEventListener("click", function(e) {
-    localStorage.setItem("mode", "dark");
+  var loadDarkMode = function() {
     loadCss('/stylesheets/dark.css');
+    setTimeout(function() {
+      var iframe = document.getElementById('twitter-widget-0');
+      iframe.contentWindow.document.getElementsByTagName('body')[0].style.color="#839496";
+    }, 500);
     hide(dark);
     show(light);
+  };
+
+  dark.addEventListener("click", function(e) {
+    localStorage.setItem("mode", "dark");
+    loadDarkMode();
   });
   light.addEventListener("click", function(e) {
     localStorage.setItem("mode", "light");
@@ -29,9 +37,9 @@
     show(dark);
   });
 
-  if (localStorage.getItem("mode") == "dark") {
-    loadCss('/stylesheets/dark.css');
-    hide(dark);
-    show(light);
-  }
+  document.addEventListener("DOMContentLoaded", function(event) {
+    if (localStorage.getItem("mode") == "dark") {
+      loadDarkMode();
+    }
+  });
 })();
