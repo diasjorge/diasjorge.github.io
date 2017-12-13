@@ -4,12 +4,75 @@
  <title>Mr Dias</title>
  <link href="https://mrdias.com/atom.xml" rel="self"/>
  <link href="https://mrdias.com/"/>
- <updated>2017-12-10T23:16:51+01:00</updated>
+ <updated>2017-12-13T23:34:52+01:00</updated>
  <id>https://mrdias.com/</id>
  <author>
    <name>Jorge Dias</name>
  </author>
 
+ 
+ <entry>
+   <title>Fast directory navigation using the CDPATH</title>
+   <link href="https://mrdias.com/2017/12/11/fast-directory-navigation-using-the-cdpath.html"/>
+   <updated>2017-12-11T22:42:23+01:00</updated>
+   <id>https://mrdias.com/2017/12/11/fast-directory-navigation-using-the-cdpath</id>
+   <content type="html">&lt;p&gt;For a long time I’ve used my own command alias to navigate through my
+work related projects and jump to them using the &lt;code&gt;cx&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Originally the x comes from Xing where I worked at the time. It also
+happens that the letter x is located next to the c which makes it very
+convenient like &lt;code&gt;cd&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Anyway imagine you’re in any directory on your system and you want to
+change to &lt;code&gt;~/development/work/boring-project&lt;/code&gt; normally you’d do
+something like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd ~/development/work/boring-project # or
+cd ../../boring-project
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now this can get very tiresome depending where you are and having to
+get right how many directories levels to go up, etc. Fortunately for
+us we have the &lt;em&gt;CDPATH&lt;/em&gt; environment variable.&lt;/p&gt;
+
+&lt;p&gt;We could set in our bash_profile&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export CDPATH=~/development/work
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and then in our previous example we could have just done &lt;code&gt;cd boring-project&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If we had a directory &lt;code&gt;foo&lt;/code&gt; in our current path and a project
+named &lt;code&gt;foo&lt;/code&gt; in our CDPATH in that case you’d be taken to project
+foo which may not be what you want. So some people recommend to set
+the CDPATH like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CDPATH=.:~/development/work
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now in my case I don’t want to change the default behaviour of the cd
+command so that’s were my &lt;code&gt;cx&lt;/code&gt; command comes in.&lt;/p&gt;
+
+&lt;p&gt;You can copy this into your bash_profile.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Change to match your needs
+export CXPATH=$HOME/development/work
+
+cx() {
+    CDPATH=$CXPATH cd $@
+}
+
+_cx() {
+    CDPATH=$CXPATH _cd
+}
+
+complete -o nospace -F_cx cx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this when you type &lt;code&gt;cx&lt;/code&gt; you’ll get autocompletion too for the
+projects in your CXPATH regardless from where you are.&lt;/p&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Blog redesign</title>

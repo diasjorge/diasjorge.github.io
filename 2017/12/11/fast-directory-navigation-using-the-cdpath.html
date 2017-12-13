@@ -10,7 +10,7 @@
   gtag('config', 'UA-15098892-1');
 </script>
 
-  <title></title>
+  <title>Fast directory navigation using the CDPATH</title>
   <meta charset="utf-8"/>
   <meta name="description" content="Jorge Dias | So many layers of web"/>
   <meta name="author" content="Jorge Dias"/>
@@ -48,80 +48,90 @@
   </header>
   <div class="content-wrapper">
     <div id="content">
-      <h2 class="title">12 2017</h2>
-<ul>
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
+      <div class="article">
+  <div class="header">
+    <h2>
+      <a href="/2017/12/11/fast-directory-navigation-using-the-cdpath.html">Fast directory navigation using the CDPATH</a>
+    </h2>
+  </div>
+  <div class="content">
+    <p>For a long time I’ve used my own command alias to navigate through my
+work related projects and jump to them using the <code>cx</code></p>
+
+<p>Originally the x comes from Xing where I worked at the time. It also
+happens that the letter x is located next to the c which makes it very
+convenient like <code>cd</code>.</p>
+
+<p>Anyway imagine you’re in any directory on your system and you want to
+change to <code>~/development/work/boring-project</code> normally you’d do
+something like:</p>
+
+<pre><code>cd ~/development/work/boring-project # or
+cd ../../boring-project
+</code></pre>
+
+<p>Now this can get very tiresome depending where you are and having to
+get right how many directories levels to go up, etc. Fortunately for
+us we have the <em>CDPATH</em> environment variable.</p>
+
+<p>We could set in our bash_profile</p>
+<pre><code>export CDPATH=~/development/work
+</code></pre>
+<p>and then in our previous example we could have just done <code>cd boring-project</code>.</p>
+
+<p>If we had a directory <code>foo</code> in our current path and a project
+named <code>foo</code> in our CDPATH in that case you’d be taken to project
+foo which may not be what you want. So some people recommend to set
+the CDPATH like:</p>
+
+<pre><code>CDPATH=.:~/development/work
+</code></pre>
+
+<p>Now in my case I don’t want to change the default behaviour of the cd
+command so that’s were my <code>cx</code> command comes in.</p>
+
+<p>You can copy this into your bash_profile.</p>
+
+<pre><code># Change to match your needs
+export CXPATH=$HOME/development/work
+
+cx() {
+    CDPATH=$CXPATH cd $@
+}
+
+_cx() {
+    CDPATH=$CXPATH _cd
+}
+
+complete -o nospace -F_cx cx
+</code></pre>
+
+<p>With this when you type <code>cx</code> you’ll get autocompletion too for the
+projects in your CXPATH regardless from where you are.</p>
+
+<p>Enjoy!</p>
+
+  </div>
+  <div class="metadata">
+    <p class="author vcard">
+      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2017-12-11T22:42:23+01:00">11 December 2017</time>
+    </p>
+    <ul class="tags">
       
-        <li><a href='/2017/12/11/fast-directory-navigation-using-the-cdpath.html'>Fast directory navigation using the CDPATH</a></li>
-      
-    
-  
-    
-  
-    
-      
-        <li><a href='/2017/12/09/blog-redesign.html'>Blog redesign</a></li>
-      
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-</ul>
+    </ul>
+  </div>
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'mrdias';
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
     </div>
     <div id="sidebar">

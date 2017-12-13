@@ -7,10 +7,16 @@
   
   <url>
     <loc>https://mrdias.com/</loc>
-    <lastmod>2017-12-10T23:16:51+01:00</lastmod>
+    <lastmod>2017-12-13T23:34:52+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
+  
+  <url>
+    <loc>https://mrdias.com/2017/12/11/fast-directory-navigation-using-the-cdpath.html</loc>
+    <lastmod>2017-12-11T22:42:23+01:00</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
   
   <url>
     <loc>https://mrdias.com/2017/12/09/blog-redesign.html</loc>
