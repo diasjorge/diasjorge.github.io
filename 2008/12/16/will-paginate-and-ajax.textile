@@ -212,6 +212,12 @@ That's it enjoy. You can keep passing the same options you would normally do to 
       </li>
       
       <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/AWS">
+          AWS
+        </a>
+      </li>
+      
+      <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/aws">
           aws
         </a>
@@ -320,6 +326,12 @@ That's it enjoy. You can keep passing the same options you would normally do to 
       </li>
       
       <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/IAM">
+          IAM
+        </a>
+      </li>
+      
+      <li>
         <a style="font-size: 1.18em" href="https://mrdias.com/tags/IE">
           IE
         </a>
@@ -418,6 +430,12 @@ That's it enjoy. You can keep passing the same options you would normally do to 
       <li>
         <a style="font-size: 1.9em" href="https://mrdias.com/tags/reflections">
           reflections
+        </a>
+      </li>
+      
+      <li>
+        <a style="font-size: 1.18em" href="https://mrdias.com/tags/roly">
+          roly
         </a>
       </li>
       

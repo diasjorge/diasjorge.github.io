@@ -10,7 +10,7 @@
   gtag('config', 'UA-15098892-1');
 </script>
 
-  <title>IE issues with new Element and class with Prototype</title>
+  <title>Tags: roly</title>
   <meta charset="utf-8"/>
   <meta name="description" content="Jorge Dias | So many layers of web"/>
   <meta name="author" content="Jorge Dias"/>
@@ -48,90 +48,15 @@
   </header>
   <div class="content-wrapper">
     <div id="content">
-      <div class="article">
-  <div class="header">
-    <h2>
-      <a href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile">IE issues with new Element and class with Prototype</a>
-    </h2>
-  </div>
-  <div class="content">
-    The problem we have is that this code
+      <h2 class="title">Tag: roly</h2>
+<ul>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="k">new</span> <span class="nx">Element</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="o">:</span><span class="s1">&#39;klassName&#39;</span><span class="p">})</span></code></pre></figure>
+  <li> 
+    <a href="/2017/12/20/switch-aws-accounts-easily-using-roly.html">Switch AWS accounts easily using roly</a>
+  </li>
 
-will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles. <!-- -**-END-**- -->
+</ul>
 
-One of the workarounds would be to explicitly add the class name, like this:
-
-<figure class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Element</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
-<span class="nx">e</span><span class="p">.</span><span class="nx">addClassName</span><span class="p">(</span><span class="s1">&#39;klassName&#39;</span><span class="p">);</span></code></pre></figure>
-
-The problem with this approach is that at work, we have a huge javascript codebase, so instead, we are going to monkey patch Prototype. We're working against version 1.6.0.3 of prototype, that's why we add the alert, so when we update, we'll catch this and check if it was fixed on core.
-
-<figure class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// This is a dirty hack to protoype, so IE, will take class names on new Element</span>
-<span class="c1">// new Element(&#39;div&#39;, {&#39;class&#39;:&#39;klassName&#39;}) doesn&#39;t work on IE but does on firefox</span>
-<span class="c1">// in IE, we wouldn&#39;t get the className set.</span>
-
-<span class="k">if</span> <span class="p">(</span><span class="nx">Prototype</span><span class="p">.</span><span class="nx">Version</span> <span class="o">!=</span> <span class="s1">&#39;1.6.0.3&#39;</span><span class="p">)</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;BEWARE OF THE PROTOTYPE VERSION&quot;</span><span class="p">);</span>
-
-<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">Element</span><span class="p">;</span>
-   <span class="k">this</span><span class="p">.</span><span class="nx">Element</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tagName</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
-     <span class="nx">attributes</span> <span class="o">=</span> <span class="nx">attributes</span> <span class="o">||</span> <span class="p">{</span> <span class="p">};</span>
-     <span class="nx">tagName</span> <span class="o">=</span> <span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
-     <span class="kd">var</span> <span class="nx">cache</span> <span class="o">=</span> <span class="nx">Element</span><span class="p">.</span><span class="nx">cache</span><span class="p">;</span>
-     <span class="k">if</span> <span class="p">(</span><span class="nx">Prototype</span><span class="p">.</span><span class="nx">Browser</span><span class="p">.</span><span class="nx">IE</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span> <span class="o">||</span> <span class="nx">attributes</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]))</span> <span class="p">{</span>
-       <span class="nx">tagName</span> <span class="o">=</span> <span class="s1">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="nx">tagName</span> <span class="o">+</span> <span class="s1">&#39; name=&quot;&#39;</span> <span class="o">+</span> <span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="s1">&#39;class=&quot;&#39;</span> <span class="o">+</span> <span class="nx">attributes</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">;</span>
-       <span class="k">delete</span> <span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
-
-       <span class="k">return</span> <span class="nx">Element</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">tagName</span><span class="p">),</span> <span class="nx">attributes</span><span class="p">);</span>
-     <span class="p">}</span>
-     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">cache</span><span class="p">[</span><span class="nx">tagName</span><span class="p">])</span> <span class="nx">cache</span><span class="p">[</span><span class="nx">tagName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Element</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">tagName</span><span class="p">));</span>
-     <span class="k">return</span> <span class="nx">Element</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="nx">cache</span><span class="p">[</span><span class="nx">tagName</span><span class="p">].</span><span class="nx">cloneNode</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span> <span class="nx">attributes</span><span class="p">);</span>
-   <span class="p">};</span>
-   <span class="nb">Object</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">Element</span><span class="p">,</span> <span class="nx">element</span> <span class="o">||</span> <span class="p">{</span> <span class="p">});</span>
-   <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nx">Element</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
- <span class="p">}).</span><span class="nx">call</span><span class="p">(</span><span class="nb">window</span><span class="p">);</span></code></pre></figure>
-
-  </div>
-  <div class="metadata">
-    <p class="author vcard">
-      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2009-08-12T00:00:00+02:00">12 August 2009</time>
-    </p>
-    <ul class="tags">
-      
-      <li>
-        <a href="https://mrdias.com/tags/IE">
-          IE
-        </a>
-      </li>
-      
-      <li>
-        <a href="https://mrdias.com/tags/javascript">
-          javascript
-        </a>
-      </li>
-      
-      <li>
-        <a href="https://mrdias.com/tags/prototype">
-          prototype
-        </a>
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-  var disqus_shortname = 'mrdias';
-  (function() {
-  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
     </div>
     <div id="sidebar">
