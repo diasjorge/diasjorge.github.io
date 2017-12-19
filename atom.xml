@@ -4,12 +4,76 @@
  <title>Mr Dias</title>
  <link href="https://mrdias.com/atom.xml" rel="self"/>
  <link href="https://mrdias.com/"/>
- <updated>2017-12-13T23:34:52+01:00</updated>
+ <updated>2017-12-20T00:25:09+01:00</updated>
  <id>https://mrdias.com/</id>
  <author>
    <name>Jorge Dias</name>
  </author>
 
+ 
+ <entry>
+   <title>Switch AWS accounts easily using roly</title>
+   <link href="https://mrdias.com/2017/12/20/switch-aws-accounts-easily-using-roly.html"/>
+   <updated>2017-12-20T00:00:00+01:00</updated>
+   <id>https://mrdias.com/2017/12/20/switch-aws-accounts-easily-using-roly</id>
+   <content type="html">&lt;p&gt;Many companies keep their AWS accounts separated per environment, per
+team, etc and you can find yourself in a situation where you have
+users and credentials on many different accounts. From a security
+perspective this is not ideal as managing this can be very hard,
+people will change teams, leave the company, etc and cleaning up their
+access on all accounts can be very tedious and time consuming.&lt;/p&gt;
+
+&lt;p&gt;A way to deal with this is by having a user in one account and then
+assume role in another account so there’s only one place to manage
+your users and credentials.&lt;/p&gt;
+
+&lt;p&gt;I’m going to assume you already have knowledge about how to create a
+role in the target account and configure your &lt;code&gt;~/.aws/credentials&lt;/code&gt;
+file. If not AWS has a good basic introduction
+&lt;a href=&quot;https://aws.amazon.com/blogs/security/how-to-use-a-single-iam-user-to-easily-access-all-your-accounts-by-using-the-aws-cli/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This has some advantages for security but if you are using MFA it can
+be a bit more tedious to have to constantly type the tokens. The AWS
+CLI when you give it the &lt;code&gt;--profile&lt;/code&gt; flag will perform an
+&lt;code&gt;STS:AssumeRole&lt;/code&gt; call for you an cache the results for one hour.&lt;/p&gt;
+
+&lt;p&gt;This can be sufficient for your needs but if you’re working with some
+of the SDKs like boto you may encounter some problems. If you’re using
+ansible it uses boto2 underneath which doesn’t support profiles to
+assume role with MFA. Boto3 works correctly but you need to provide
+the MFA token on every invocation since it won’t cache sessions for
+you.&lt;/p&gt;
+
+&lt;p&gt;To make my life easier and some colleagues while migrating from boto2
+to boto3 I created a very small tool called &lt;strong&gt;&lt;a href=&quot;https://github.com/diasjorge/roly&quot;&gt;roly&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;The AWS SDKs will respect the &lt;code&gt;AWS_*&lt;/code&gt; environment variables you
+have set and roly just leverages this fact.&lt;/p&gt;
+
+&lt;p&gt;You can use roly in two ways:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ roly export target-profile
+Assume Role MFA token code: XXXX
+export AWS_ACCESS_KEY_ID='XXXXXXXXXXXXXXXX'
+export AWS_SECRET_ACCESS_KEY='XXXXXXXXXXXXXXXX'
+export AWS_SESSION_TOKEN='XXXXXXXXXXXXXXXX'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If needed will prompt for your MFA token and then it will print the
+commands needed to set your environment variables. The session will
+last for an hour. Copy and paste them and you’re set.&lt;/p&gt;
+
+&lt;p&gt;Or you can set the credentials and call a command just once.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ roly exec target-profile command
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can find the source and binaries at the
+&lt;a href=&quot;https://github.com/diasjorge/roly&quot;&gt;github repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I hope you find it useful.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Fast directory navigation using the CDPATH</title>
