@@ -10,6 +10,7 @@ work related projects and jump to them using the ```cx```
 Originally the x comes from Xing where I worked at the time. It also
 happens that the letter x is located next to the c which makes it very
 convenient like ```cd```.
+<!-- -**-END-**- -->
 
 Anyway imagine you're in any directory on your system and you want to
 change to ```~/development/work/boring-project``` normally you'd do

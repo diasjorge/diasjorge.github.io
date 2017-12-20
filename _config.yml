@@ -2,6 +2,7 @@ url: "https://mrdias.com"
 feed_url: "https://feeds2.feedburner.com/mrdias"
 highlighter: pygments
 disqus_shortname: "mrdias"
+excerpt_separator: "<!-- -**-END-**- -->"
 exclude:
   - "config.rb"
   - "Rakefile"

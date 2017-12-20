@@ -14,7 +14,8 @@ title: Mr. Dias
       {% if forloop.first == true %}
       {{ post.content }}
       {% else %}
-      {{ post.preview }} [...] <a class="more" href="{{ post.url }}">read more</a>
+      {{ post.excerpt }}
+      <p><a class="more" href="{{ post.url }}">Read more</a></p>
       {% endif %}
     </div>
     <div class="metadata">
