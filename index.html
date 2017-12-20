@@ -160,55 +160,8 @@ work related projects and jump to them using the <code>cx</code></p>
 happens that the letter x is located next to the c which makes it very
 convenient like <code>cd</code>.</p>
 
-<p>Anyway imagine you’re in any directory on your system and you want to
-change to <code>~/development/work/boring-project</code> normally you’d do
-something like:</p>
 
-<pre><code>cd ~/development/work/boring-project # or
-cd ../../boring-project
-</code></pre>
-
-<p>Now this can get very tiresome depending where you are and having to
-get right how many directories levels to go up, etc. Fortunately for
-us we have the <em>CDPATH</em> environment variable.</p>
-
-<p>We could set in our bash_profile</p>
-<pre><code>export CDPATH=~/development/work
-</code></pre>
-<p>and then in our previous example we could have just done <code>cd boring-project</code>.</p>
-
-<p>If we had a directory <code>foo</code> in our current path and a project
-named <code>foo</code> in our CDPATH in that case you’d be taken to project
-foo which may not be what you want. So some people recommend to set
-the CDPATH like:</p>
-
-<pre><code>CDPATH=.:~/development/work
-</code></pre>
-
-<p>Now in my case I don’t want to change the default behaviour of the cd
-command so that’s were my <code>cx</code> command comes in.</p>
-
-<p>You can copy this into your bash_profile.</p>
-
-<pre><code># Change to match your needs
-export CXPATH=$HOME/development/work
-
-cx() {
-    CDPATH=$CXPATH cd $@
-}
-
-_cx() {
-    CDPATH=$CXPATH _cd
-}
-
-complete -o nospace -F_cx cx
-</code></pre>
-
-<p>With this when you type <code>cx</code> you’ll get autocompletion too for the
-projects in your CXPATH regardless from where you are.</p>
-
-<p>Enjoy!</p>
- [...] <a class="more" href="/2017/12/11/fast-directory-navigation-using-the-cdpath.html">read more</a>
+      <p><a class="more" href="/2017/12/11/fast-directory-navigation-using-the-cdpath.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -235,7 +188,10 @@ particularly liked how it looked anymore so I decided to change it.</p>
 
 <p>I normally don’t do any design work and CSS is not something I’ve
 enjoyed particularly but I’ve always used this space to work on that
-area. [...] <a class="more" href="/2017/12/09/blog-redesign.html">read more</a>
+area.</p>
+
+
+      <p><a class="more" href="/2017/12/09/blog-redesign.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -284,7 +240,10 @@ copy those to your machine back.</p>
 
 <p>Fortunately AWS now provides a docker image for amazon linux which
 we can leverage to build our depencies. We can avoid launching an
-instance and get faster results. [...] <a class="more" href="/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html">read more</a>
+instance and get faster results.</p>
+
+
+      <p><a class="more" href="/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -331,7 +290,10 @@ instance and get faster results. [...] <a class="more" href="/2017/03/09/packagi
       
       <p>This tutorial is an extraction from a talk I recently presented about
 docker and rails apps at the Barcelona on Rails user group. I’ll
-explain how to integrate docker into an existing rails app workflow. [...] <a class="more" href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html">read more</a>
+explain how to integrate docker into an existing rails app workflow.</p>
+
+
+      <p><a class="more" href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -374,7 +336,10 @@ Dockerfile and the apps themselves and leave out the details
 of using fig.</p>
 
 <p>The tool is called
-<a href="https://github.com/diasjorge/guard-fig">guard-fig</a>. [...] <a class="more" href="/2014/12/19/faster-docker-containers-development-using-fig.html">read more</a>
+<a href="https://github.com/diasjorge/guard-fig">guard-fig</a>.</p>
+
+
+      <p><a class="more" href="/2014/12/19/faster-docker-containers-development-using-fig.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -423,7 +388,10 @@ to fit a puzzle into your head. I think this is what I love the most
 about computers, that moment when you understand the machine, what it
 does and why it does it. It’s the hack, making the computer do what
 you want. Getting out of my comfort zone is helping me appreciate the
-basics more. [...] <a class="more" href="/2014/12/09/changing-to-devops.html">read more</a>
+basics more.</p>
+
+
+      <p><a class="more" href="/2014/12/09/changing-to-devops.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -470,8 +438,10 @@ basics more. [...] <a class="more" href="/2014/12/09/changing-to-devops.html">re
       
       <p>A couple months ago I started growing a vegetable garden at home with my girlfriend. It’s been a great experience. She’s always been into plants, we have lots of them around the house but never had we tried to grow food. I think the fact that I can get something out of the experience that is more than just aesthetic but also functional (I can eat the vegetables) has made it more appealing for me.</p>
 
-<p>There have been some experiences so far that I somehow can relate with developing a software project.
- [...] <a class="more" href="/2014/07/03/growing-a-garden.html">read more</a>
+<p>There have been some experiences so far that I somehow can relate with developing a software project.</p>
+
+
+      <p><a class="more" href="/2014/07/03/growing-a-garden.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -514,7 +484,9 @@ basics more. [...] <a class="more" href="/2014/12/09/changing-to-devops.html">re
 
 <p>Here you can find the slides: <a href="http://diasjorge.github.io/google-dev-fest-slides/">http://diasjorge.github.io/google-dev-fest-slides/</a></p>
 
-<p>Hope you like them. [...] <a class="more" href="/2013/10/12/barcelona-gdg-devfest-2013.html">read more</a>
+<p>Hope you like them.</p>
+
+      <p><a class="more" href="/2013/10/12/barcelona-gdg-devfest-2013.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -572,7 +544,10 @@ working with our development environment in a more automated way. I’m
 a big proponent of automating everything you can and so when I started
 working I realized that there were these tasks that I would do over
 and over again. Since I couldn’t bare doing all this manual work I
-started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-doors-open-source.html">read more</a>
+started writing my own scripts.</p>
+
+
+      <p><a class="more" href="/2012/09/10/closed-doors-open-source.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -605,7 +580,10 @@ started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-d
     </div>
     <div class="content">
       
-      <p>Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called <a href="http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html">git-rerere</a>. [...] <a class="more" href="/2012/07/11/git-rebasing-without-conflicts.html">read more</a>
+      <p>Yesterday I was at work with a colleague and we wanted to merge a long-running branch we had. This branch was full of useless commits so we wanted to clean it up. We tried an interactive rebase but we got a lot of conflicts since git doesn’t know how to resolve merge conflicts that we had previously fixed. As you probably know this is no fun, so we did what any sane person would do and found a nice solution for this called <a href="http://www.kernel.org/pub/software/scm/git/docs/git-rerere.html">git-rerere</a>.</p>
+
+
+      <p><a class="more" href="/2012/07/11/git-rebasing-without-conflicts.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -632,7 +610,10 @@ started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-d
     </div>
     <div class="content">
       
-      <p>Recently I had to reinstall my computer at work since I had to update to Lion and I could only do a fresh install, so I decided to try to automate the installation process since some of my colleagues are going through the same and it seems like every time we have to waste many hours or days to solve the same issues over and over. [...] <a class="more" href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html">read more</a>
+      <p>Recently I had to reinstall my computer at work since I had to update to Lion and I could only do a fresh install, so I decided to try to automate the installation process since some of my colleagues are going through the same and it seems like every time we have to waste many hours or days to solve the same issues over and over.</p>
+
+
+      <p><a class="more" href="/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -671,7 +652,10 @@ started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-d
     </div>
     <div class="content">
       
-      <p>As a programmer, the impetus to go as fast as you can is to be taken with caution as it helps you move forward but it can also hold you back. [...] <a class="more" href="/2012/02/29/slow-down-you-are-programming-too-fast.html">read more</a>
+      <p>As a programmer, the impetus to go as fast as you can is to be taken with caution as it helps you move forward but it can also hold you back.</p>
+
+
+      <p><a class="more" href="/2012/02/29/slow-down-you-are-programming-too-fast.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -704,7 +688,10 @@ started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-d
     </div>
     <div class="content">
       
-      <p>It is perhaps my experience but I’ve hardly had the opportunity to work on green field projects, but rather worked on legacy ones where most of the original developers were no longer part of the team or even none of them. Projects with little to no documentation and in some cases no tests at all. You probable know this feeling, it sucks, you want to do things but everything you touch breaks something else, where you obviously see that there was lack of care.  [...] <a class="more" href="/2011/12/21/being-pragmatic.html">read more</a>
+      <p>It is perhaps my experience but I’ve hardly had the opportunity to work on green field projects, but rather worked on legacy ones where most of the original developers were no longer part of the team or even none of them. Projects with little to no documentation and in some cases no tests at all. You probable know this feeling, it sucks, you want to do things but everything you touch breaks something else, where you obviously see that there was lack of care.</p>
+
+
+      <p><a class="more" href="/2011/12/21/being-pragmatic.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -737,7 +724,10 @@ started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-d
     </div>
     <div class="content">
       
-      <p>It’s been some agitated months lately for me, I quitted working at JustLanded after almost two years there and then went working for some consulting, the experience was not so great, actually it was really bad, the kind of experience that has made me learn to choose very carefully my future career moves and never again believe in marketing people. Fortunately I got an offer to work at <a href="https://xing.com">XING</a> offices in Barcelona, so I packed my stuff and moved there. Now this is a really good place to work, everything was as we talked, they’ve been very helpful with my relocation and the environment is great, lots of smart people that want to do a good job, so nowadays I’m very happy and enjoying my new city. [...] <a class="more" href="/2011/08/29/back-from-the-trenches.html">read more</a>
+      <p>It’s been some agitated months lately for me, I quitted working at JustLanded after almost two years there and then went working for some consulting, the experience was not so great, actually it was really bad, the kind of experience that has made me learn to choose very carefully my future career moves and never again believe in marketing people. Fortunately I got an offer to work at <a href="https://xing.com">XING</a> offices in Barcelona, so I packed my stuff and moved there. Now this is a really good place to work, everything was as we talked, they’ve been very helpful with my relocation and the environment is great, lots of smart people that want to do a good job, so nowadays I’m very happy and enjoying my new city.</p>
+
+
+      <p><a class="more" href="/2011/08/29/back-from-the-trenches.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -776,7 +766,10 @@ started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-d
     </div>
     <div class="content">
       
-      <p>If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations. [...] <a class="more" href="/2011/01/13/avoid-empty-deploys-with-capistrano.html">read more</a>
+      <p>If you’ve ever forgotten to push your changes to the remote repository before trying to make a deploy, you will know that it can be really frustrating to think that everything has gone live when actually it has not. This little script will help you avoid this situations.</p>
+
+
+      <p><a class="more" href="/2011/01/13/avoid-empty-deploys-with-capistrano.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -806,7 +799,10 @@ started writing my own scripts. [...] <a class="more" href="/2012/09/10/closed-d
       <p>When using passenger with rvm I’ve had some issues with project specific gemsets, where bundler was unable to find the gems.
 After searching a lot I found out about using the “config/setup_load_paths.rb” file to tell passenger where to locate your gems, but then I had a new issue with rvm trying to use the system ruby instead of the ruby version of my .rvmrc file.</p>
 
-<p>After going to the irc channel, I got some help that help me fixed my problem. The culprit was my rvmrc file. [...] <a class="more" href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html">read more</a>
+<p>After going to the irc channel, I got some help that help me fixed my problem. The culprit was my rvmrc file.</p>
+
+
+      <p><a class="more" href="/2010/11/17/passenger-rvm-gemsets-and-bundler.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -850,7 +846,8 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
 <p><a href="https://github.com/diasjorge/ruby-cli-tweet">Ruby CLI Tweet</a></p>
 
 <p>Hope you enjoy it.</p>
- [...] <a class="more" href="/2010/11/04/conferencia-rails-workshop.html">read more</a>
+
+      <p><a class="more" href="/2010/11/04/conferencia-rails-workshop.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -891,7 +888,10 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
       
       <p>Today I spent several hours with my friend <a href="http://es.linkedin.com/in/glebm">Gleb</a> trying to find a weird bug we we’re having importing some rss feeds.</p>
 
-<p>We have a rake task that will grab an xml feed and import it to our system. When we call this rake task from the command line it would run fine, but if we run it from inside our application, we would get some wrong characters (you know, the usual ???) in the imported items. [...] <a class="more" href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html">read more</a>
+<p>We have a rake task that will grab an xml feed and import it to our system. When we call this rake task from the command line it would run fine, but if we run it from inside our application, we would get some wrong characters (you know, the usual ???) in the imported items.</p>
+
+
+      <p><a class="more" href="/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -930,7 +930,10 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
     </div>
     <div class="content">
       
-      <p>If you’re using emacs to write your jekyll blog posts, there is a mode to help you with some common tasks. It is originally from <a href="http://metajack.im/2009/01/02/manage-jekyll-from-emacs/">metajack</a>. Recently I thought it could be a nice addition to have syntax highlight support for jekyll posts, so I got my hands dirty and after some hours of lisp hacking (this was my first attempt at lisp programming) it was a reallity. It is based on <a href="http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html">nxhtml</a> so you need it to work. [...] <a class="more" href="/2010/04/11/emacs-support-for-jekyll.html">read more</a>
+      <p>If you’re using emacs to write your jekyll blog posts, there is a mode to help you with some common tasks. It is originally from <a href="http://metajack.im/2009/01/02/manage-jekyll-from-emacs/">metajack</a>. Recently I thought it could be a nice addition to have syntax highlight support for jekyll posts, so I got my hands dirty and after some hours of lisp hacking (this was my first attempt at lisp programming) it was a reallity. It is based on <a href="http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html">nxhtml</a> so you need it to work.</p>
+
+
+      <p><a class="more" href="/2010/04/11/emacs-support-for-jekyll.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -972,7 +975,8 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">set</span> <span class="ss">:rails_env</span><span class="p">,</span> <span class="s2">&quot;staging&quot;</span></code></pre></figure>
 
 <p>Then when migrations get executed they’ll have RAILS_ENV=staging.</p>
- [...] <a class="more" href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html">read more</a>
+
+      <p><a class="more" href="/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -1007,7 +1011,10 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
       
       <p>Recently I moved my blog to <a href="http://jekyllrb.com/">Jekyll</a>, while being able to write stuff directly in my favorite editor EMACS, there was some functionality that I was missing from my previous custom blog engine, such as archives. Looking at how I could achieve this, I found <a href="http://rfelix.com">Raoul Felix</a> approach to the problem. Instead of patching jekyll, he wrote a small library that wraps around it, called <a href="http://github.com/rfelix/jekyll_ext">jekyll_ext</a>. Using it was really easy, and based on some of the extensions he created, I was able to provide this functionality in my site.</p>
 
-<p>Although I had archives generated for me, I was still missing a way to display this information on my site, so I decided to create my own extension. [...] <a class="more" href="/2010/03/08/monthly-archives-for-jekyll.html">read more</a>
+<p>Although I had archives generated for me, I was still missing a way to display this information on my site, so I decided to create my own extension.</p>
+
+
+      <p><a class="more" href="/2010/03/08/monthly-archives-for-jekyll.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -1040,7 +1047,10 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
     </div>
     <div class="content">
       
-      <p>I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages. [...] <a class="more" href="/2010/03/02/view-your-emails-with-cucumber.html">read more</a>
+      <p>I’ve been developing some new mailers at work, and I’ve found it really helpful to be able to view the emails as they are sent to the users. So I’ve implemented a cucumber step to help me achieve that, inspired on a similar webrat step for web pages.</p>
+
+
+      <p><a class="more" href="/2010/03/02/view-your-emails-with-cucumber.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -1073,7 +1083,10 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
     </div>
     <div class="content">
       
-      If you ever run into the situation where one migration doesn't complete sucessfully, and you're stuck with a column in a table or a new table, so you can't drop the migration or execute the migration again, you can always call the migration methods from the console like this: [...] <a class="more" href="/2010/02/23/activerecord-migrations-from-the-console.textile">read more</a>
+      If you ever run into the situation where one migration doesn't complete sucessfully, and you're stuck with a column in a table or a new table, so you can't drop the migration or execute the migration again, you can always call the migration methods from the console like this:
+
+
+      <p><a class="more" href="/2010/02/23/activerecord-migrations-from-the-console.textile">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -1110,7 +1123,10 @@ After searching a lot I found out about using the “config/setup_load_paths.rb�
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="k">new</span> <span class="nx">Element</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="o">:</span><span class="s1">&#39;klassName&#39;</span><span class="p">})</span></code></pre></figure>
 
-will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles.  [...] <a class="more" href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile">read more</a>
+will work in firefox but in IE (tested on version 8) the className is never set, which was causing some problems with the elements styles. 
+
+
+      <p><a class="more" href="/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -1149,7 +1165,10 @@ will work in firefox but in IE (tested on version 8) the className is never set,
     </div>
     <div class="content">
       
-      A couple days ago I had to gather some information from a git repository, so I'm sharing this small scripts with you.  [...] <a class="more" href="/2009/02/12/git-goodies.textile">read more</a>
+      A couple days ago I had to gather some information from a git repository, so I'm sharing this small scripts with you. 
+
+
+      <p><a class="more" href="/2009/02/12/git-goodies.textile">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -1182,7 +1201,10 @@ will work in firefox but in IE (tested on version 8) the className is never set,
     </div>
     <div class="content">
       
-      I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn't customize the pagination url's or I had to specify the paginator to use (will paginate's default or mine for ajax), so I came up with this solution which fulfils all my needs. [...] <a class="more" href="/2008/12/16/will-paginate-and-ajax.textile">read more</a>
+      I recently had to implement some ajax pagination for a site. After googling for a while I found a solution, but I couldn't customize the pagination url's or I had to specify the paginator to use (will paginate's default or mine for ajax), so I came up with this solution which fulfils all my needs.
+
+
+      <p><a class="more" href="/2008/12/16/will-paginate-and-ajax.textile">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -1222,7 +1244,10 @@ will work in firefox but in IE (tested on version 8) the className is never set,
     <div class="content">
       
       I read something about how to do it in this "post":http://merbist.com/2008/10/27/will_paginate-and-merb/ by The merbist, albeit the information was not complete.
-So here are my instructions: [...] <a class="more" href="/2008/12/09/will-paginate-and-merb.textile">read more</a>
+So here are my instructions:
+
+
+      <p><a class="more" href="/2008/12/09/will-paginate-and-merb.textile">Read more</a></p>
       
     </div>
     <div class="metadata">

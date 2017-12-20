@@ -4,7 +4,7 @@
  <title>Mr Dias</title>
  <link href="https://mrdias.com/atom.xml" rel="self"/>
  <link href="https://mrdias.com/"/>
- <updated>2017-12-20T00:30:02+01:00</updated>
+ <updated>2017-12-20T23:07:49+01:00</updated>
  <id>https://mrdias.com/</id>
  <author>
    <name>Jorge Dias</name>
@@ -85,7 +85,8 @@ work related projects and jump to them using the &lt;code&gt;cx&lt;/code&gt;&lt;
 
 &lt;p&gt;Originally the x comes from Xing where I worked at the time. It also
 happens that the letter x is located next to the c which makes it very
-convenient like &lt;code&gt;cd&lt;/code&gt;.&lt;/p&gt;
+convenient like &lt;code&gt;cd&lt;/code&gt;.
+&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;Anyway imagine you’re in any directory on your system and you want to
 change to &lt;code&gt;~/development/work/boring-project&lt;/code&gt; normally you’d do
