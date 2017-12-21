@@ -1,14 +1,14 @@
 ---
 layout: null
 site_pages:
-  - /
+- /
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-			http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+                        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   {% for site_page in page.site_pages %}
   <url>
     <loc>{{ site.url }}{{ site_page }}</loc>
@@ -23,11 +23,11 @@ site_pages:
     <changefreq>daily</changefreq>
   </url>
   {% endfor %}
-  {% for monthly_archive in site.monthly_archives reversed %}
-    <url>
-    <loc>{{ site.url }}{{ monthly_archive.url }}</loc>
-    <lastmod>{{ monthly_archive.date | date_to_xmlschema }}</lastmod>
+  {% for archive in site.archives %}
+  <url>
+    <loc>{{ site.url }}{{ archive.url }}</loc>
+    <lastmod>{{ archive.posts[-1].date | date_to_xmlschema }}</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   {% endfor %}
 </urlset>

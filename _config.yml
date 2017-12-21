@@ -3,8 +3,18 @@ feed_url: "https://feeds2.feedburner.com/mrdias"
 highlighter: pygments
 disqus_shortname: "mrdias"
 excerpt_separator: "<!-- -**-END-**- -->"
+plugins:
+  - jekyll-archives
+  - jekyll/tagging
 tag_page_layout: tag_index
 tag_page_dir: tags
+jekyll-archives:
+  enabled:
+    - year
+    - month
+  layouts:
+    year: archive_yearly
+    month: archive_monthly
 exclude:
   - "config.rb"
   - "Rakefile"

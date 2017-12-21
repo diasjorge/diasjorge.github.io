@@ -3,11 +3,9 @@ layout: default
 ---
 
 <h2 class="title">Tag: {{ page.tag }}</h2>
-<ul>
-{% for post in site.tags[page.tag] %}
-  <li> 
-    <a href="{{post.url}}">{{ post.title }}</a>
-  </li>
-{% endfor %}
-</ul>
 
+<ul class="posts">
+  {% for post in site.tags[page.tag] %}
+  {% include _post_list.html %}
+  {% endfor %}
+</ul>

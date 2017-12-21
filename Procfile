@@ -1,2 +1,2 @@
-jekyll:  ejekyll serve --watch
+jekyll: jekyll serve --watch
 sass: sass --watch _sass:stylesheets
