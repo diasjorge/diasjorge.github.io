@@ -27,5 +27,5 @@ task release: :deploy
 
 def jekyll(opts = '')
   sh 'rm -rf _site'
-  sh 'ejekyll ' + opts
+  sh 'jekyll ' + opts
 end
