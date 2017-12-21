@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-15098892-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-15098892-1');
+</script>
+
+  <title></title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Jorge Dias | So many layers of web"/>
+  <meta name="author" content="Jorge Dias"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+  <link rel="stylesheet" href="/stylesheets/main.css"/>
+  <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="https://feeds2.feedburner.com/mrdias" />
+</head>
+<body>
+  <header>
+    <a href="/" id="title">
+  <h1>Jorge Dias</h1>
+  <h2>So many layers of web</h2>
+</a>
+<div id="toplinks">
+  <a href="https://github.com/diasjorge">
+    <img width="24" height="24" src="/images/github.svg" alt="github"/>
+  </a>
+  <a href="https://twitter.com/dias_jorge">
+    <img width="24" height="24" src="/images/twitter.svg" alt="twitter"/>
+  </a>
+  <a href="https://linkedin.com/in/jorgediasmartinez/en">
+    <img width="24" height="24" src="/images/linkedin.svg" alt="linkedin"/>
+  </a>
+  <div id="mode">
+    <a style="display:none;" id="light-mode" href="#">
+      Light Mode
+    </a>
+    <a id="dark-mode" href="#">
+      Dark Mode
+    </a>
+  </div>
+</div>
+
+  </header>
+  <div class="content-wrapper">
+    <div id="content">
+      <h2 class="title">Tag: rails</h2>
+
+<ul class="posts">
+  
+  <li>
+  <span class="post-date">Mar 08, 2015</span>
+  <a class="post-link" href="/2015/03/08/using-docker-containers-with-your-existing-rails-app.html">Using docker containers with your existing rails app</a>
+</li>
+
+  
+  <li>
+  <span class="post-date">Dec 16, 2008</span>
+  <a class="post-link" href="/2008/12/16/will-paginate-and-ajax.textile">Will Paginate And Ajax</a>
+</li>
+
+  
+</ul>
+
+    </div>
+    <div id="sidebar">
+      <div class="module rss">
+  <h2>
+    Subscribe
+  </h2>
+  <ul>
+    <li>
+      <a href="https://feeds2.feedburner.com/mrdias" class="feed-link">RSS</a>
+    </li>
+  </ul>
+</div>
+<div class="module github">
+  <h2>Github</h2>
+  <h3>Last Active Repos</h3>
+  <ul id="gh_repos">
+  </ul>
+  <script>
+   var github = {
+     success: function(response) {
+       var repos = [];
+       var length = response.data.length >= 10 ? 10: response.data.length
+       for (var i = 0; i < length; i++) {
+         repos.push(response.data[i]);
+       }
+       github.render(repos);
+     },
+     render: function(repos) {
+       var i = 0,
+       fragment = '',
+       target = 'gh_repos';
+       t = document.getElementById(target);
+
+       for (i = 0; i < repos.length; i++) {
+         fragment += '<li><a href="' + repos[i].html_url + '">' + repos[i].name + '</a><p>' + (repos[i].description || '') + '</p></li>';
+       }
+       t.innerHTML = fragment;
+     }
+   }
+  </script>
+  <script src="https://api.github.com/users/diasjorge/repos?sort=pushed&type=public&callback=github.success"></script>
+</div>
+<div class="module twitter">
+  <h2>Twitter</h2>
+  <h3>Recent Activity</h3>
+  <a class="twitter-timeline" href="https://twitter.com/dias_jorge" data-widget-id="398762448485744640" data-theme="light" data-chrome="noheader nofooter noscrollbar transparent" data-border-color="#D0D0D0" data-tweet-limit="5" data-width="auto" data-link-color="#b58900"></a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+<div class="module tags">
+  <h2>
+    Tags
+  </h2>
+  <div id="tag-cloud">
+    <a href="/tags/aws.html" class="set-2">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-2">automation</a> <a href="/tags/awareness.html" class="set-2">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-2">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-3">docker</a> <a href="/tags/emacs.html" class="set-2">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-2">git</a> <a href="/tags/javascript.html" class="set-2">javascript</a> <a href="/tags/jekyll.html" class="set-2">jekyll</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-2">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-2">osx</a> <a href="/tags/passenger.html" class="set-2">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-2">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-2">will_paginate</a>
+  </div>
+</div>
+
+    </div>
+  </div>
+  <footer>
+    &copy; 2008-2017 Jorge Dias
+  </footer>
+  <script src="/js/main.js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#f2f1ec"
+    },
+    "button": {
+      "background": "#8ec760",
+      "text": "#ffffff"
+    }
+  },
+  "theme": "edgeless"
+})});
+</script>
+
+</body>

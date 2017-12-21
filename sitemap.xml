@@ -3,11 +3,11 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-			http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+                        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   
   <url>
     <loc>https://mrdias.com/</loc>
-    <lastmod>2017-12-20T23:07:49+01:00</lastmod>
+    <lastmod>2017-12-21T11:27:46+01:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
@@ -181,130 +181,184 @@
   </url>
   
   
-    <url>
-    <loc>https://mrdias.com/2017/12</loc>
-    <lastmod>2017-12-31T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2008/</loc>
+    <lastmod>2008-12-09T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2017/03</loc>
-    <lastmod>2017-03-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2008/12/</loc>
+    <lastmod>2008-12-09T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2015/03</loc>
-    <lastmod>2015-03-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2009/</loc>
+    <lastmod>2009-02-12T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2014/12</loc>
-    <lastmod>2014-12-31T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2009/08/</loc>
+    <lastmod>2009-08-12T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2014/07</loc>
-    <lastmod>2014-07-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2009/02/</loc>
+    <lastmod>2009-02-12T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2013/10</loc>
-    <lastmod>2013-10-31T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2010/</loc>
+    <lastmod>2010-02-23T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2012/09</loc>
-    <lastmod>2012-09-30T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2010/11/</loc>
+    <lastmod>2010-11-04T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2012/07</loc>
-    <lastmod>2012-07-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2010/05/</loc>
+    <lastmod>2010-05-25T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2012/05</loc>
-    <lastmod>2012-05-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2010/04/</loc>
+    <lastmod>2010-04-11T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2012/02</loc>
+  <url>
+    <loc>https://mrdias.com/2010/03/</loc>
+    <lastmod>2010-03-02T00:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2010/02/</loc>
+    <lastmod>2010-02-23T00:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2011/</loc>
+    <lastmod>2011-01-13T00:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2011/12/</loc>
+    <lastmod>2011-12-21T00:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2011/08/</loc>
+    <lastmod>2011-08-29T00:00:00+02:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2011/01/</loc>
+    <lastmod>2011-01-13T00:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2012/</loc>
     <lastmod>2012-02-29T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2011/12</loc>
-    <lastmod>2011-12-31T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2012/09/</loc>
+    <lastmod>2012-09-10T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2011/08</loc>
-    <lastmod>2011-08-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2012/07/</loc>
+    <lastmod>2012-07-11T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2011/01</loc>
-    <lastmod>2011-01-31T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2012/05/</loc>
+    <lastmod>2012-05-11T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2010/11</loc>
-    <lastmod>2010-11-30T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2012/02/</loc>
+    <lastmod>2012-02-29T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2010/05</loc>
-    <lastmod>2010-05-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2013/</loc>
+    <lastmod>2013-10-12T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2010/04</loc>
-    <lastmod>2010-04-30T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2013/10/</loc>
+    <lastmod>2013-10-12T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2010/03</loc>
-    <lastmod>2010-03-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2014/</loc>
+    <lastmod>2014-07-03T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2010/02</loc>
-    <lastmod>2010-02-28T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2014/12/</loc>
+    <lastmod>2014-12-09T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2009/08</loc>
-    <lastmod>2009-08-31T00:00:00+02:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2014/07/</loc>
+    <lastmod>2014-07-03T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2009/02</loc>
-    <lastmod>2009-02-28T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2015/</loc>
+    <lastmod>2015-03-08T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
   
-    <url>
-    <loc>https://mrdias.com/2008/12</loc>
-    <lastmod>2008-12-31T00:00:00+01:00</lastmod>
+  <url>
+    <loc>https://mrdias.com/2015/03/</loc>
+    <lastmod>2015-03-08T00:00:00+01:00</lastmod>
     <changefreq>weekly</changefreq>
-    </url>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2017/</loc>
+    <lastmod>2017-03-09T00:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2017/12/</loc>
+    <lastmod>2017-12-09T00:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2017/03/</loc>
+    <lastmod>2017-03-09T00:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
   
 </urlset>
