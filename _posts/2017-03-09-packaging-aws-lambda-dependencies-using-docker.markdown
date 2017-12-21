@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Packaging AWS Lambda dependencies using docker
-tags: aws lambda docker python
+tags: AWS lambda docker python
 ---
 
 Recently I've been using AWS Lambda at work for some projects and one

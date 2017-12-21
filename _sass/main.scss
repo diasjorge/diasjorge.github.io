@@ -15,9 +15,22 @@ a {
 }
 
 #sidebar {
-  .cloud-wrap li {
-    display: inline;
-    margin: 0.1em;
+  #tag-cloud {
+    .set-1 {
+      font-size: 1.18em;
+    }
+    .set-2 {
+      font-size: 1.36em;
+    }
+    .set-3 {
+      font-size: 1.54em;
+    }
+    .set-4 {
+      font-size: 1.72em;
+    }
+    .set-5 {
+      font-size: 1.90em;
+    }
   }
 }
 

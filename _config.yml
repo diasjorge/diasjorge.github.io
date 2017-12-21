@@ -3,6 +3,8 @@ feed_url: "https://feeds2.feedburner.com/mrdias"
 highlighter: pygments
 disqus_shortname: "mrdias"
 excerpt_separator: "<!-- -**-END-**- -->"
+tag_page_layout: tag_index
+tag_page_dir: tags
 exclude:
   - "config.rb"
   - "Rakefile"

@@ -22,6 +22,8 @@ GEM
       safe_yaml (~> 1.0)
     jekyll-sass-converter (1.5.0)
       sass (~> 3.4)
+    jekyll-tagging (1.1.0)
+      nuggets
     jekyll-watch (1.5.0)
       listen (~> 3.0, < 3.1)
     jekyll_ext (0.1.4)
@@ -32,6 +34,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.7)
     mercenary (0.3.6)
     multi_json (1.12.1)
+    nuggets (1.5.0)
     pathutil (0.14.0)
       forwardable-extended (~> 2.6)
     public_suffix (2.0.5)
@@ -53,6 +56,7 @@ DEPENDENCIES
   RedCloth
   foreman
   jekyll
+  jekyll-tagging
   jekyll_ext
   pygments.rb
   rake
@@ -60,4 +64,4 @@ DEPENDENCIES
   sass
 
 BUNDLED WITH
-   1.12.3
+   1.16.0
