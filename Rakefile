@@ -5,14 +5,13 @@ task default: :server
 
 desc 'Build site with Jekyll'
 task :build do
-  raise "Install pygments" unless system("which pygmentize")
-  sh 'sass --update _sass:stylesheets --style compressed --force --sourcemap=none'
-  jekyll('build')
+  raise 'Install pygments' unless system('which pygmentize')
+  jekyll('build -c _config.yml,_config.deploy.yml')
 end
 
 desc 'run server'
 task :server do
-  sh 'foreman start'
+  jekyll('serve --watch --drafts')
 end
 
 desc 'run server'
