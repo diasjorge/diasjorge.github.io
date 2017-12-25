@@ -4,7 +4,7 @@
  <title>Mr Dias</title>
  <link href="https://mrdias.com/atom.xml" rel="self"/>
  <link href="https://mrdias.com/"/>
- <updated>2017-12-22T00:30:28+01:00</updated>
+ <updated>2017-12-25T11:41:08+01:00</updated>
  <id>https://mrdias.com/</id>
  <author>
    <name>Jorge Dias</name>
@@ -16,7 +16,7 @@
    <link href="https://mrdias.com/2017/12/22/pair-programming-revisited.html"/>
    <updated>2017-12-22T00:00:00+01:00</updated>
    <id>https://mrdias.com/2017/12/22/pair-programming-revisited</id>
-   <content type="html">&lt;p&gt;I’ve always liked pair programming, since my colleague times. I
+   <content type="html">&lt;p&gt;I’ve always liked pair programming, since my college times. I
 remember doing coding exercises spending late nights at the computer
 lab and we were always working with your partners. And you would talk
 to everyone in the room trying to figure out how to solve things,
