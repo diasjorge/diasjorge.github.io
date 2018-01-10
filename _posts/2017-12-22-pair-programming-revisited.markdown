@@ -8,7 +8,7 @@ remember doing coding exercises spending late nights at the computer
 lab and we were always working with your partners. And you would talk
 to everyone in the room trying to figure out how to solve things,
 you'd sit with people from other teams and share code. I didn't know
-you'd call this pairing then.
+you'd call this pairing then.<!-- -**-END-**- -->
 
 And then I started doing an internship to get my degree, and I was
 assigned a project with someone from my same university. And we would

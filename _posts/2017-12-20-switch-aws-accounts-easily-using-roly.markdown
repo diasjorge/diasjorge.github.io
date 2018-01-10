@@ -9,7 +9,7 @@ team, etc and you can find yourself in a situation where you have
 users and credentials on many different accounts. From a security
 perspective this is not ideal as managing this can be very hard,
 people will change teams, leave the company, etc and cleaning up their
-access on all accounts can be very tedious and time consuming.
+access on all accounts can be very tedious and time consuming.<!-- -**-END-**- -->
 
 A way to deal with this is by having a user in one account and then
 assume role in another account so there's only one place to manage
