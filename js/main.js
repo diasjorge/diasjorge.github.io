@@ -17,7 +17,7 @@
   };
 
   var loadDarkMode = function() {
-    loadCss('/stylesheets/dark.css');
+    loadCss('/css/dark.css');
     setTimeout(function() {
       var iframe = document.getElementById('twitter-widget-0');
       iframe.contentWindow.document.getElementsByTagName('body')[0].style.color="#839496";
@@ -32,7 +32,7 @@
   });
   light.addEventListener("click", function(e) {
     localStorage.setItem("mode", "light");
-    loadCss('/stylesheets/main.css');
+    loadCss('/css/main.css');
     hide(light);
     show(dark);
   });

@@ -4,12 +4,111 @@
  <title>Mr Dias</title>
  <link href="https://mrdias.com/atom.xml" rel="self"/>
  <link href="https://mrdias.com/"/>
- <updated>2017-12-25T11:41:08+01:00</updated>
+ <updated>2018-04-01T22:22:57+02:00</updated>
  <id>https://mrdias.com/</id>
  <author>
    <name>Jorge Dias</name>
  </author>
 
+ 
+ <entry>
+   <title>Using magit with Github Enterprise</title>
+   <link href="https://mrdias.com/2018/04/01/using-magit-with-github-enterprise.html"/>
+   <updated>2018-04-01T00:00:00+02:00</updated>
+   <id>https://mrdias.com/2018/04/01/using-magit-with-github-enterprise</id>
+   <content type="html">&lt;p&gt;I’m a big fan of &lt;a href=&quot;https://magit.vc&quot;&gt;magit&lt;/a&gt; and I’ve been using it for
+many years and I found some time ago the
+&lt;a href=&quot;https://github.com/vermiculus/magithub&quot;&gt;magithub extension&lt;/a&gt;, which is
+great and allows you to integrate with github, see your pull requests,
+open the browser for the current project, create PRs, etc.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+
+&lt;p&gt;The main difficulties I had were getting it to work with GHE, I had to
+do some hacks to get it working like a year ago but it was good and I
+moved on.&lt;/p&gt;
+
+&lt;p&gt;Now I recently had to setup a new computer and the newest version of
+magithub has changed and my previous configuration didn’t work.&lt;/p&gt;
+
+&lt;p&gt;After reading the documentation for magithub, ghub and ghub+ I was
+still having some problems so after some debugging and reading the
+source code I found how to make it work which I’ll document here for
+future reference.&lt;/p&gt;
+
+&lt;p&gt;From the
+&lt;a href=&quot;https://github.com/vermiculus/magithub/blob/master/magithub.org#faq&quot;&gt;magithub FAQ&lt;/a&gt;
+the first thing you need is to setup the correct value of
+&lt;code&gt;magithub-github-hosts&lt;/code&gt;. I tried to customize it but there seems
+to be a problem and emacs (25.2.1) doesn’t let me use a list so in my
+.emacs config I added.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(setq magithub-github-hosts '(&quot;github.com&quot; &quot;ghe.example.com&quot;)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Following the
+&lt;a href=&quot;https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started&quot;&gt;ghub manual&lt;/a&gt;
+the first thing you need to do is setup your username:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git config --global github.user USERNAME
+
+# For GHE
+git config --global github.ghe.example.com/api/v3.user EMPLOYEE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then for each corporate repository you should do:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd /path/to/repo
+git config github.host ghe.example.com/api/v3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now in my case I added a conditional include in my &lt;code&gt;~/.gitconfig&lt;/code&gt;
+to set this globally for all the work repos (which I have under the same root folder).&lt;/p&gt;
+
+&lt;p&gt;So my &lt;code&gt;~/.gitconfig&lt;/code&gt; would include:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[github]
+	user = diasjorge
+
+[includeIf &quot;gitdir:~/development/work/&quot;]
+        path = ~/.gitconfig.work
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And in &lt;code&gt;~/.gitconfig.work&lt;/code&gt; I’ll have:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[user]
+        email = jorge.dias@example.com
+[github &quot;ghe.example.com/api/v3&quot;] # Magithub uses this to make the API requests
+	user = jorge-dias
+[github] # Make ghub always use this user and host
+	user = jorge-dias
+	host = ghe.example.com/api/v3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now with this setup I have seamless integration and I don’t have to
+remember to configure the &lt;code&gt;github.host&lt;/code&gt; for all my repos.&lt;/p&gt;
+
+&lt;p&gt;Then you need to configure your &lt;code&gt;~/.authinfo&lt;/code&gt; file. Following the
+&lt;a href=&quot;https://magit.vc/manual/ghub/How-Ghub-uses-Auth_002dSource.html#How-Ghub-uses-Auth_002dSource&quot;&gt;manual&lt;/a&gt;
+I added:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;machine api.github.com login user^ghub password TOKEN
+machine api.github.com login user^magithub password TOKEN
+
+machine ghe.example.com/api/v3 login ghe-user^ghub password GHE_TOKEN
+machine ghe.example.com/api/v3 login ghe-user^magithub password GHE_TOKEN
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Notice I add different entries for ghub and magithub packages. This is
+so you can give different packages that use ghub different permissions.&lt;/p&gt;
+
+&lt;p&gt;For magithub the variable &lt;code&gt;magithub-github-token-scopes&lt;/code&gt;
+mentions the required scopes &lt;code&gt;'(repo user notifications)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;It took me a while to figure it all out so I hope you find this
+summary useful and you can enjoy working with magit and Github
+enterprise using magithub.&lt;/p&gt;
+
+&lt;p&gt;Cheers!&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Pair programming revisited</title>
@@ -21,7 +120,7 @@ remember doing coding exercises spending late nights at the computer
 lab and we were always working with your partners. And you would talk
 to everyone in the room trying to figure out how to solve things,
 you’d sit with people from other teams and share code. I didn’t know
-you’d call this pairing then.&lt;/p&gt;
+you’d call this pairing then.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;And then I started doing an internship to get my degree, and I was
 assigned a project with someone from my same university. And we would
@@ -84,10 +183,12 @@ with your partner when you’re writing the code and when you’re the
 constant distractions and focusing on the task with your partner can
 be challenging.&lt;/p&gt;
 
-&lt;p&gt;I’m preparing a workshop to help you learn how to get the most from
-pair programming, if you’re starting now or want to improve the way
-you work with your colleagues please sign up to the newsletter to keep
-you informed.&lt;/p&gt;
+&lt;p&gt;
+  I'm preparing a workshop to help you learn how to get the most from
+  pair programming, if you're starting now or want to improve the way
+  you work with your colleagues please sign up to the newsletter to
+  keep you informed.
+&lt;/p&gt;
 
 &lt;!-- Begin MailChimp Signup Form --&gt;
 &lt;link href=&quot;//cdn-images.mailchimp.com/embedcode/slim-10_7.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
@@ -108,6 +209,7 @@ you informed.&lt;/p&gt;
     &lt;/div&gt;
 &lt;/form&gt;
 &lt;/div&gt;
+
 </content>
  </entry>
  
@@ -121,7 +223,7 @@ team, etc and you can find yourself in a situation where you have
 users and credentials on many different accounts. From a security
 perspective this is not ideal as managing this can be very hard,
 people will change teams, leave the company, etc and cleaning up their
-access on all accounts can be very tedious and time consuming.&lt;/p&gt;
+access on all accounts can be very tedious and time consuming.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
 
 &lt;p&gt;A way to deal with this is by having a user in one account and then
 assume role in another account so there’s only one place to manage

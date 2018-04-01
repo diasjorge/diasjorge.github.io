@@ -16,7 +16,7 @@
   <meta name="author" content="Jorge Dias"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-  <link rel="stylesheet" href="/stylesheets/main.css"/>
+  <link rel="stylesheet" href="/css/main.css"/>
   <link rel="alternate" type="application/rss+xml" title="Articles RSS" href="https://feeds2.feedburner.com/mrdias" />
 </head>
 <body>
@@ -53,6 +53,118 @@
   <div class="article">
     <div class="header">
       <h2>
+        <a href="/2018/04/01/using-magit-with-github-enterprise.html">Using magit with Github Enterprise</a>
+      </h2>
+    </div>
+    <div class="content">
+      
+      <p>I’m a big fan of <a href="https://magit.vc">magit</a> and I’ve been using it for
+many years and I found some time ago the
+<a href="https://github.com/vermiculus/magithub">magithub extension</a>, which is
+great and allows you to integrate with github, see your pull requests,
+open the browser for the current project, create PRs, etc.<!-- -**-END-**- --></p>
+
+<p>The main difficulties I had were getting it to work with GHE, I had to
+do some hacks to get it working like a year ago but it was good and I
+moved on.</p>
+
+<p>Now I recently had to setup a new computer and the newest version of
+magithub has changed and my previous configuration didn’t work.</p>
+
+<p>After reading the documentation for magithub, ghub and ghub+ I was
+still having some problems so after some debugging and reading the
+source code I found how to make it work which I’ll document here for
+future reference.</p>
+
+<p>From the
+<a href="https://github.com/vermiculus/magithub/blob/master/magithub.org#faq">magithub FAQ</a>
+the first thing you need is to setup the correct value of
+<code>magithub-github-hosts</code>. I tried to customize it but there seems
+to be a problem and emacs (25.2.1) doesn’t let me use a list so in my
+.emacs config I added.</p>
+
+<pre><code>(setq magithub-github-hosts '("github.com" "ghe.example.com")))
+</code></pre>
+
+<p>Following the
+<a href="https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started">ghub manual</a>
+the first thing you need to do is setup your username:</p>
+
+<pre><code>git config --global github.user USERNAME
+
+# For GHE
+git config --global github.ghe.example.com/api/v3.user EMPLOYEE
+</code></pre>
+
+<p>Then for each corporate repository you should do:</p>
+<pre><code>cd /path/to/repo
+git config github.host ghe.example.com/api/v3
+</code></pre>
+
+<p>Now in my case I added a conditional include in my <code>~/.gitconfig</code>
+to set this globally for all the work repos (which I have under the same root folder).</p>
+
+<p>So my <code>~/.gitconfig</code> would include:</p>
+
+<pre><code>[github]
+	user = diasjorge
+
+[includeIf "gitdir:~/development/work/"]
+        path = ~/.gitconfig.work
+</code></pre>
+
+<p>And in <code>~/.gitconfig.work</code> I’ll have:</p>
+
+<pre><code>[user]
+        email = jorge.dias@example.com
+[github "ghe.example.com/api/v3"] # Magithub uses this to make the API requests
+	user = jorge-dias
+[github] # Make ghub always use this user and host
+	user = jorge-dias
+	host = ghe.example.com/api/v3
+</code></pre>
+
+<p>Now with this setup I have seamless integration and I don’t have to
+remember to configure the <code>github.host</code> for all my repos.</p>
+
+<p>Then you need to configure your <code>~/.authinfo</code> file. Following the
+<a href="https://magit.vc/manual/ghub/How-Ghub-uses-Auth_002dSource.html#How-Ghub-uses-Auth_002dSource">manual</a>
+I added:</p>
+
+<pre><code>machine api.github.com login user^ghub password TOKEN
+machine api.github.com login user^magithub password TOKEN
+
+machine ghe.example.com/api/v3 login ghe-user^ghub password GHE_TOKEN
+machine ghe.example.com/api/v3 login ghe-user^magithub password GHE_TOKEN
+</code></pre>
+
+<p>Notice I add different entries for ghub and magithub packages. This is
+so you can give different packages that use ghub different permissions.</p>
+
+<p>For magithub the variable <code>magithub-github-token-scopes</code>
+mentions the required scopes <code>'(repo user notifications)</code>.</p>
+
+<p>It took me a while to figure it all out so I hope you find this
+summary useful and you can enjoy working with magit and Github
+enterprise using magithub.</p>
+
+<p>Cheers!</p>
+
+      
+    </div>
+    <div class="metadata">
+      <p class="author vcard">
+        <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2018-04-01T00:00:00+02:00">01 April 2018</time>
+      </p>
+      <ul class="tags">
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="article">
+    <div class="header">
+      <h2>
         <a href="/2017/12/22/pair-programming-revisited.html">Pair programming revisited</a>
       </h2>
     </div>
@@ -65,92 +177,8 @@ to everyone in the room trying to figure out how to solve things,
 you’d sit with people from other teams and share code. I didn’t know
 you’d call this pairing then.</p>
 
-<p>And then I started doing an internship to get my degree, and I was
-assigned a project with someone from my same university. And we would
-work together a lot, we’d sit together solve problems we had with
-Enterprise Java Beans (OMG!!) the Oracle web server and related
-technologies of the time for hours. And we’d code together on the same
-things, sometimes at my computer or his and I still didn’t know it was
-called pair programming.</p>
 
-<p>And as I started working after I moved to Spain I was working as a
-consultant and I didn’t do much of that. Yes I’d talk to colleagues
-and solve some things together but it was not well seen to work
-together. How can you have two people working on the same thing? It
-would take double to get things done they’d say.</p>
-
-<p>And then I had my first Rails job, a totally different environment,
-and we worked together a lot, sit with someone for many hours solving
-some problems, debugging, creating things and having fun. It was at
-this moment when I started to learn about pair programming.</p>
-
-<p>It was a thing, doing that which always seemed to me like the best way
-to work actually had a name. And there was a lot of people that talked
-about this subject, a consultancy like Hash rocket would do it and
-talk about it, what worked well for them and it was good to realise
-there was a movement of people promoting this work.</p>
-
-<p>And so since then I’ve had a few jobs and I’ve always been bit of a
-proponent of it and I’ve always tried pairing whenever possible since
-I enjoy working with others this way.</p>
-
-<p>The software we’re building is getting more and more complex with
-time, the demands of our users become ever increasing and we’re
-required to handle many different parts. With micro services and the
-cloud this is only getting harder. And for me it’s becoming more clear
-that in order to solve this things what we need is more collaboration
-and that pairing is a more effective way of getting work done.</p>
-
-<p>There is only so much information one can keep in their
-heads when you are pairing you have much more capacity. When you have
-a good partner and you’re driving you can feel more relaxed since
-someone else is spotting many little mistakes that help things flow
-better instead of hitting them and having to fix them.</p>
-
-<p>When tackling a problem and there’s a need to discuss things and you’re
-pairing you have immediate access to a smart person sitting next to
-you to help you discuss alternatives and make a decision.</p>
-
-<p>Writing tests for a feature and having a partner is very useful going
-through edge cases, suggesting possibilities that you haven’t
-considered making sure things are more robust from the beginning.</p>
-
-<p>All the features done with a partner get an automatic +1. Features
-developed pairing are better designed and more robust and other team
-members will feel usually more inclined to accept them.</p>
-
-<p>Pairing is a social skill that needs to be developed, it’s not the
-most natural way to work for people, you need to learn how to work
-with your partner when you’re writing the code and when you’re the
-“co-pilot”. It takes time to break old habits too, getting rid of the
-constant distractions and focusing on the task with your partner can
-be challenging.</p>
-
-<p>I’m preparing a workshop to help you learn how to get the most from
-pair programming, if you’re starting now or want to improve the way
-you work with your colleagues please sign up to the newsletter to keep
-you informed.</p>
-
-<!-- Begin MailChimp Signup Form -->
-<link href="//cdn-images.mailchimp.com/embedcode/slim-10_7.css" rel="stylesheet" type="text/css" />
-
-<style type="text/css">
-	#mc_embed_signup{background:#eee8d5; clear:left; font:14px Helvetica,Arial,sans-serif; }
-    #mc_embed_signup input{text-shadow:none;}
-</style>
-
-<div id="mc_embed_signup">
-<form action="https://mrdias.us17.list-manage.com/subscribe/post?u=5d763b2a9b2fb35ef9b2cc455&amp;id=da74371800" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
-    <div id="mc_embed_signup_scroll">
-	<label for="mce-EMAIL">Subscribe to my mailing list</label>
-	<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required="" />
-    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_5d763b2a9b2fb35ef9b2cc455_da74371800" tabindex="-1" value="" /></div>
-    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button" /></div>
-    </div>
-</form>
-</div>
-
+      <p><a class="more" href="/2017/12/22/pair-programming-revisited.html">Read more</a></p>
       
     </div>
     <div class="metadata">
@@ -190,55 +218,6 @@ perspective this is not ideal as managing this can be very hard,
 people will change teams, leave the company, etc and cleaning up their
 access on all accounts can be very tedious and time consuming.</p>
 
-<p>A way to deal with this is by having a user in one account and then
-assume role in another account so there’s only one place to manage
-your users and credentials.</p>
-
-<p>I’m going to assume you already have knowledge about how to create a
-role in the target account and configure your <code>~/.aws/credentials</code>
-file. If not AWS has a good basic introduction
-<a href="https://aws.amazon.com/blogs/security/how-to-use-a-single-iam-user-to-easily-access-all-your-accounts-by-using-the-aws-cli/">here</a>.</p>
-
-<p>This has some advantages for security but if you are using MFA it can
-be a bit more tedious to have to constantly type the tokens. The AWS
-CLI when you give it the <code>--profile</code> flag will perform an
-<code>STS:AssumeRole</code> call for you an cache the results for one hour.</p>
-
-<p>This can be sufficient for your needs but if you’re working with some
-of the SDKs like boto you may encounter some problems. If you’re using
-ansible it uses boto2 underneath which doesn’t support profiles to
-assume role with MFA. Boto3 works correctly but you need to provide
-the MFA token on every invocation since it won’t cache sessions for
-you.</p>
-
-<p>To make my life easier and some colleagues while migrating from boto2
-to boto3 I created a very small tool called <strong><a href="https://github.com/diasjorge/roly">roly</a></strong>.</p>
-
-<p>The AWS SDKs will respect the <code>AWS_*</code> environment variables you
-have set and roly just leverages this fact.</p>
-
-<p>You can use roly in two ways:</p>
-
-<pre><code>$ roly export target-profile
-Assume Role MFA token code: XXXX
-export AWS_ACCESS_KEY_ID='XXXXXXXXXXXXXXXX'
-export AWS_SECRET_ACCESS_KEY='XXXXXXXXXXXXXXXX'
-export AWS_SESSION_TOKEN='XXXXXXXXXXXXXXXX'
-</code></pre>
-
-<p>If needed will prompt for your MFA token and then it will print the
-commands needed to set your environment variables. The session will
-last for an hour. Copy and paste them and you’re set.</p>
-
-<p>Or you can set the credentials and call a command just once.</p>
-
-<pre><code>$ roly exec target-profile command
-</code></pre>
-
-<p>You can find the source and binaries at the
-<a href="https://github.com/diasjorge/roly">github repository</a>.</p>
-
-<p>I hope you find it useful.</p>
 
       <p><a class="more" href="/2017/12/20/switch-aws-accounts-easily-using-roly.html">Read more</a></p>
       
@@ -1460,7 +1439,7 @@ So here are my instructions:
     </div>
   </div>
   <footer>
-    &copy; 2008-2017 Jorge Dias
+    &copy; 2008-2018 Jorge Dias
   </footer>
   <script src="/js/main.js"></script>
   <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
