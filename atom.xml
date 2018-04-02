@@ -4,12 +4,113 @@
  <title>Mr Dias</title>
  <link href="https://mrdias.com/atom.xml" rel="self"/>
  <link href="https://mrdias.com/"/>
- <updated>2018-04-01T22:22:57+02:00</updated>
+ <updated>2018-04-02T21:27:56+02:00</updated>
  <id>https://mrdias.com/</id>
  <author>
    <name>Jorge Dias</name>
  </author>
 
+ 
+ <entry>
+   <title>Pair programming Dos and Don'ts</title>
+   <link href="https://mrdias.com/2018/04/02/pair-programming-dos-and-donts.html"/>
+   <updated>2018-04-02T00:00:00+02:00</updated>
+   <id>https://mrdias.com/2018/04/02/pair-programming-dos-and-donts</id>
+   <content type="html">&lt;p&gt;There are several things that will make your pair programming sessions
+work better. Things you can actively do and others best to avoid.&lt;/p&gt;
+
+&lt;p&gt;First of all, you need to give it an honest shot, especially if you’re
+not experienced in pairing. Pair programming is a skill and needs to
+be learned. Like learning any other thing the process can be tough, it
+can take you out of your comfort zone and get your mind resisting and
+wanting to do things as usual. So it’s important to be open about the
+experience and try to make the best of it.&lt;!-- -**-END-**- --&gt;&lt;/p&gt;
+
+&lt;p&gt;Communication is crucial, you need to talk to your partner and learn
+to listen. There is a quote by
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt; which I
+really like that says: &lt;em&gt;“Programming is the art of telling another
+human being what one wants the computer to do”&lt;/em&gt;. This has always stuck
+with me since I first read it and when you’re pairing it applies even
+more. That’s the essence of it.&lt;/p&gt;
+
+&lt;p&gt;Effective listening is necessary, listening to others is by no means
+easy! Try to open to their suggestions and be aware of the interaction
+you have with your partner. Don’t rush through the task, take the time
+so both understand clearly the goal.&lt;/p&gt;
+
+&lt;p&gt;You need to be patient, you may have a very clear idea but your
+partner may not understand so try to explain things and help them
+understand. Use a notebook or a drawing board, don’t get frustrated if
+you need to repeat things many times. At the same time sometimes you
+just need to trust your partner. You may not understand clearly
+despite their best intentions or may not exactly agree on how to do
+things but let them show you their way. If after all the idea doesn’t
+work out you’ll both get something out of it, and the next attempt
+will work out much better as you won’t have to make the same mistakes.&lt;/p&gt;
+
+&lt;p&gt;Code written by a pair is a construction of the best ideas by two
+people and coming up with them, things need to be challenged. You’ll
+need to convince your partner and in some occasions you’ll need to
+convince yourself, so it’s important to leave the old ego at home!
+It’s not a competition nor is it about being right or wrong so
+questioning and discussing are vital and need not be taken
+personally. Remember the deliberation is all about the ideas not the
+people.&lt;/p&gt;
+
+&lt;p&gt;Be respectful when talking, try to avoid using bad words and
+expressions, try to keep the session positive even when faced with
+challenges (bugs, bad documentation, some third party failing,
+etc). Stay positive! A good mood will help the sessions be lighter and less
+stressful for both. And it’s ok to keep your partner in check, if they
+are being cranky or moody let them know and help them cheer up.&lt;/p&gt;
+
+&lt;p&gt;Taking regular breaks is also advisable. When you’re pairing a lot of
+the little distractions that plague us will vanish. Writing emails,
+checking slack, reading blogs, twitter, news sites, etc is not
+something you can do with someone next to you so the increased focus
+will be draining after a while. When you feel tired go for a coffee or
+go for a walk, try to change the environment so that you can recharge
+and get back into action feeling fresh.&lt;/p&gt;
+
+&lt;p&gt;Last but not least, you’ll be working shoulder to shoulder with
+someone so consider your personal hygiene and avoid using too much
+perfume or after shave as some people may be sensitive to it.&lt;/p&gt;
+
+&lt;p&gt;This is not an exhaustive list but by using these points you’ll see
+how your pair programming sessions become more enjoyable and after
+practicing some time you’ll get acquainted and see how working in this
+way is worth it.&lt;/p&gt;
+
+&lt;p&gt;
+  I'm preparing a workshop to help you learn how to get the most from
+  pair programming, if you're starting now or want to improve the way
+  you work with your colleagues please sign up to the newsletter to
+  keep you informed.
+&lt;/p&gt;
+
+&lt;!-- Begin MailChimp Signup Form --&gt;
+&lt;link href=&quot;//cdn-images.mailchimp.com/embedcode/slim-10_7.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+
+&lt;style type=&quot;text/css&quot;&gt;
+	#mc_embed_signup{background:#eee8d5; clear:left; font:14px Helvetica,Arial,sans-serif; }
+    #mc_embed_signup input{text-shadow:none;}
+&lt;/style&gt;
+
+&lt;div id=&quot;mc_embed_signup&quot;&gt;
+&lt;form action=&quot;https://mrdias.us17.list-manage.com/subscribe/post?u=5d763b2a9b2fb35ef9b2cc455&amp;amp;id=da74371800&quot; method=&quot;post&quot; id=&quot;mc-embedded-subscribe-form&quot; name=&quot;mc-embedded-subscribe-form&quot; class=&quot;validate&quot; target=&quot;_blank&quot; novalidate=&quot;&quot;&gt;
+    &lt;div id=&quot;mc_embed_signup_scroll&quot;&gt;
+	&lt;label for=&quot;mce-EMAIL&quot;&gt;Subscribe to my mailing list&lt;/label&gt;
+	&lt;input type=&quot;email&quot; value=&quot;&quot; name=&quot;EMAIL&quot; class=&quot;email&quot; id=&quot;mce-EMAIL&quot; placeholder=&quot;email address&quot; required=&quot;&quot; /&gt;
+    &lt;!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups--&gt;
+    &lt;div style=&quot;position: absolute; left: -5000px;&quot; aria-hidden=&quot;true&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;b_5d763b2a9b2fb35ef9b2cc455_da74371800&quot; tabindex=&quot;-1&quot; value=&quot;&quot; /&gt;&lt;/div&gt;
+    &lt;div class=&quot;clear&quot;&gt;&lt;input type=&quot;submit&quot; value=&quot;Subscribe&quot; name=&quot;subscribe&quot; id=&quot;mc-embedded-subscribe&quot; class=&quot;button&quot; /&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;/div&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Using magit with Github Enterprise</title>
