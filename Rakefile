@@ -11,6 +11,11 @@ end
 
 desc 'run server'
 task :server do
+  jekyll('serve --watch')
+end
+
+desc 'drafts'
+task :drafts do
   jekyll('serve --watch --drafts')
 end
 
