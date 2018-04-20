@@ -12,6 +12,38 @@ window.cookieconsent.initialise({
       "text": "#ffffff"
     }
   },
-  "theme": "edgeless"
+  "theme": "edgeless",
+  "type": "opt-in",
+  onInitialise: function (status) {
+    var type = this.options.type;
+    var didConsent = this.hasConsented();
+    if (type == 'opt-in' && didConsent) {
+       window['ga-disable-UA-15098892-1'] = false;
+    }
+    if (type == 'opt-out' && !didConsent) {
+       window['ga-disable-UA-15098892-1'] = true;
+    }
+  },
+
+  onStatusChange: function(status, chosenBefore) {
+    var type = this.options.type;
+    var didConsent = this.hasConsented();
+    if (type == 'opt-in' && didConsent) {
+       window['ga-disable-UA-15098892-1'] = false;
+    }
+    if (type == 'opt-out' && !didConsent) {
+       window['ga-disable-UA-15098892-1'] = true;
+    }
+  },
+
+  onRevokeChoice: function() {
+    var type = this.options.type;
+    if (type == 'opt-in') {
+       window['ga-disable-UA-15098892-1'] = false;
+    }
+    if (type == 'opt-out') {
+       window['ga-disable-UA-15098892-1'] = true;
+    }
+  }
 })});
 </script>
