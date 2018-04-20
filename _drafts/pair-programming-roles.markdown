@@ -55,5 +55,3 @@ the surface of the topic but I hope it makes you think of the concept
 of a good pairing session as a good car trip with your peer. Pilot and
 co-pilot working together to get to the destionation safe, relaxed,
 having a good conversation, having fun and without getting lost.
-
-{% include _newsletter_signup.html %}

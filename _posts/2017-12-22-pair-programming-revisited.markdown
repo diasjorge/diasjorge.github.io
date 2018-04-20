@@ -70,5 +70,3 @@ with your partner when you're writing the code and when you're the
 "co-pilot". It takes time to break old habits too, getting rid of the
 constant distractions and focusing on the task with your partner can
 be challenging.
-
-{% include _newsletter_signup.html %}

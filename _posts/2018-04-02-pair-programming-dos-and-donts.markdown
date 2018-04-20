@@ -68,5 +68,3 @@ This is not an exhaustive list but by using these points you'll see
 how your pair programming sessions become more enjoyable and after
 practicing some time you'll get acquainted and see how working in this
 way is worth it.
-
-{% include _newsletter_signup.html %}
