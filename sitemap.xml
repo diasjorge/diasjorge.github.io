@@ -7,10 +7,16 @@
   
   <url>
     <loc>https://mrdias.com/</loc>
-    <lastmod>2018-05-26T22:41:22+02:00</lastmod>
+    <lastmod>2020-06-03T15:50:15+02:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
+  
+  <url>
+    <loc>https://mrdias.com/2020/06/03/creating-jenkins-users-and-tokens-programmatically.html</loc>
+    <lastmod>2020-06-03T00:00:00+02:00</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
   
   <url>
     <loc>https://mrdias.com/2018/04/23/get-to-know-your-editor.html</loc>
@@ -394,6 +400,18 @@
   <url>
     <loc>https://mrdias.com/2018/04/</loc>
     <lastmod>2018-04-01T00:00:00+02:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2020/</loc>
+    <lastmod>2020-06-03T00:00:00+02:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2020/06/</loc>
+    <lastmod>2020-06-03T00:00:00+02:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   

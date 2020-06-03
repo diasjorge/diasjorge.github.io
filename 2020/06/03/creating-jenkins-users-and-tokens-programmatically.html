@@ -16,7 +16,7 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
-  <title></title>
+  <title>Creating jenkins users and tokens programatically</title>
   <meta charset="utf-8"/>
   <meta name="description" content="Jorge Dias | So many layers of web"/>
   <meta name="author" content="Jorge Dias"/>
@@ -54,17 +54,88 @@ ga('send', 'pageview');
   </header>
   <div class="content-wrapper">
     <div id="content">
-      <h2 class="title">Tag: roly</h2>
+      <div class="article">
+  <div class="header">
+    <h2>
+      <a href="/2020/06/03/creating-jenkins-users-and-tokens-programmatically.html">Creating jenkins users and tokens programatically</a>
+    </h2>
+  </div>
+  <div class="content">
+    <p>At work we manage a jenkins setup and rely on Google for
+authentication. One drawback is managing service users that do not
+have an email. We use those for interacting with the jenkins API in
+scripts.</p>
 
-<ul class="posts">
-  
-  <li>
-  <span class="post-date">Dec 20, 2017</span>
-  <a class="post-link" href="/2017/12/20/switch-aws-accounts-easily-using-roly.html">Switch AWS accounts easily using roly</a>
-</li>
+<p>When you use the Google Login plugin you no longer see the option to
+manage users in the UI, fortunately we can leverage the Jenkins
+Console and provision those users and generate the API tokens we need.</p>
 
-  
-</ul>
+<p>Let’s create some jenkins users and give them a username and password.</p>
+
+<!-- -**-END-**- -->
+
+<p>Go to the jenkins console on <code>JEKINS_URL/script</code>.</p>
+
+<p>To create a user you can execute:</p>
+
+<figure class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span></span>    <span class="kn">import</span> <span class="nn">static</span> <span class="n">hudson</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">HudsonPrivateSecurityRealm</span><span class="o">;</span>
+    <span class="n">HudsonPrivateSecurityRealm</span> <span class="n">securityRealm</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HudsonPrivateSecurityRealm</span><span class="o">(</span><span class="kc">true</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">securityRealm</span><span class="o">.</span><span class="na">createAccount</span><span class="o">(</span><span class="s2">&quot;USERNAME&quot;</span><span class="o">,</span> <span class="s2">&quot;PASSWORD&quot;</span><span class="o">)</span></code></pre></figure>
+
+<p>To generate an API Token for the user:</p>
+
+<figure class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span></span>    <span class="kn">import</span> <span class="nn">hudson.model.*</span>
+    <span class="kn">import</span> <span class="nn">jenkins.model.*</span>
+    <span class="kn">import</span> <span class="nn">jenkins.security.*</span>
+    <span class="kn">import</span> <span class="nn">jenkins.security.apitoken.*</span>
+
+    <span class="c1">// script parameters</span>
+    <span class="kt">def</span> <span class="n">userName</span> <span class="o">=</span> <span class="s1">&#39;USERNAME&#39;</span>
+    <span class="kt">def</span> <span class="n">tokenName</span> <span class="o">=</span> <span class="s1">&#39;kb-token&#39;</span>
+
+    <span class="kt">def</span> <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">userName</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="kt">def</span> <span class="n">apiTokenProperty</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="n">ApiTokenProperty</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kt">def</span> <span class="n">result</span> <span class="o">=</span> <span class="n">apiTokenProperty</span><span class="o">.</span><span class="na">tokenStore</span><span class="o">.</span><span class="na">generateNewToken</span><span class="o">(</span><span class="n">tokenName</span><span class="o">)</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">save</span><span class="o">()</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="na">plainValue</span></code></pre></figure>
+
+<p>This last script can be used to (re)generate API tokens for any user.</p>
+
+<p>Remember to use the API token to authenticate instead of the password.</p>
+
+<p>To verify it works, run:</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>    curl -u USERNAME:API_TOKEN https://jenkins.example.com</code></pre></figure>
+
+
+  </div>
+  <div class="metadata">
+    <p class="author vcard">
+      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2020-06-03T00:00:00+02:00">03 June 2020</time>
+    </p>
+    <ul class="tags">
+      
+      <li>
+        <a href="https://mrdias.com/tags/jenkins">
+          jenkins
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'mrdias';
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
     </div>
     <div id="sidebar">
