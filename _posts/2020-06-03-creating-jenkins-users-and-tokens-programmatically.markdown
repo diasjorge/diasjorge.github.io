@@ -1,5 +1,5 @@
 ---
-title: Managing jenkins users database programatically while using external authentication
+title: Creating jenkins users and tokens programatically
 layout: post
 tags: jenkins
 ---
@@ -9,24 +9,27 @@ authentication. One drawback is managing service users that do not
 have an email. We use those for interacting with the jenkins API in
 scripts.
 
-Fortunately we can leverage the Jenkins Console and provision those
-users and generate the API tokens we need.
+When you use the Google Login plugin you no longer see the option to
+manage users in the UI, fortunately we can leverage the Jenkins
+Console and provision those users and generate the API tokens we need.
+
+Let's create some jenkins users and give them a username and password.
+
+<!-- -**-END-**- -->
 
 Go to the jenkins console on `JEKINS_URL/script`.
 
-Then you can add the following scripts:
+To create a user you can execute:
 
-- To create a user you can do:
-
-    {% highlight groovy %}
+{% highlight groovy %}
     import static hudson.security.HudsonPrivateSecurityRealm;
     HudsonPrivateSecurityRealm securityRealm = new HudsonPrivateSecurityRealm(true, false, null);
     securityRealm.createAccount("USERNAME", "PASSWORD")
-    {% endhighlight %}
+{% endhighlight %}
 
-- To generate the API Token:
+To generate an API Token for the user:
 
-    {% highlight groovy %}
+{% highlight groovy %}
     import hudson.model.*
     import jenkins.model.*
     import jenkins.security.*
@@ -42,6 +45,15 @@ Then you can add the following scripts:
     user.save()
 
     return result.plainValue
-    {% endhighlight %}
+{% endhighlight %}
 
-    This last script can be used to (re)generate API tokens for any user
+This last script can be used to (re)generate API tokens for any user.
+
+Remember to use the API token to authenticate instead of the password.
+
+To verify it works, run:
+
+
+{% highlight sh %}
+    curl -u USERNAME:API_TOKEN https://jenkins.example.com
+{% endhighlight %}
