@@ -11,6 +11,7 @@ defaults:
 plugins:
   - jekyll-archives
   - jekyll/tagging
+  - jekyll-textile-converter
 tag_page_layout: tag_index
 tag_page_dir: tags
 jekyll-archives:

@@ -1,5 +1,7 @@
 ---
+layout: post
 title: 63 pensamientos y lecciones que he aprendido en 2 años como manager
+tags: reflections management
 ---
 
 He tenido este post en draft durante demasiado tiempo. Empezó como una lista de 6 meses, no me gustaba y al año otro cambio y realmente como me suele pasar lo he dejado de lado por no ser ¨perfecto¨, también escribir en Castellano se me hace raro pero podría ser un cambio interesante para este blog.
