@@ -78,9 +78,9 @@ rails app. For this example we’ll use the postgresql database.</p>
 <p>So the first thing is to initialize our database container. For that
 we execute the following command.</p>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker run -d --name fulcrum-postgres <span class="se">\</span>
--e <span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum -e <span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum <span class="se">\</span>
--p <span class="m">5432</span>:5432 postgres</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>fulcrum-postgres<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum<span class="w"> </span>-e<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum<span class="w"> </span><span class="se">\</span>
+-p<span class="w"> </span><span class="m">5432</span>:5432<span class="w"> </span>postgres</code></pre></figure>
 
 <p>So we’re creating a container and run it as a daemon (-d), we
 setup some environment variables (-e) for the username and password and
@@ -89,37 +89,37 @@ make the ports available (-p HOSTPORT:CONTAINERPORT).</p>
 <p>Now we need to adjust our config/database.yml, it should look
 something like this:</p>
 
-<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="l l-Scalar l-Scalar-Plain">development</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">adapter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql</span>
-  <span class="l l-Scalar l-Scalar-Plain">encoding</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unicode</span>
-  <span class="l l-Scalar l-Scalar-Plain">database</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fulcrum_development</span>
-  <span class="l l-Scalar l-Scalar-Plain">pool</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
-  <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
-  <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
-  <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="nt">development</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">adapter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+<span class="w">  </span><span class="nt">encoding</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicode</span>
+<span class="w">  </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fulcrum_development</span>
+<span class="w">  </span><span class="nt">pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
+<span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
+<span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span>
 
-<span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">adapter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql</span>
-  <span class="l l-Scalar l-Scalar-Plain">encoding</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">unicode</span>
-  <span class="l l-Scalar l-Scalar-Plain">database</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fulcrum_test</span>
-  <span class="l l-Scalar l-Scalar-Plain">pool</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
-  <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
-  <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
-  <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span></code></pre></figure>
+<span class="nt">test</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">adapter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+<span class="w">  </span><span class="nt">encoding</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicode</span>
+<span class="w">  </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fulcrum_test</span>
+<span class="w">  </span><span class="nt">pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_HOST&#39;] %&gt;</span>
+<span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] %&gt;</span>
+<span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] %&gt;</span></code></pre></figure>
 
 <p>And now we run our rails app</p>
 
 <figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span><span class="c1"># Initialize the db</span>
-<span class="nv">POSTGRES_HOST</span><span class="o">=</span><span class="sb">`</span>boot2docker ip<span class="sb">`</span> <span class="se">\</span>
-<span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum <span class="se">\</span>
-<span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum <span class="se">\</span>
-bundle <span class="nb">exec</span> rake db:setup
+<span class="nv">POSTGRES_HOST</span><span class="o">=</span><span class="sb">`</span>boot2docker<span class="w"> </span>ip<span class="sb">`</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum<span class="w"> </span><span class="se">\</span>
+<span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum<span class="w"> </span><span class="se">\</span>
+bundle<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>rake<span class="w"> </span>db:setup
 
 <span class="c1"># Run the app</span>
-<span class="nv">POSTGRES_HOST</span><span class="o">=</span><span class="sb">`</span>boot2docker ip<span class="sb">`</span> <span class="se">\</span>
-<span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum <span class="se">\</span>
-<span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum <span class="se">\</span>
-bundle <span class="nb">exec</span> rails s</code></pre></figure>
+<span class="nv">POSTGRES_HOST</span><span class="o">=</span><span class="sb">`</span>boot2docker<span class="w"> </span>ip<span class="sb">`</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">POSTGRES_USER</span><span class="o">=</span>fulcrum<span class="w"> </span><span class="se">\</span>
+<span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum<span class="w"> </span><span class="se">\</span>
+bundle<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>rails<span class="w"> </span>s</code></pre></figure>
 
 <p>Please note that for the value for the <em>POSTGRES_HOST</em> I’m using
 boot2docker, if you’re running on linux or against another docker host
@@ -144,29 +144,29 @@ defining our own from scratch is quite easy as well.</p>
 
 <p>Our Dockerfile should look like this</p>
 
-<figure class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span></span><span class="k">FROM</span><span class="s"> ruby:2.1.5</span>
+<figure class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span></span><span class="k">FROM</span><span class="w"> </span><span class="s">ruby:2.1.5</span>
 
-<span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive apt-get install -y <span class="se">\</span>
-    nodejs <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+<span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>nodejs<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
 
-<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
 
-COPY Gemfile* /app/
+<span class="k">COPY</span><span class="w"> </span>Gemfile*<span class="w"> </span>/app/
 
-<span class="k">RUN</span> bundle install -j4
+<span class="k">RUN</span><span class="w"> </span>bundle<span class="w"> </span>install<span class="w"> </span>-j4
 
-<span class="k">ADD</span><span class="s"> . /app</span>
+<span class="k">ADD</span><span class="w"> </span>.<span class="w"> </span>/app
 
 <span class="c"># Let&#39;s create a user to run the app that is not root</span>
-<span class="k">RUN</span> usr/sbin/useradd --create-home --home-dir /app --shell /bin/bash fulcrum
+<span class="k">RUN</span><span class="w"> </span>usr/sbin/useradd<span class="w"> </span>--create-home<span class="w"> </span>--home-dir<span class="w"> </span>/app<span class="w"> </span>--shell<span class="w"> </span>/bin/bash<span class="w"> </span>fulcrum
 
-<span class="k">RUN</span> chown -R fulcrum:fulcrum /app
+<span class="k">RUN</span><span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>fulcrum:fulcrum<span class="w"> </span>/app
 
-USER fulcrum
+<span class="k">USER</span><span class="w"> </span><span class="s">fulcrum</span>
 
-<span class="k">CMD</span><span class="s"> [&quot;rails&quot;, &quot;server&quot;]</span></code></pre></figure>
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;rails&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;server&quot;</span><span class="p">]</span></code></pre></figure>
 
 <p>We also need to tell docker certain files we don’t want as part of our container,
 we create a .dockerignore file like this:</p>
@@ -177,14 +177,14 @@ vendor/bundle</code></pre></figure>
 
 <p>After creating the files in the root of our app we execute:</p>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker build -t fulcrum-web .</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>fulcrum-web<span class="w"> </span>.</code></pre></figure>
 
 <p>Once that is finised we can run our app like this:</p>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker run --rm -p <span class="m">3000</span>:3000 --link fulcrum-postgres:postgres <span class="se">\</span>
--e <span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres <span class="se">\</span>
--e <span class="nv">POSTGRES_USERNAME</span><span class="o">=</span>fulcrum <span class="se">\</span>
--e <span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum <span class="se">\</span>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>--link<span class="w"> </span>fulcrum-postgres:postgres<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">POSTGRES_USERNAME</span><span class="o">=</span>fulcrum<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>fulcrum<span class="w"> </span><span class="se">\</span>
 fulcrum-web</code></pre></figure>
 
 <p>So what is this doing exactly? We’re linking our database container to
@@ -201,13 +201,13 @@ environment variables.</p>
 <p>We can change now our config/database.yml replacing the username and
 password like this:</p>
 
-<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_USER&#39;] %&gt;</span>
-<span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_PASSWORD&#39;] %&gt;</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_USER&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_USER&#39;] %&gt;</span>
+<span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;%= ENV[&#39;POSTGRES_PASSWORD&#39;] || ENV[&#39;POSTGRES_ENV_POSTGRES_PASSWORD&#39;] %&gt;</span></code></pre></figure>
 
 <p>We rebuild our container again, and now we can start it simply like:</p>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker run --rm -p <span class="m">3000</span>:3000 --link fulcrum-postgres:postgres <span class="se">\</span>
--e <span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres <span class="se">\</span>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>--link<span class="w"> </span>fulcrum-postgres:postgres<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres<span class="w"> </span><span class="se">\</span>
 fulcrum-web</code></pre></figure>
 
 <p>Now, recreating our container every time we make a file change is going
@@ -216,9 +216,9 @@ another docker facility called volumes. This will allow our container
 to have access to our local files. To do this simply we start our
 container like this:</p>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker run --rm -p <span class="m">3000</span>:3000 --link fulcrum-postgres:postgres <span class="se">\</span>
--e <span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres <span class="se">\</span>
--v <span class="nv">$PWD</span>:/app <span class="se">\</span>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>--link<span class="w"> </span>fulcrum-postgres:postgres<span class="w"> </span><span class="se">\</span>
+-e<span class="w"> </span><span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres<span class="w"> </span><span class="se">\</span>
+-v<span class="w"> </span><span class="nv">$PWD</span>:/app<span class="w"> </span><span class="se">\</span>
 fulcrum-web</code></pre></figure>
 
 <p>Note: Please make sure you delete your .bundle/config local file to
@@ -233,35 +233,35 @@ container, but having to be typing this commands constantly is not fun.</p>
 
 <p>So let’s create our docker-compose.yml.</p>
 
-<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">build</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">.</span>
-  <span class="l l-Scalar l-Scalar-Plain">links</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">db:postgres</span>
-  <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">POSTGRES_HOST</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
-  <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&quot;3000:3000&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">.:/app</span>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="nt">web</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="w">  </span><span class="nt">links</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db:postgres</span>
+<span class="w">  </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">POSTGRES_HOST</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
+<span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.:/app</span>
 
-<span class="l l-Scalar l-Scalar-Plain">db</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
-  <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">POSTGRES_USER</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fulcrum</span>
-    <span class="l l-Scalar l-Scalar-Plain">POSTGRES_PASSWORD</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fulcrum</span></code></pre></figure>
+<span class="nt">db</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+<span class="w">  </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fulcrum</span>
+<span class="w">    </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fulcrum</span></code></pre></figure>
 
 <p>Now to run our app we simply do:</p>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose up</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose<span class="w"> </span>up</code></pre></figure>
 
 <p>The first time we access our app it will complain our db is not
 created we can simply fix this by running:</p>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose run web rake db:setup</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose<span class="w"> </span>run<span class="w"> </span>web<span class="w"> </span>rake<span class="w"> </span>db:setup</code></pre></figure>
 
 <p>And last but not least if you want to run your tests then you can simply do:</p>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose run web rake db:test:prepare spec</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>docker-compose<span class="w"> </span>run<span class="w"> </span>web<span class="w"> </span>rake<span class="w"> </span>db:test:prepare<span class="w"> </span>spec</code></pre></figure>
 
 <h3 id="the-end">The end</h3>
 
@@ -273,7 +273,7 @@ predecesor) <a href="/2014/12/19/faster-docker-containers-development-using-fig.
   </div>
   <div class="metadata">
     <p class="author vcard">
-      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2015-03-08T00:00:00+01:00">08 March 2015</time>
+      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2015-03-08T00:00:00-04:00">08 March 2015</time>
     </p>
     <ul class="tags">
       
@@ -321,7 +321,7 @@ predecesor) <a href="/2014/12/19/faster-docker-containers-development-using-fig.
     Tags
   </h2>
   <div id="tag-cloud">
-    <a href="/tags/aws.html" class="set-1">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-1">automation</a> <a href="/tags/awareness.html" class="set-1">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-1">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-2">docker</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/emacs.html" class="set-1">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/javascript.html" class="set-1">javascript</a> <a href="/tags/jekyll.html" class="set-1">jekyll</a> <a href="/tags/jenkins.html" class="set-1">jenkins</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-1">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-1">osx</a> <a href="/tags/pair_programming.html" class="set-1">pair_programming</a> <a href="/tags/passenger.html" class="set-1">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-1">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-1">will_paginate</a>
+    <a href="/tags/aws.html" class="set-1">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-1">automation</a> <a href="/tags/awareness.html" class="set-1">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-1">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-2">docker</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/emacs.html" class="set-1">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/javascript.html" class="set-1">javascript</a> <a href="/tags/jekyll.html" class="set-1">jekyll</a> <a href="/tags/jenkins.html" class="set-1">jenkins</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/management.html" class="set-1">management</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-1">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-1">osx</a> <a href="/tags/pair_programming.html" class="set-1">pair_programming</a> <a href="/tags/passenger.html" class="set-1">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-1">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-1">will_paginate</a>
   </div>
 </div>
 <div class="module github">

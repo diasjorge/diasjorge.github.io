@@ -16,7 +16,7 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
-  <title>ActiveRecord migrations from the console</title>
+  <title>Will Paginate And Merb</title>
   <meta charset="utf-8"/>
   <meta name="description" content="Jorge Dias | So many layers of web"/>
   <meta name="author" content="Jorge Dias"/>
@@ -57,32 +57,36 @@ ga('send', 'pageview');
       <div class="article">
   <div class="header">
     <h2>
-      <a href="/2010/02/23/activerecord-migrations-from-the-console.textile">ActiveRecord migrations from the console</a>
+      <a href="/2008/12/09/will-paginate-and-merb.html">Will Paginate And Merb</a>
     </h2>
   </div>
   <div class="content">
-    If you ever run into the situation where one migration doesn't complete sucessfully, and you're stuck with a column in a table or a new table, so you can't drop the migration or execute the migration again, you can always call the migration methods from the console like this:<!-- -**-END-**- -->
-
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="o">.</span><span class="n">drop_table</span> <span class="ss">:table_name</span>
-<span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="o">.</span><span class="n">remove_column</span> <span class="ss">:table_name</span><span class="p">,</span> <span class="ss">:column_name</span></code></pre></figure>
-
-Hopefully this will help you when you're developing your migrations.
+    <p>I read something about how to do it in this <a href="http://merbist.com/2008/10/27/will_paginate-and-merb/">post</a> by The merbist, albeit the information was not complete.<br />
+So here are my instructions:<!-- -**-END-**- --></p>
+<p>Clone mislav&#8217;s will_paginate repo and build the gem from the agnostic branch.</p>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>git<span class="w"> </span>clone<span class="w"> </span>git://github.com/mislav/will_paginate.git
+<span class="nb">cd</span><span class="w"> </span>will_paginate/
+git<span class="w"> </span>checkout<span class="w"> </span>origin/agnostic<span class="w"> </span>
+gem<span class="w"> </span>build</code></pre></figure><p>With this commands you&#8217;ve generated the will_paginate-3.0.0.gem.</p>
+<p>If you want to install it system-wide use your usual gem install.<br />
+If you want to bundle it in your project, as I did, then you&#8217;ll have to do:</p>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>thor<span class="w"> </span>merb:gem:install<span class="w"> </span>path/to/gem</code></pre></figure><p>That&#8217;s it.</p>
   </div>
   <div class="metadata">
     <p class="author vcard">
-      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-02-23T00:00:00+01:00">23 February 2010</time>
+      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2008-12-09T00:00:00-04:00">09 December 2008</time>
     </p>
     <ul class="tags">
       
       <li>
-        <a href="https://mrdias.com/tags/activerecord">
-          activerecord
+        <a href="https://mrdias.com/tags/merb">
+          merb
         </a>
       </li>
       
       <li>
-        <a href="https://mrdias.com/tags/migrations">
-          migrations
+        <a href="https://mrdias.com/tags/will_paginate">
+          will_paginate
         </a>
       </li>
       
@@ -118,7 +122,7 @@ Hopefully this will help you when you're developing your migrations.
     Tags
   </h2>
   <div id="tag-cloud">
-    <a href="/tags/aws.html" class="set-1">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-1">automation</a> <a href="/tags/awareness.html" class="set-1">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-1">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-2">docker</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/emacs.html" class="set-1">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/javascript.html" class="set-1">javascript</a> <a href="/tags/jekyll.html" class="set-1">jekyll</a> <a href="/tags/jenkins.html" class="set-1">jenkins</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-1">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-1">osx</a> <a href="/tags/pair_programming.html" class="set-1">pair_programming</a> <a href="/tags/passenger.html" class="set-1">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-1">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-1">will_paginate</a>
+    <a href="/tags/aws.html" class="set-1">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-1">automation</a> <a href="/tags/awareness.html" class="set-1">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-1">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-2">docker</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/emacs.html" class="set-1">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/javascript.html" class="set-1">javascript</a> <a href="/tags/jekyll.html" class="set-1">jekyll</a> <a href="/tags/jenkins.html" class="set-1">jenkins</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/management.html" class="set-1">management</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-1">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-1">osx</a> <a href="/tags/pair_programming.html" class="set-1">pair_programming</a> <a href="/tags/passenger.html" class="set-1">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-1">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-1">will_paginate</a>
   </div>
 </div>
 <div class="module github">

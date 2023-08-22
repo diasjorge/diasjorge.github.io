@@ -79,22 +79,22 @@ project but you can probably modify it for other cases.</p>
 <p>Just put the following content in a Makefile.</p>
 
 <figure class="highlight"><pre><code class="language-basemake" data-lang="basemake"><span></span><span class="nf">compile</span><span class="o">:</span>
-	yum install -y gcc libffi-devel openssl-devel python27-virtualenv
-	virtualenv /tmp/venv
-	/tmp/venv/bin/pip install --upgrade pip setuptools
-	/tmp/venv/bin/pip install -e .
-	cp -r /tmp/venv/lib/python2.7/site-packages/. ./aws_lambda_libs
-	cp -r /tmp/venv/lib64/python2.7/site-packages/. ./aws_lambda_libs
+<span class="w">	</span>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gcc<span class="w"> </span>libffi-devel<span class="w"> </span>openssl-devel<span class="w"> </span>python27-virtualenv
+<span class="w">	</span>virtualenv<span class="w"> </span>/tmp/venv
+<span class="w">	</span>/tmp/venv/bin/pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools
+<span class="w">	</span>/tmp/venv/bin/pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+<span class="w">	</span>cp<span class="w"> </span>-r<span class="w"> </span>/tmp/venv/lib/python2.7/site-packages/.<span class="w"> </span>./aws_lambda_libs
+<span class="w">	</span>cp<span class="w"> </span>-r<span class="w"> </span>/tmp/venv/lib64/python2.7/site-packages/.<span class="w"> </span>./aws_lambda_libs
 
 <span class="nf">lambda-deps</span><span class="o">:</span>
-	@echo <span class="s2">&quot;--&gt; Compiling lambda dependencies&quot;</span>
-	docker run --rm -it -v <span class="si">${</span><span class="nv">CURDIR</span><span class="si">}</span>:/src -w /src amazonlinux make compile
+<span class="w">	</span>@echo<span class="w"> </span><span class="s2">&quot;--&gt; Compiling lambda dependencies&quot;</span>
+<span class="w">	</span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>-v<span class="w"> </span><span class="si">${</span><span class="nv">CURDIR</span><span class="si">}</span>:/src<span class="w"> </span>-w<span class="w"> </span>/src<span class="w"> </span>amazonlinux<span class="w"> </span>make<span class="w"> </span>compile
 
-<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">lambda</span>-<span class="n">deps</span> <span class="n">compile</span></code></pre></figure>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">lambda</span>-<span class="n">deps</span> <span class="n">compile</span></code></pre></figure>
 
 <p>Then you just need to execute:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>make lambda-deps</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>make<span class="w"> </span>lambda-deps</code></pre></figure>
 
 <p>When this process finishes you’ll have your dependencies compiled in aws_lambda_libs.</p>
 
@@ -105,7 +105,7 @@ project but you can probably modify it for other cases.</p>
   </div>
   <div class="metadata">
     <p class="author vcard">
-      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2017-03-09T00:00:00+01:00">09 March 2017</time>
+      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2017-03-09T00:00:00-04:00">09 March 2017</time>
     </p>
     <ul class="tags">
       
@@ -165,7 +165,7 @@ project but you can probably modify it for other cases.</p>
     Tags
   </h2>
   <div id="tag-cloud">
-    <a href="/tags/aws.html" class="set-1">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-1">automation</a> <a href="/tags/awareness.html" class="set-1">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-1">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-2">docker</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/emacs.html" class="set-1">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/javascript.html" class="set-1">javascript</a> <a href="/tags/jekyll.html" class="set-1">jekyll</a> <a href="/tags/jenkins.html" class="set-1">jenkins</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-1">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-1">osx</a> <a href="/tags/pair_programming.html" class="set-1">pair_programming</a> <a href="/tags/passenger.html" class="set-1">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-1">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-1">will_paginate</a>
+    <a href="/tags/aws.html" class="set-1">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-1">automation</a> <a href="/tags/awareness.html" class="set-1">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-1">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-2">docker</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/emacs.html" class="set-1">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/javascript.html" class="set-1">javascript</a> <a href="/tags/jekyll.html" class="set-1">jekyll</a> <a href="/tags/jenkins.html" class="set-1">jenkins</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/management.html" class="set-1">management</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-1">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-1">osx</a> <a href="/tags/pair_programming.html" class="set-1">pair_programming</a> <a href="/tags/passenger.html" class="set-1">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-1">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-1">will_paginate</a>
   </div>
 </div>
 <div class="module github">

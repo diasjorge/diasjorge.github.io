@@ -7,411 +7,429 @@
   
   <url>
     <loc>https://mrdias.com/</loc>
-    <lastmod>2020-06-03T15:50:15+02:00</lastmod>
+    <lastmod>2023-08-21T20:52:24-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   
   <url>
+    <loc>https://mrdias.com/2023/08/20/63-pensamientos-y-lecciones-que-he-aprendido-en-2-an-os-como-manager.html</loc>
+    <lastmod>2023-08-20T00:00:00-04:00</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  
+  <url>
     <loc>https://mrdias.com/2020/06/03/creating-jenkins-users-and-tokens-programmatically.html</loc>
-    <lastmod>2020-06-03T00:00:00+02:00</lastmod>
+    <lastmod>2020-06-03T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2018/04/23/get-to-know-your-editor.html</loc>
-    <lastmod>2018-04-23T00:00:00+02:00</lastmod>
+    <lastmod>2018-04-23T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2018/04/02/pair-programming-dos-and-donts.html</loc>
-    <lastmod>2018-04-02T00:00:00+02:00</lastmod>
+    <lastmod>2018-04-02T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2018/04/01/using-magit-with-github-enterprise.html</loc>
-    <lastmod>2018-04-01T00:00:00+02:00</lastmod>
+    <lastmod>2018-04-01T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2017/12/22/pair-programming-revisited.html</loc>
-    <lastmod>2017-12-22T00:00:00+01:00</lastmod>
+    <lastmod>2017-12-22T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2017/12/20/switch-aws-accounts-easily-using-roly.html</loc>
-    <lastmod>2017-12-20T00:00:00+01:00</lastmod>
+    <lastmod>2017-12-20T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2017/12/11/fast-directory-navigation-using-the-cdpath.html</loc>
-    <lastmod>2017-12-11T22:42:23+01:00</lastmod>
+    <lastmod>2017-12-11T17:42:23-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2017/12/09/blog-redesign.html</loc>
-    <lastmod>2017-12-09T00:00:00+01:00</lastmod>
+    <lastmod>2017-12-09T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2017/03/09/packaging-aws-lambda-dependencies-using-docker.html</loc>
-    <lastmod>2017-03-09T00:00:00+01:00</lastmod>
+    <lastmod>2017-03-09T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2015/03/08/using-docker-containers-with-your-existing-rails-app.html</loc>
-    <lastmod>2015-03-08T00:00:00+01:00</lastmod>
+    <lastmod>2015-03-08T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2014/12/19/faster-docker-containers-development-using-fig.html</loc>
-    <lastmod>2014-12-19T00:00:00+01:00</lastmod>
+    <lastmod>2014-12-19T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2014/12/09/changing-to-devops.html</loc>
-    <lastmod>2014-12-09T00:00:00+01:00</lastmod>
+    <lastmod>2014-12-09T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2014/07/03/growing-a-garden.html</loc>
-    <lastmod>2014-07-03T00:00:00+02:00</lastmod>
+    <lastmod>2014-07-03T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2013/10/12/barcelona-gdg-devfest-2013.html</loc>
-    <lastmod>2013-10-12T00:00:00+02:00</lastmod>
+    <lastmod>2013-10-12T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/09/10/closed-doors-open-source.html</loc>
-    <lastmod>2012-09-10T00:00:00+02:00</lastmod>
+    <lastmod>2012-09-10T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/07/11/git-rebasing-without-conflicts.html</loc>
-    <lastmod>2012-07-11T00:00:00+02:00</lastmod>
+    <lastmod>2012-07-11T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/05/11/using-chef-to-setup-your-development-environment-in-osx.html</loc>
-    <lastmod>2012-05-11T00:00:00+02:00</lastmod>
+    <lastmod>2012-05-11T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/02/29/slow-down-you-are-programming-too-fast.html</loc>
-    <lastmod>2012-02-29T00:00:00+01:00</lastmod>
+    <lastmod>2012-02-29T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2011/12/21/being-pragmatic.html</loc>
-    <lastmod>2011-12-21T00:00:00+01:00</lastmod>
+    <lastmod>2011-12-21T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2011/08/29/back-from-the-trenches.html</loc>
-    <lastmod>2011-08-29T00:00:00+02:00</lastmod>
+    <lastmod>2011-08-29T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2011/01/13/avoid-empty-deploys-with-capistrano.html</loc>
-    <lastmod>2011-01-13T00:00:00+01:00</lastmod>
+    <lastmod>2011-01-13T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/11/17/passenger-rvm-gemsets-and-bundler.html</loc>
-    <lastmod>2010-11-17T00:00:00+01:00</lastmod>
+    <lastmod>2010-11-17T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/11/04/conferencia-rails-workshop.html</loc>
-    <lastmod>2010-11-04T00:00:00+01:00</lastmod>
+    <lastmod>2010-11-04T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/05/25/ruby-enterprise-passenger-and-encoding-hell.html</loc>
-    <lastmod>2010-05-25T00:00:00+02:00</lastmod>
+    <lastmod>2010-05-25T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/04/11/emacs-support-for-jekyll.html</loc>
-    <lastmod>2010-04-11T00:00:00+02:00</lastmod>
+    <lastmod>2010-04-11T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/03/09/setting-environment-to-run-migrations-with-capistrano-ext.html</loc>
-    <lastmod>2010-03-09T00:00:00+01:00</lastmod>
+    <lastmod>2010-03-09T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/03/08/monthly-archives-for-jekyll.html</loc>
-    <lastmod>2010-03-08T00:00:00+01:00</lastmod>
+    <lastmod>2010-03-08T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/03/02/view-your-emails-with-cucumber.html</loc>
-    <lastmod>2010-03-02T00:00:00+01:00</lastmod>
+    <lastmod>2010-03-02T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>https://mrdias.com/2010/02/23/activerecord-migrations-from-the-console.textile</loc>
-    <lastmod>2010-02-23T00:00:00+01:00</lastmod>
+    <loc>https://mrdias.com/2010/02/23/activerecord-migrations-from-the-console.html</loc>
+    <lastmod>2010-02-23T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>https://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.textile</loc>
-    <lastmod>2009-08-12T00:00:00+02:00</lastmod>
+    <loc>https://mrdias.com/2009/08/12/ie-issues-with-new-element-and-class-with-prototype.html</loc>
+    <lastmod>2009-08-12T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>https://mrdias.com/2009/02/12/git-goodies.textile</loc>
-    <lastmod>2009-02-12T00:00:00+01:00</lastmod>
+    <loc>https://mrdias.com/2009/02/12/git-goodies.html</loc>
+    <lastmod>2009-02-12T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>https://mrdias.com/2008/12/16/will-paginate-and-ajax.textile</loc>
-    <lastmod>2008-12-16T00:00:00+01:00</lastmod>
+    <loc>https://mrdias.com/2008/12/16/will-paginate-and-ajax.html</loc>
+    <lastmod>2008-12-16T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   <url>
-    <loc>https://mrdias.com/2008/12/09/will-paginate-and-merb.textile</loc>
-    <lastmod>2008-12-09T00:00:00+01:00</lastmod>
+    <loc>https://mrdias.com/2008/12/09/will-paginate-and-merb.html</loc>
+    <lastmod>2008-12-09T00:00:00-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
   
   <url>
     <loc>https://mrdias.com/2008/</loc>
-    <lastmod>2008-12-09T00:00:00+01:00</lastmod>
+    <lastmod>2008-12-09T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2008/12/</loc>
-    <lastmod>2008-12-09T00:00:00+01:00</lastmod>
+    <lastmod>2008-12-09T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2009/</loc>
-    <lastmod>2009-02-12T00:00:00+01:00</lastmod>
+    <lastmod>2009-02-12T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2009/08/</loc>
-    <lastmod>2009-08-12T00:00:00+02:00</lastmod>
+    <lastmod>2009-08-12T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2009/02/</loc>
-    <lastmod>2009-02-12T00:00:00+01:00</lastmod>
+    <lastmod>2009-02-12T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/</loc>
-    <lastmod>2010-02-23T00:00:00+01:00</lastmod>
+    <lastmod>2010-02-23T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/11/</loc>
-    <lastmod>2010-11-04T00:00:00+01:00</lastmod>
+    <lastmod>2010-11-04T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/05/</loc>
-    <lastmod>2010-05-25T00:00:00+02:00</lastmod>
+    <lastmod>2010-05-25T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/04/</loc>
-    <lastmod>2010-04-11T00:00:00+02:00</lastmod>
+    <lastmod>2010-04-11T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/03/</loc>
-    <lastmod>2010-03-02T00:00:00+01:00</lastmod>
+    <lastmod>2010-03-02T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2010/02/</loc>
-    <lastmod>2010-02-23T00:00:00+01:00</lastmod>
+    <lastmod>2010-02-23T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2011/</loc>
-    <lastmod>2011-01-13T00:00:00+01:00</lastmod>
+    <lastmod>2011-01-13T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2011/12/</loc>
-    <lastmod>2011-12-21T00:00:00+01:00</lastmod>
+    <lastmod>2011-12-21T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2011/08/</loc>
-    <lastmod>2011-08-29T00:00:00+02:00</lastmod>
+    <lastmod>2011-08-29T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2011/01/</loc>
-    <lastmod>2011-01-13T00:00:00+01:00</lastmod>
+    <lastmod>2011-01-13T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/</loc>
-    <lastmod>2012-02-29T00:00:00+01:00</lastmod>
+    <lastmod>2012-02-29T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/09/</loc>
-    <lastmod>2012-09-10T00:00:00+02:00</lastmod>
+    <lastmod>2012-09-10T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/07/</loc>
-    <lastmod>2012-07-11T00:00:00+02:00</lastmod>
+    <lastmod>2012-07-11T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/05/</loc>
-    <lastmod>2012-05-11T00:00:00+02:00</lastmod>
+    <lastmod>2012-05-11T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2012/02/</loc>
-    <lastmod>2012-02-29T00:00:00+01:00</lastmod>
+    <lastmod>2012-02-29T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2013/</loc>
-    <lastmod>2013-10-12T00:00:00+02:00</lastmod>
+    <lastmod>2013-10-12T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2013/10/</loc>
-    <lastmod>2013-10-12T00:00:00+02:00</lastmod>
+    <lastmod>2013-10-12T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2014/</loc>
-    <lastmod>2014-07-03T00:00:00+02:00</lastmod>
+    <lastmod>2014-07-03T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2014/12/</loc>
-    <lastmod>2014-12-09T00:00:00+01:00</lastmod>
+    <lastmod>2014-12-09T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2014/07/</loc>
-    <lastmod>2014-07-03T00:00:00+02:00</lastmod>
+    <lastmod>2014-07-03T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2015/</loc>
-    <lastmod>2015-03-08T00:00:00+01:00</lastmod>
+    <lastmod>2015-03-08T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2015/03/</loc>
-    <lastmod>2015-03-08T00:00:00+01:00</lastmod>
+    <lastmod>2015-03-08T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2017/</loc>
-    <lastmod>2017-03-09T00:00:00+01:00</lastmod>
+    <lastmod>2017-03-09T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2017/12/</loc>
-    <lastmod>2017-12-09T00:00:00+01:00</lastmod>
+    <lastmod>2017-12-09T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2017/03/</loc>
-    <lastmod>2017-03-09T00:00:00+01:00</lastmod>
+    <lastmod>2017-03-09T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2018/</loc>
-    <lastmod>2018-04-01T00:00:00+02:00</lastmod>
+    <lastmod>2018-04-01T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2018/04/</loc>
-    <lastmod>2018-04-01T00:00:00+02:00</lastmod>
+    <lastmod>2018-04-01T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2020/</loc>
-    <lastmod>2020-06-03T00:00:00+02:00</lastmod>
+    <lastmod>2020-06-03T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
   <url>
     <loc>https://mrdias.com/2020/06/</loc>
-    <lastmod>2020-06-03T00:00:00+02:00</lastmod>
+    <lastmod>2020-06-03T00:00:00-04:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2023/</loc>
+    <lastmod>2023-08-20T00:00:00-04:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2023/08/</loc>
+    <lastmod>2023-08-20T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   

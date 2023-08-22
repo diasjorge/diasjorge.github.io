@@ -65,46 +65,46 @@ ga('send', 'pageview');
 
 <p>Inside a support file for cucumber, like features/support/open_email.rb, insert the following code:</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="k">module</span> <span class="nn">SaveAndOpenEmail</span>
-  <span class="kp">include</span> <span class="no">Webrat</span><span class="o">::</span><span class="no">SaveAndOpenPage</span>
-  <span class="k">def</span> <span class="nf">save_and_open_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">unless</span> <span class="no">File</span><span class="o">.</span><span class="n">exist?</span><span class="p">(</span><span class="n">saved_page_dir</span><span class="p">)</span>
- 
-    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">saved_page_dir</span><span class="si">}</span><span class="s2">/email-</span><span class="si">#{</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">to_i</span><span class="si">}</span><span class="s2">.html&quot;</span>
- 
-    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
-      <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="n">email</span><span class="o">.</span><span class="n">to_s</span>
-    <span class="k">end</span>
- 
-    <span class="n">open_in_browser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-  <span class="k">end</span> 
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="k">module</span><span class="w"> </span><span class="nn">SaveAndOpenEmail</span>
+<span class="w">  </span><span class="kp">include</span><span class="w"> </span><span class="no">Webrat</span><span class="o">::</span><span class="no">SaveAndOpenPage</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">save_and_open_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="no">File</span><span class="o">.</span><span class="n">exist?</span><span class="p">(</span><span class="n">saved_page_dir</span><span class="p">)</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">saved_page_dir</span><span class="si">}</span><span class="s2">/email-</span><span class="si">#{</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">to_i</span><span class="si">}</span><span class="s2">.html&quot;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">f</span><span class="o">|</span>
+<span class="w">      </span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="w"> </span><span class="n">email</span><span class="o">.</span><span class="n">to_s</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">open_in_browser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="w">  </span><span class="k">end</span><span class="w"> </span>
 <span class="k">end</span>
- 
+<span class="w"> </span>
 <span class="no">World</span><span class="p">(</span><span class="no">SaveAndOpenEmail</span><span class="p">)</span></code></pre></figure>
 
 <p>Then in your step definitions, you can implement a step like this</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="no">Then</span><span class="p">(</span><span class="sr">/^show me the emails?$/</span><span class="p">)</span> <span class="k">do</span>
-  <span class="n">save_and_open_email</span><span class="p">(</span><span class="n">current_email</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="no">Then</span><span class="p">(</span><span class="sr">/^show me the emails?$/</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">save_and_open_email</span><span class="p">(</span><span class="n">current_email</span><span class="p">)</span>
 <span class="k">end</span></code></pre></figure>
 
 <p><strong>UPDATE</strong>: As of version 0.2.2 of pickle, they already include this functionality, although it has a bug which has not been fixed. If you try to call that step, you will see:</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`open_in_browser&#39; for #&lt;Cucumber::Rails::World:0x..fdb4951fa&gt; (NoMethodError)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">undefined</span><span class="w"> </span><span class="nb">method</span><span class="w"> </span><span class="sb">`open_in_browser&#39; for #&lt;Cucumber::Rails::World:0x..fdb4951fa&gt; (NoMethodError)</span></code></pre></figure>
 
 <p>To fix it, as a workaround do this in features/support/email.rb</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="nb">require</span> <span class="s1">&#39;pickle/email&#39;</span>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="nb">require</span><span class="w"> </span><span class="s1">&#39;pickle/email&#39;</span>
 
-<span class="no">Pickle</span><span class="o">::</span><span class="no">Email</span><span class="o">.</span><span class="n">module_eval</span> <span class="k">do</span>
-  <span class="kp">include</span> <span class="no">Webrat</span><span class="o">::</span><span class="no">SaveAndOpenPage</span>
+<span class="no">Pickle</span><span class="o">::</span><span class="no">Email</span><span class="o">.</span><span class="n">module_eval</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="kp">include</span><span class="w"> </span><span class="no">Webrat</span><span class="o">::</span><span class="no">SaveAndOpenPage</span>
 <span class="k">end</span></code></pre></figure>
 
 
   </div>
   <div class="metadata">
     <p class="author vcard">
-      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-03-02T00:00:00+01:00">02 March 2010</time>
+      <span class="name">Jorge Dias</span><time pubdate class="published" datetime="2010-03-02T00:00:00-04:00">02 March 2010</time>
     </p>
     <ul class="tags">
       
@@ -152,7 +152,7 @@ ga('send', 'pageview');
     Tags
   </h2>
   <div id="tag-cloud">
-    <a href="/tags/aws.html" class="set-1">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-1">automation</a> <a href="/tags/awareness.html" class="set-1">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-1">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-2">docker</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/emacs.html" class="set-1">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/javascript.html" class="set-1">javascript</a> <a href="/tags/jekyll.html" class="set-1">jekyll</a> <a href="/tags/jenkins.html" class="set-1">jenkins</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-1">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-1">osx</a> <a href="/tags/pair_programming.html" class="set-1">pair_programming</a> <a href="/tags/passenger.html" class="set-1">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-1">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-1">will_paginate</a>
+    <a href="/tags/aws.html" class="set-1">AWS</a> <a href="/tags/iam.html" class="set-1">IAM</a> <a href="/tags/ie.html" class="set-1">IE</a> <a href="/tags/activerecord.html" class="set-1">activerecord</a> <a href="/tags/ajax.html" class="set-1">ajax</a> <a href="/tags/archives.html" class="set-1">archives</a> <a href="/tags/automation.html" class="set-1">automation</a> <a href="/tags/awareness.html" class="set-1">awareness</a> <a href="/tags/backbone.html" class="set-1">backbone</a> <a href="/tags/capistrano.html" class="set-1">capistrano</a> <a href="/tags/chef.html" class="set-1">chef</a> <a href="/tags/conferencia_rails.html" class="set-1">conferencia_rails</a> <a href="/tags/css.html" class="set-1">css</a> <a href="/tags/cucumber.html" class="set-1">cucumber</a> <a href="/tags/design.html" class="set-1">design</a> <a href="/tags/development.html" class="set-1">development</a> <a href="/tags/devops.html" class="set-1">devops</a> <a href="/tags/docker.html" class="set-2">docker</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/emacs.html" class="set-1">emacs</a> <a href="/tags/emails.html" class="set-1">emails</a> <a href="/tags/encodings.html" class="set-1">encodings</a> <a href="/tags/fig.html" class="set-1">fig</a> <a href="/tags/gardening.html" class="set-1">gardening</a> <a href="/tags/gdg.html" class="set-1">gdg</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/javascript.html" class="set-1">javascript</a> <a href="/tags/jekyll.html" class="set-1">jekyll</a> <a href="/tags/jenkins.html" class="set-1">jenkins</a> <a href="/tags/lambda.html" class="set-1">lambda</a> <a href="/tags/life.html" class="set-1">life</a> <a href="/tags/management.html" class="set-1">management</a> <a href="/tags/marionette.html" class="set-1">marionette</a> <a href="/tags/merb.html" class="set-1">merb</a> <a href="/tags/migrations.html" class="set-1">migrations</a> <a href="/tags/open_source.html" class="set-1">open_source</a> <a href="/tags/osx.html" class="set-1">osx</a> <a href="/tags/pair_programming.html" class="set-1">pair_programming</a> <a href="/tags/passenger.html" class="set-1">passenger</a> <a href="/tags/programming.html" class="set-1">programming</a> <a href="/tags/prototype.html" class="set-1">prototype</a> <a href="/tags/python.html" class="set-1">python</a> <a href="/tags/rails.html" class="set-1">rails</a> <a href="/tags/refactoring.html" class="set-1">refactoring</a> <a href="/tags/reflections.html" class="set-5">reflections</a> <a href="/tags/roly.html" class="set-1">roly</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/rvm.html" class="set-1">rvm</a> <a href="/tags/shell.html" class="set-1">shell</a> <a href="/tags/slides.html" class="set-1">slides</a> <a href="/tags/solarized.html" class="set-1">solarized</a> <a href="/tags/systems.html" class="set-1">systems</a> <a href="/tags/thor.html" class="set-1">thor</a> <a href="/tags/will_paginate.html" class="set-1">will_paginate</a>
   </div>
 </div>
 <div class="module github">
