@@ -17,7 +17,7 @@ Hoy está siendo un día lluvioso y tranquilo, no hay mucho que hacer, todos due
 7. Aclarar nuestra posición desde el principio ayudará a evitar malos entendidos.
 8. Ser directo, pero bondadoso. Siempre desde el respeto.
 9. Si crees que te has equivocado, pide disculpas sinceramente.
-10. Es mejor tener una conversación difícil un momento, que pasar mil momentos difíciles.
+10. Es mejor tener una conversación difícil un momento, que pasar mil momentos difíciles."<!-- -**-END-**- -->"
 11. Es realmente importante demostrar el aprecio por el trabajo y las cosas bien hechas, aunque sea lo que esperamos de ellas.
 12. Hay que dar buenas y malas noticias y feedback, mejor no mezclarlo.
 13. Si hay algo que mejorar, seamos claros y no intentemos suavizarlo con lo bueno.

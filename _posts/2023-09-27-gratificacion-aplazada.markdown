@@ -7,7 +7,7 @@ tags: reflections management
 Una de las mayores difícultades que he tenido después del cambio a una posición de gestión es la diferencia en la escala de gratificación con respecto a la que tenía por mi contribución individual (Individual Contributor).
 
 Como ingenieros tenemos múltiples oportunidades de realizar pequeñas contribuciones en el día a día. Mezclar una rama y hacer un despliegue nos da la oportunidad de ver los resultados de nuestras acciones y su impacto durante ciclos bastante cortos. En empresas ágiles esto puede ser de días a pocas semanas.
-Es una generalización, ya hay mucho proyectos que pueden llevar largo tiempo para poner en producción pero suele haber oportunidades de ver el progreso que vamos consiguiendo. Ese momento que resuelves un problema y hace click!
+Es una generalización, ya hay mucho proyectos que pueden llevar largo tiempo para poner en producción pero suele haber oportunidades de ver el progreso que vamos consiguiendo. Ese momento que resuelves un problema y hace click! "<!-- -**-END-**- -->"
 
 En una posición de gestión podemos ver el  progreso que realizan nuestros equipos pero la escala de los objetivos es mayor y los resultados se pueden ver en semanas o meses cuando pronto.
 
