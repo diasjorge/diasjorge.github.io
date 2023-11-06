@@ -7,10 +7,16 @@
   
   <url>
     <loc>https://mrdias.com/</loc>
-    <lastmod>2023-09-27T19:47:21-04:00</lastmod>
+    <lastmod>2023-11-05T20:49:44-04:00</lastmod>
     <changefreq>daily</changefreq>
   </url>
   
+  
+  <url>
+    <loc>https://mrdias.com/2023/11/05/las-victorias-de-los-demas.html</loc>
+    <lastmod>2023-11-05T00:00:00-04:00</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
   
   <url>
     <loc>https://mrdias.com/2023/09/27/gratificacion-aplazada.html</loc>
@@ -430,6 +436,12 @@
   <url>
     <loc>https://mrdias.com/2023/</loc>
     <lastmod>2023-08-20T00:00:00-04:00</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://mrdias.com/2023/11/</loc>
+    <lastmod>2023-11-05T00:00:00-04:00</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   
