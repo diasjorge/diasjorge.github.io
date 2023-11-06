@@ -1,8 +1,12 @@
 ---
 ---
 @import "skeleton/base";
-@import "solarized-css/solarized-light";
 @import "highlight";
+@import "solarized-css/solarized-light";
+
+@media (prefers-color-scheme: dark) {
+  @import "solarized-css/solarized-dark";
+}
 
 body {
   max-width: 27cm;
