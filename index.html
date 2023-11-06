@@ -13,6 +13,7 @@ title: Mr. Dias
     <div class="content">
       {% if forloop.first == true %}
       {{ post.content }}
+      {% include _newsletter_signup.html %}
       {% else %}
       {{ post.excerpt }}
       <p><a class="more" href="{{ post.url }}">Read more</a></p>
